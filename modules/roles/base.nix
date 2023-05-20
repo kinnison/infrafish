@@ -13,7 +13,6 @@ with lib;
       passwordAuthentication = false;
       permitRootLogin = "without-password";
     };
-  };
 
   users.extraUsers.root.shell = mkOverride 50 "${pkgs.bashInteractive}/bin/bash";
 
@@ -22,4 +21,7 @@ with lib;
     curl
     openssh
   ];
+
+  system.stateVersion = "22.11";
+};
 }

@@ -17,6 +17,6 @@ in
   user = "root";
   sshUser = "root";
   nodes = {
-    utils = mkNode "utils" "192.168.122.1" true;
+    utils = mkNode "utils" "192.168.122.190" true;
   };
 }

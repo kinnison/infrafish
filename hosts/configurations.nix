@@ -4,6 +4,7 @@
 , inputs
 , nixpkgs
 , sops-nix
+, ...
 }:
 let 
   nixosSystem = nixpkgs.lib.makeOverridable nixpkgs.lib.nixosSystem;
