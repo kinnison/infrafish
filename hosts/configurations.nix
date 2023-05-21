@@ -32,4 +32,12 @@ in
       ./utils/configuration.nix
     ];
   };
+
+  services0 = nixosSystem {
+    system = "x86_64-linux";
+    modules = defaultModules ++ [
+      ./services0/configuration.nix
+    ];
+  };
+
 }

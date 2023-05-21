@@ -18,5 +18,6 @@ in
   sshUser = "root";
   nodes = {
     utils = mkNode "utils" "192.168.122.190" true;
+    services0 = mkNode "services0" "192.168.122.179" true;
   };
 }

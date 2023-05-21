@@ -2,7 +2,7 @@
 { lib, config, pkgs, ... }:
 
 let 
-  machine = "utils";
+  machine = "services0";
 in
 {
   imports = [ ./hardware-configuration.nix ];
@@ -11,5 +11,13 @@ in
   zramSwap.enable = true;
   networking.hostName = machine;
   networking.domain = "";
+  
+  services.postgresql = {
+    enable = true;
+  };
+  services.postgresqlBackup = {
+    enable = true;
+    backupAll = true;
+  };
 
 }
