@@ -20,4 +20,6 @@ in
     backupAll = true;
   };
 
+  pepperfish.munin-node.enable = true;
+
 }
