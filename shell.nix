@@ -1,18 +1,15 @@
 { mkShell
-, sops-import-keys-hook
-, ssh-to-pgp
-, sops-init-gpg-key
 , sops
 , deploy-rs
 , nixpkgs-fmt
+, age
+, ssh-to-age
 }:
 
 mkShell {
-  sopsPGPKeyDirs = [ "./keys/users" ];
   nativeBuildInputs = [
-    ssh-to-pgp
-    sops-import-keys-hook
-    sops-init-gpg-key
+    age
+    ssh-to-age
     sops
     deploy-rs
     nixpkgs-fmt

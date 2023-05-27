@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -eu
+
+TMPKEY=$(mktemp)
+
+cleanup () { rm -f "${TMPKEY}"; }
+
+trap cleanup 0
+
+age -d -o "${TMPKEY}" keys/primary.age.enc
+
+AGEKEY=$(grep AGE-SECRET-KEY "${TMPKEY}")
+
+:> ${TMPKEY}
+
+AGEFILE=~/.config/sops/age/keys.txt
+
+mkdir -p $(dirname "${AGEFILE}")
+
+touch "${AGEFILE}"
+
+if ! grep -F "${AGEKEY}" "${AGEFILE}"; then
+    echo "Saving primary identity into ${AGEFILE}"
+    echo "${AGEKEY}" >> "${AGEFILE}"
+else
+    echo "Primary identity already present in ${AGEFILE}"
+fi

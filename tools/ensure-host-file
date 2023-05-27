@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+HOSTFILE="$1"
+
+if [ "x$HOSTFILE" = "x" ]; then
+    echo "usage: ensure-host-file HOSTNAME"
+    exit 1
+fi
+
+if [ -r "keys/hosts/${HOSTFILE}.yaml" ]; then
+    echo "Host file for $HOSTFILE already exists"
+else
+    cat > keys/hosts/${HOSTFILE}.yaml <<EOF
+info: "This is an example entry"
+EOF
+    sops -i -e keys/hosts/${HOSTFILE}.yaml
+fi

@@ -1,0 +1,16 @@
+keys:
+  - &primary age1kmyypm3zq50ul5wrswxwp669jm7nt56z9kpc2d5awtv2etwzzpmqr6fr5k
+  - &utils age1lw8yy6ayck9cfxy38wrmgxvptamm7erqck00qyg6aa3nzasry4wsnccmvf
+
+creation_rules:
+
+  - path_regex: keys/hosts/utils_.*\.yaml$
+    key_groups:
+      - age:
+        - *primary
+        - *utils
+
+  # Fallback just uses the primary
+  - key_groups:
+      - age:
+          - *primary

@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -eu
+
+TARGETNAME="$1"
+SSHHOST="$2"
+SSHPORT="${3:-22}"
+
+if [ "x$TARGETNAME" = "x" -o "x$SSHHOST" = "x" ]; then
+  echo "usage: fetch-ssh targetname sshhost [port]"
+  exit 1
+fi
+
+echo "$TARGETNAME will ssh to $SSHHOST on $SSHPORT"
+
+do_ssh () {
+    ssh -p $SSHPORT root@$SSHHOST "$@"
+}
+
+tools/ensure-host-file "${TARGETNAME}_ssh_host_keys"
+
+for KEY in $(do_ssh ls /etc/ssh | grep 'ssh_host_.*_key$'); do
+    echo "Processing $KEY"
+    KEYDATA=$(do_ssh cat /etc/ssh/$KEY | sed -e's/$/\\n/g' | tr -d '\n')
+    sops -i --set '["'$KEY'"] "'"${KEYDATA}"'"' keys/hosts/${TARGETNAME}_ssh_host_keys.yaml
+    do_ssh cat /etc/ssh/${KEY}.pub > keys/hosts/${TARGETNAME}_${KEY}.pub
+done
+
+sops -d --extract '["ssh_host_ed25519_key"]' keys/hosts/${TARGETNAME}_ssh_host_keys.yaml | ssh-to-age -private-key | age-keygen -y > keys/hosts/${TARGETNAME}.pub

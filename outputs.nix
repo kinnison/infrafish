@@ -12,7 +12,6 @@
   in
   {
     devShell = pkgs.callPackage ./shell.nix {
-      inherit (sops-nix.packages."${pkgs.system}") sops-import-keys-hook ssh-to-pgp sops-init-gpg-key;
       inherit (deploy.packages."${pkgs.system}") deploy-rs;
     };
   })) // {
