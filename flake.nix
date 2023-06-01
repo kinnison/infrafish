@@ -5,7 +5,7 @@
 
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     deploy.url = "github:input-output-hk/deploy-rs";
     deploy.inputs.nixpkgs.follows = "fenix/nixpkgs";
@@ -15,5 +15,5 @@
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = {...} @ args: import ./outputs.nix args;
+  outputs = {...} @ args: import ./outputs.nix (args // { hosts = import ./hosts.nix; });
 }

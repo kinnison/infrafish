@@ -2,6 +2,7 @@
 , sops
 , deploy-rs
 , nixpkgs-fmt
+, wireguard-tools
 , age
 , ssh-to-age
 }:
@@ -13,5 +14,6 @@ mkShell {
     sops
     deploy-rs
     nixpkgs-fmt
+    wireguard-tools
   ];
 }

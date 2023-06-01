@@ -7,7 +7,6 @@ in
 {
   imports = [ ./hardware-configuration.nix ];
 
-  boot.cleanTmpDir = true;
   zramSwap.enable = true;
   networking.hostName = machine;
   networking.domain = "";

@@ -7,11 +7,13 @@ with lib;
 {
   config = {
     time.timeZone = mkDefault "Europe/London";
-    boot.cleanTmpDir = mkDefault true;
+    boot.tmp.cleanOnBoot = mkDefault true;
     services.openssh = {
       enable = true;
-      passwordAuthentication = false;
-      permitRootLogin = "without-password";
+      settings = {
+        PasswordAuthentication = false;
+        PermitRootLogin = "without-password";
+      };
     };
 
   users.users.root.openssh.authorizedKeys.keys = [
