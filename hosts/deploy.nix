@@ -1,21 +1,17 @@
 # Deploy instructions for Pepperfish hosts
 
-{ self
-, deploy
-, hosts
-, ...
-}:
+{ self, deploy, hosts, ... }:
 let
   mkNode = server: ip: port: fast: {
     hostname = "${ip}:${builtins.toString port}";
     fastConnection = fast;
-    profiles.system.path =
-      deploy.lib.x86_64-linux.activate.nixos
-        self.nixosConfigurations."${server}";
+    profiles.system.path = deploy.lib.x86_64-linux.activate.nixos
+      self.nixosConfigurations."${server}";
   };
-in
-{
+in {
   user = "root";
   sshUser = "root";
-  nodes = builtins.mapAttrs (nodename: data: mkNode nodename data.ip data.port true) hosts;
+  nodes =
+    builtins.mapAttrs (nodename: data: mkNode nodename data.ip data.port true)
+    hosts;
 }

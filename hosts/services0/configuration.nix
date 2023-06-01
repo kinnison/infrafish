@@ -1,19 +1,12 @@
 # Utility system configuration
 { lib, config, pkgs, ... }:
 
-let 
-  machine = "services0";
-in
 {
   imports = [ ./hardware-configuration.nix ];
 
   zramSwap.enable = true;
-  networking.hostName = machine;
-  networking.domain = "";
-  
-  services.postgresql = {
-    enable = true;
-  };
+
+  services.postgresql = { enable = true; };
   services.postgresqlBackup = {
     enable = true;
     backupAll = true;

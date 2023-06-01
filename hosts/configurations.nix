@@ -1,12 +1,7 @@
 # Host configurations
 
-{ self
-, inputs
-, nixpkgs
-, sops-nix
-, ...
-}:
-let 
+{ self, inputs, nixpkgs, sops-nix, hosts, ... }:
+let
   nixosSystem = nixpkgs.lib.makeOverridable nixpkgs.lib.nixosSystem;
   customModules = import ../modules/modules-list.nix;
   baseModules = [
@@ -24,20 +19,18 @@ let
     }
   ];
   defaultModules = baseModules ++ customModules;
-in
-{
-  utils = nixosSystem {
-    system = "x86_64-linux";
-    modules = defaultModules ++ [
-      ./utils/configuration.nix
-    ];
-  };
 
-  services0 = nixosSystem {
-    system = "x86_64-linux";
-    modules = defaultModules ++ [
-      ./services0/configuration.nix
-    ];
-  };
-
-}
+  mkSystem = nodename: data:
+    nixosSystem {
+      system = if data ? system then data.system else "x86_64-linux";
+      modules = defaultModules ++ [
+        {
+          _module.args = {
+            nodeData = data;
+            nodeName = nodename;
+          };
+        }
+        ./${nodename}/configuration.nix
+      ];
+    };
+in builtins.mapAttrs mkSystem hosts

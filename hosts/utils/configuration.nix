@@ -1,15 +1,10 @@
 # Utility system configuration
 { lib, config, pkgs, ... }:
 
-let 
-  machine = "utils";
-in
 {
   imports = [ ./hardware-configuration.nix ];
 
   zramSwap.enable = true;
-  networking.hostName = machine;
-  networking.domain = "";
 
   pepperfish.munin-node.enable = true;
 

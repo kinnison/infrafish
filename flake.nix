@@ -15,5 +15,6 @@
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = {...} @ args: import ./outputs.nix (args // { hosts = import ./hosts.nix; });
+  outputs = { ... }@args:
+    import ./outputs.nix (args // { hosts = import ./hosts.nix; });
 }
