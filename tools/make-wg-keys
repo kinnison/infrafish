@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -eu
+
+TARGETNAME="$1"
+if [ "x$TARGETNAME" = "x" ]; then
+  echo "usage: make-wg-keys targetname"
+  exit 1
+fi
+
+YAML="keys/hosts/${TARGETNAME}_wg_keys.yaml"
+
+tools/ensure-host-file $(basename $YAML .yaml)
+
+EXISTING=$(sops -d --extract '["wg_private"]' $YAML 2>/dev/null || true)
+
+if [ "x$EXISTING" != 'x' ]; then
+    echo "There is already a private key, not overwriting.  Remove $YAML if you want to regenerate"
+    echo ""
+    echo "Existing public key is:"
+else
+    sops -i --set '["wg_private"] "'$(wg genkey)'"' $YAML
+fi
+
+sops -d --extract '["wg_private"]' $YAML | wg pubkey
