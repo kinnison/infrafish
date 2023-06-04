@@ -1,10 +1,10 @@
 # Wireguard setup for Pepperfish
 
-{ config, lib, nodeName, nodeData, inputs, ... }:
+{ config, lib, nodeName, nodeData, inputs, ppfmisc, ... }:
 
 with lib;
 let
-  wglib = import ./wg-lib.nix;
+  wglib = import ./wg-lib.nix { inherit ppfmisc; };
   wgPort = 51820;
   myClients =
     filterAttrs (n: d: d ? vpn && d.vpn.core == nodeName) inputs.hosts;

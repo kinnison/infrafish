@@ -16,5 +16,8 @@
   };
 
   outputs = { ... }@args:
-    import ./outputs.nix (args // { hosts = import ./hosts.nix; });
+    import ./outputs.nix (args // {
+      hosts = import ./hosts.nix;
+      ppfmisc = import ./misc.nix;
+    });
 }

@@ -1,6 +1,6 @@
 # Host configurations
 
-{ self, inputs, nixpkgs, sops-nix, hosts, ... }:
+{ self, inputs, nixpkgs, sops-nix, hosts, ppfmisc, ... }:
 let
   nixosSystem = nixpkgs.lib.makeOverridable nixpkgs.lib.nixosSystem;
   customModules = import ../modules/modules-list.nix;
@@ -28,6 +28,8 @@ let
           _module.args = {
             nodeData = data;
             nodeName = nodename;
+            inherit hosts;
+            inherit ppfmisc;
           };
         }
         ./${nodename}/configuration.nix
