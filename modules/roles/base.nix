@@ -41,6 +41,6 @@ with lib;
 
     boot.kernel.sysctl = { "net.ipv4.tcp_sack" = 0; };
 
-    system.stateVersion = "22.11";
+    system.stateVersion = "23.05";
   };
 }
