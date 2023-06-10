@@ -5,7 +5,7 @@ let
   systems = concatStrings (mapAttrsToList (n: d:
     let
       hostIP = ppfmisc.internalIP d.hostNumber;
-      group = if d ? munin-group then d.munin-group else "plain";
+      group = if d ? munin-group then d.munin-group else "infrafish";
     in ''
       [${group};${n}]
       address ${hostIP}
