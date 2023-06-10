@@ -1,7 +1,7 @@
 {
-  utils = {
+  core = {
     hostNumber = 1;
-    ip = "192.168.122.190";
+    ip = "188.246.206.159";
     port = 22;
     vpn = {
       core = ""; # Empty string means this is the core/lighthouse/whatever
@@ -11,10 +11,10 @@
 
   services0 = {
     hostNumber = 2;
-    ip = "192.168.122.179";
+    ip = "188.246.206.160";
     port = 22;
     vpn = {
-      core = "utils";
+      core = "core";
       pubkey = "7X4EaBuuuRKJirAYSTceGR7vWNeN+XtSMlodJid3AGs=";
     };
   };

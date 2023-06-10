@@ -11,6 +11,25 @@ Then you can run `nix devshell` and work from there.
 This is very very unlikely to be complete but I will update it as and
 when I can to try and improve matters.
 
+If the host is not already running nixos then you need to infect it
+using nixos-infect. This is likely to work only if you have Debian 11
+or newer.
+
+Approximately:
+
+1. Ensure root has an authorized_keys
+2. infect with:
+   ```console
+   $ which curl || apt install -y curl
+   $ copy in nixos-infect from wherever
+   ... examine the downloaded script
+   $ env NIX_CHANNEL=nixos-23.05 NO_REBOOT=1 doNetConf=y bash -x nixos-infect
+   ```
+   (you may not need doNetConf if the VM DHCPs)
+3. Check the status of things like the bootloader, in case
+4. Reboot your host and log back into it directly
+5. Check and make any tweaks necessary, reboot, etc. once you're happy then we can proceed
+
 ## Basic prep
 
 Install a system somehow and get hold of keys by means of things like
@@ -41,3 +60,8 @@ entries will be deployed to all hosts for all hosts on the same VPN.
 Note, the VPN is only for connection between hosts, and does not grant
 NAT or other access. Any support for such an additional VPN will be
 in host specific configuration.
+
+## Basic configuration in hosts/$systemname
+
+You need to get some basic configuration into hosts/$systemname - you can
+begin by acquiring this from /etc/nixos on the system

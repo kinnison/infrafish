@@ -27,12 +27,18 @@ in {
   services.nginx = {
     enable = true;
     virtualHosts = {
-      "utils" = {
+      "core" = {
         serverAliases =
           [ nodeData.ip (ppfmisc.internalIP nodeData.hostNumber) ];
         root = "/var/www/munin";
       };
     };
+  };
+
+  services.postgresql = { enable = true; };
+  services.postgresqlBackup = {
+    enable = true;
+    backupAll = true;
   };
 
   networking.firewall.allowedTCPPorts = [ 80 ];
