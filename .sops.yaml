@@ -1,7 +1,7 @@
 keys:
   - &primary age1kmyypm3zq50ul5wrswxwp669jm7nt56z9kpc2d5awtv2etwzzpmqr6fr5k
   - &core age1w7gfrlckwurlrmjdmy4jst472wkvrrdffmycrr853cak68hfjsss8lrnjw
-  - &services0 age1zcdyu8zcd9k2exp3lywr2m89u0ms6k2pu6n3v4e4cmqgm4rctaqsleq6je
+  - &services0 age1kllehtqjxl802lew2zd8lwn5emxewdd4p9aq9zaaykln8rkp2gaq7057ln
 
 creation_rules:
 

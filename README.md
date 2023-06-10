@@ -65,3 +65,7 @@ in host specific configuration.
 
 You need to get some basic configuration into hosts/$systemname - you can
 begin by acquiring this from /etc/nixos on the system
+
+Then you can go ahead and configure it how you want.
+
+To deploy just one host you can do `deploy -i '.#systemname.system`
