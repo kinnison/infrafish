@@ -17,6 +17,18 @@ creation_rules:
         - *primary
         - *services0
 
+  - path_regex: keys/pdns-
+    key_groups:
+      - age:
+        - *primary
+        - *services0
+  - path_regex: keys/acme-credentials$
+    key_groups:
+      - age:
+        - *primary
+        - *core
+        - *services0
+
   # Fallback just uses the primary
   - key_groups:
       - age:

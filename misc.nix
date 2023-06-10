@@ -6,4 +6,5 @@ in {
   internalIP = hostNumber: "10.105.102.${builtins.toString hostNumber}";
   munin-core = "core";
   rootPermittedKeys = [ danielSSHKey ];
+  primary-ns = "services0";
 }

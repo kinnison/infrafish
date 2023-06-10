@@ -1,6 +1,6 @@
 # Pepperfish base role
 
-{ config, pkgs, lib, nodeName, ppfmisc, ... }:
+{ config, pkgs, lib, nodeName, ppfmisc, hosts, ... }:
 
 with lib;
 
@@ -17,7 +17,7 @@ with lib;
     };
 
     networking.hostName = nodeName;
-    networking.domain = "";
+    networking.domain = "infrafish.uk";
 
     users.users.root.openssh.authorizedKeys.keys = ppfmisc.rootPermittedKeys;
 
@@ -38,6 +38,21 @@ with lib;
     services.fstrim.enable = true;
 
     boot.kernel.sysctl = { "net.ipv4.tcp_sack" = 0; };
+
+    security.acme = {
+      acceptTerms = true;
+      defaults = {
+        email = "dsilvers@digital-scurf.org";
+        dnsProvider = "pdns";
+        credentialsFile = config.sops.secrets.acme-credentials.path;
+        dnsPropagationCheck = true;
+      };
+    };
+
+    sops.secrets.acme-credentials = {
+      format = "binary";
+      sopsFile = ../../keys/acme-credentials;
+    };
 
     system.stateVersion = "23.05";
   };

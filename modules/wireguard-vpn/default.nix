@@ -46,5 +46,6 @@ in {
       name = wglib.hostIP d.hostNumber;
       value = [ "${n}.vpn" ];
     }) allHostsInVPN;
+    networking.firewall.trustedInterfaces = [ "wg0" ];
   };
 }

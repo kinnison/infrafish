@@ -27,20 +27,31 @@ in {
   services.nginx = {
     enable = true;
     virtualHosts = {
-      "core" = {
-        serverAliases =
-          [ nodeData.ip (ppfmisc.internalIP nodeData.hostNumber) ];
+      "munin.infrafish.uk" = {
+        onlySSL = true;
+        useACMEHost = "munin.infrafish.uk";
         root = "/var/www/munin";
       };
     };
   };
 
-  services.postgresql = { enable = true; };
+  security.acme.certs = {
+    "munin.infrafish.uk" = { group = config.services.nginx.group; };
+  };
+
+  services.postgresql = {
+    enable = true;
+    enableTCPIP = true;
+    authentication = ''
+      host all all ${ppfmisc.internalIP 1}/24 trust
+    '';
+  };
+
   services.postgresqlBackup = {
     enable = true;
     backupAll = true;
   };
 
-  networking.firewall.allowedTCPPorts = [ 80 ];
+  networking.firewall.allowedTCPPorts = [ 443 ];
 
 }
