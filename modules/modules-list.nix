@@ -5,4 +5,5 @@
   # Pepperfish tasks
   ./munin-node
   ./wireguard-vpn
+  ./vaultwarden
 ]

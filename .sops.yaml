@@ -28,6 +28,11 @@ creation_rules:
         - *primary
         - *core
         - *services0
+  - path_regex: keys/vaultwarden-
+    key_groups:
+      - age:
+        - *primary
+        - *services0
 
   # Fallback just uses the primary
   - key_groups:

@@ -76,6 +76,8 @@
     "pdns-admin.infrafish.uk" = { group = config.services.nginx.group; };
   };
 
+  pepperfish.vaultwarden.enable = true;
+
   networking.firewall.allowedTCPPorts = [ 53 443 80 ];
   networking.firewall.allowedUDPPorts = [ 53 ];
 
