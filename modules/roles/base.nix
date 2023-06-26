@@ -54,6 +54,23 @@ with lib;
       sopsFile = ../../keys/acme-credentials;
     };
 
+    # Root's SSH key comes next
+    sops.secrets.root-ssh-private = {
+      format = "binary";
+      sopsFile = ../../keys/hosts/${nodeName}_root_ssh_key;
+    };
+
+    fonts.fontconfig.enable = false;
+
+    services.openssh.knownHosts = builtins.mapAttrs (name: value: {
+      publicKeyFile = ../../keys/hosts/${name}_ssh_host_ed25519_key.pub;
+      extraHostNames = [
+        "${name}.infrafish.uk"
+        "${name}.vpn"
+        (ppfmisc.internalIP value.hostNumber)
+      ];
+    }) hosts;
+
     system.stateVersion = "23.05";
   };
 }

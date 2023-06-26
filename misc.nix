@@ -7,4 +7,5 @@ in {
   munin-core = "core";
   rootPermittedKeys = [ danielSSHKey ];
   primary-ns = "services0";
+  storageServer = "u356603.your-storagebox.de";
 }

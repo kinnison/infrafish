@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -eu
+
+TARGETNAME="$1"
+if [ "x$TARGETNAME" = "x" ]; then
+  echo "usage: make-root-ssh targetname"
+  exit 1
+fi
+
+KEY="keys/hosts/${TARGETNAME}_root_ssh_key"
+PUB="${KEY}.pub"
+
+if [ -f $KEY ]; then
+    echo "There is already a private key, not overwriting.  Remove $KEY and $PUB if you want to regenerate"
+    echo ""
+    echo "Existing public key is:"
+else
+    ssh-keygen -f $KEY -t ed25519 -N '' -q
+    sops -i -e $KEY
+fi
+
+cat $PUB
+

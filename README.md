@@ -43,7 +43,12 @@ by `fetch-ssh` (`keys/hosts/somehost.pub`).
 Next you'll need to create wireguard keys, you can do this using the
 `tools/make-wg-keys` utility. It will put them into the right SOPS
 file for you. Note, if you run this when the host already has keys,
-then this will simply overwrite them, so be careful.
+then this might simply overwrite them, so be careful.
+
+Finally you will need to create SSH keys for the root user which
+can then be used to support backups etc. Do this with the aptly named
+`tools/make-root-ssh` utility. It will put them into the right SOPS
+file for you. As with the WG keys, this might overwrite so be careful.
 
 ## Required data in `hosts.nix`
 

@@ -5,13 +5,13 @@ keys:
 
 creation_rules:
 
-  - path_regex: keys/hosts/core_.*\.yaml$
+  - path_regex: keys/hosts/core_.*
     key_groups:
       - age:
         - *primary
         - *core
 
-  - path_regex: keys/hosts/services0_.*\.yaml$
+  - path_regex: keys/hosts/services0_.*
     key_groups:
       - age:
         - *primary

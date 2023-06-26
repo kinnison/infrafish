@@ -13,6 +13,8 @@
     sops-nix.url = "github:Mic92/sops-nix";
     fenix.url = "github:nix-community/fenix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.url = "github:nix-community/home-manager/release-23.05";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { ... }@args:

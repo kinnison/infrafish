@@ -1,6 +1,6 @@
 # Host configurations
 
-{ self, inputs, nixpkgs, sops-nix, hosts, ppfmisc, ... }:
+{ self, inputs, nixpkgs, sops-nix, home-manager, hosts, ppfmisc, ... }:
 let
   nixosSystem = nixpkgs.lib.makeOverridable nixpkgs.lib.nixosSystem;
   customModules = import ../modules/modules-list.nix;
@@ -15,6 +15,16 @@ let
           documentation.info.enable = false;
         })
         sops-nix.nixosModules.sops
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.root = import ../modules/roles/root.nix;
+          home-manager.extraSpecialArgs = {
+            inherit hosts;
+            inherit ppfmisc;
+          };
+        }
       ];
     }
   ];
