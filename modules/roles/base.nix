@@ -1,6 +1,6 @@
 # Pepperfish base role
 
-{ config, pkgs, lib, nodeName, ppfmisc, hosts, ... }:
+{ config, pkgs, lib, nodeName, nodeData, ppfmisc, hosts, ... }:
 
 with lib;
 
@@ -62,14 +62,30 @@ with lib;
 
     fonts.fontconfig.enable = false;
 
-    services.openssh.knownHosts = builtins.mapAttrs (name: value: {
+    services.openssh.knownHosts = (builtins.mapAttrs (name: value: {
       publicKeyFile = ../../keys/hosts/${name}_ssh_host_ed25519_key.pub;
       extraHostNames = [
         "${name}.infrafish.uk"
         "${name}.vpn"
         (ppfmisc.internalIP value.hostNumber)
       ];
-    }) hosts;
+    }) hosts) // ppfmisc.extraHostKeys;
+
+    sops.secrets.backup-passphrase = {
+      format = "binary";
+      sopsFile = ../../keys/backup-passphrase;
+    };
+
+    services.borgbackup.jobs.system-files = {
+      startAt = "*-*-* 00:00:00";
+      paths = [ "/var/lib/acme" ];
+      repo = (ppfmisc.borgURI nodeData.storage-user "system");
+      encryption = {
+        mode = "repokey-blake2";
+        passCommand = "cat /run/secrets/backup-passphrase";
+      };
+      compression = "auto,lzma";
+    };
 
     system.stateVersion = "23.05";
   };

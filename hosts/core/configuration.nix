@@ -50,6 +50,18 @@ in {
   services.postgresqlBackup = {
     enable = true;
     backupAll = true;
+    startAt = "*-*-* 02:15:00";
+  };
+
+  services.borgbackup.jobs.postgresql = {
+    startAt = "*-*-* 03:00:00";
+    paths = [ config.services.postgresqlBackup.location ];
+    repo = (ppfmisc.borgURI nodeData.storage-user "postgresql");
+    encryption = {
+      mode = "repokey-blake2";
+      passCommand = "cat /run/secrets/backup-passphrase";
+    };
+    compression = "auto,lzma";
   };
 
   networking.firewall.allowedTCPPorts = [ 443 ];

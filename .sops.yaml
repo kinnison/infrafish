@@ -33,6 +33,12 @@ creation_rules:
       - age:
         - *primary
         - *services0
+  - path_regex: keys/backup-passphrase
+    key_groups:
+      - age:
+        - *primary
+        - *core
+        - *services0
 
   # Fallback just uses the primary
   - key_groups:

@@ -30,6 +30,7 @@ in {
 
         # TODO: Add SMTP configuration later
       };
+      backupDir = "/var/lib/bitwarden_rs/backups";
     };
 
     security.acme.certs = {

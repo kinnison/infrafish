@@ -78,6 +78,17 @@
 
   pepperfish.vaultwarden.enable = true;
 
+  services.borgbackup.jobs.vaultwarden = {
+    startAt = "*-*-* 04:00:00";
+    paths = [ config.services.vaultwarden.backupDir ];
+    repo = (ppfmisc.borgURI nodeData.storage-user "vaultwarden");
+    encryption = {
+      mode = "repokey-blake2";
+      passCommand = "cat /run/secrets/backup-passphrase";
+    };
+    compression = "auto,lzma";
+  };
+
   networking.firewall.allowedTCPPorts = [ 53 443 80 ];
   networking.firewall.allowedUDPPorts = [ 53 ];
 
