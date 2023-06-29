@@ -4,6 +4,11 @@
 let
   nixosSystem = nixpkgs.lib.makeOverridable nixpkgs.lib.nixosSystem;
   customModules = import ../modules/modules-list.nix;
+  overlays = [
+    (final: prev: {
+      local = import ../pkgs { pkgs = prev; };
+    })
+  ];
   baseModules = [
     { _module.args.inputs = inputs; }
     {
@@ -26,6 +31,7 @@ let
           };
         }
       ];
+      nixpkgs.overlays = overlays;
     }
   ];
   defaultModules = baseModules ++ customModules;
