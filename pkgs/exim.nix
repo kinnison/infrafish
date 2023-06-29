@@ -1,6 +1,7 @@
 { coreutils, db, fetchurl, openssl, pcre2, perl, pkg-config, lib, stdenv
 , enableLDAP ? false, openldap
 , enableMySQL ? false, libmysqlclient, zlib
+, enablePgSQL ? false, postgresql
 , enableAuthDovecot ? false, dovecot
 , enablePAM ? false, pam
 , enableSPF ? true, libspf2
@@ -23,6 +24,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ coreutils db openssl perl pcre2 ]
     ++ lib.optional enableLDAP openldap
     ++ lib.optionals enableMySQL [ libmysqlclient zlib ]
+    ++ lib.optional enablePgSQL postgresql
     ++ lib.optional enableAuthDovecot dovecot
     ++ lib.optional enablePAM pam
     ++ lib.optional enableSPF libspf2
@@ -67,6 +69,12 @@ stdenv.mkDerivation rec {
         s:^\(LOOKUP_LIBS\)=\(.*\):\1=\2 -lmysqlclient -L${libmysqlclient}/lib/mysql -lssl -lm -lpthread -lz:
         s:^# \(LOOKUP_LIBS\)=.*:\1=-lmysqlclient -L${libmysqlclient}/lib/mysql -lssl -lm -lpthread -lz:
         s:^# \(LOOKUP_INCLUDE\)=.*:\1=-I${libmysqlclient.dev}/include/mysql/:
+      ''}
+      ${lib.optionalString enablePgSQL ''
+        s:^# \(LOOKUP_PGSQL=yes\)$:\1:
+        s:^\(LOOKUP_LIBS\)=\(.*\):\1=\2 -lpq -L${postgresql.lib}/lib:
+        s:^# \(LOOKUP_LIBS\)=.*:\1=-lpq -L${postgresql.lib}/lib:
+        s:^# \(LOOKUP_INCLUDE\)=.*:\1=-I${postgresql}/include:
       ''}
       ${lib.optionalString enableAuthDovecot ''
         s:^# \(AUTH_DOVECOT\)=.*:\1=yes:
