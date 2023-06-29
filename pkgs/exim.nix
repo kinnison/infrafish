@@ -7,6 +7,7 @@
 , enableSPF ? true, libspf2
 , enableDMARC ? true, opendmarc
 , enableRedis ? false, hiredis
+, enableJSON ? false, jansson
 }:
 
 stdenv.mkDerivation rec {
@@ -29,7 +30,8 @@ stdenv.mkDerivation rec {
     ++ lib.optional enablePAM pam
     ++ lib.optional enableSPF libspf2
     ++ lib.optional enableDMARC opendmarc
-    ++ lib.optional enableRedis hiredis;
+    ++ lib.optional enableRedis hiredis
+    ++ lib.optional enableJSON jansson;
 
   configurePhase = ''
     runHook preConfigure
@@ -98,6 +100,13 @@ stdenv.mkDerivation rec {
         s:^# \(LOOKUP_LIBS\)=.*:\1=-lhiredis -L${hiredis}/lib/hiredis:
         s:^\(LOOKUP_INCLUDE\)=\(.*\):\1=\2 -I${hiredis}/include/hiredis/:
         s:^# \(LOOKUP_INCLUDE\)=.*:\1=-I${hiredis}/include/hiredis/:
+      ''}
+      ${lib.optionalString enableJSON ''
+        s:^# \(LOOKUP_JSON=yes\)$:\1:
+        s:^\(LOOKUP_LIBS\)=\(.*\):\1=\2 -ljansson -L${jansson}/lib:
+        s:^# \(LOOKUP_LIBS\)=.*:\1=-ljansson -L${jansson}/lib:
+        s:^\(LOOKUP_INCLUDE\)=\(.*\):\1=\2 -I${jansson}/include:
+        s:^# \(LOOKUP_INCLUDE\)=.*:\1=-I${jansson}/include:
       ''}
       #/^\s*#.*/d
       #/^\s*$/d
