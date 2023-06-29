@@ -1,5 +1,6 @@
 {pkgs, ...}:
 with pkgs;
 {
-  exim = callPackage ./exim.nix { enablePgSQL = true; };
+  exim-core = callPackage ./exim.nix { enablePgSQL = true; };
+  exim-inmail = callPackage ./exim.nix { enableJSON = true; enableSqlite = true; };
 }
