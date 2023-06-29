@@ -2,6 +2,7 @@
 , enableLDAP ? false, openldap
 , enableMySQL ? false, libmysqlclient, zlib
 , enablePgSQL ? false, postgresql
+, enableSqlite ? false, sqlite
 , enableAuthDovecot ? false, dovecot
 , enablePAM ? false, pam
 , enableSPF ? true, libspf2
@@ -26,6 +27,7 @@ stdenv.mkDerivation rec {
     ++ lib.optional enableLDAP openldap
     ++ lib.optionals enableMySQL [ libmysqlclient zlib ]
     ++ lib.optional enablePgSQL postgresql
+    ++ lib.optionals enableSqlite [ sqlite sqlite.dev ]
     ++ lib.optional enableAuthDovecot dovecot
     ++ lib.optional enablePAM pam
     ++ lib.optional enableSPF libspf2
@@ -77,6 +79,13 @@ stdenv.mkDerivation rec {
         s:^\(LOOKUP_LIBS\)=\(.*\):\1=\2 -lpq -L${postgresql.lib}/lib:
         s:^# \(LOOKUP_LIBS\)=.*:\1=-lpq -L${postgresql.lib}/lib:
         s:^# \(LOOKUP_INCLUDE\)=.*:\1=-I${postgresql}/include:
+      ''}
+      ${lib.optionalString enableSqlite ''
+        s:^# \(LOOKUP_SQLITE=yes\)$:\1:
+        s:^# \(LOOKUP_SQLITE_PC=sqlite3\)$:\1:
+        s:^\(LOOKUP_LIBS\)=\(.*\):\1=\2 -lsqlite3 -L${sqlite}/lib:
+        s:^# \(LOOKUP_LIBS\)=.*:\1=-lsqlite3 -L${sqlite}/lib -lssl -lm -lpthread -lz:
+        s:^# \(LOOKUP_INCLUDE\)=.*:\1=-I${sqlite.dev}/include:
       ''}
       ${lib.optionalString enableAuthDovecot ''
         s:^# \(AUTH_DOVECOT\)=.*:\1=yes:
