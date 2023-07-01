@@ -6,4 +6,5 @@
   ./munin-node
   ./wireguard-vpn
   ./vaultwarden
+  ./mail-core
 ]

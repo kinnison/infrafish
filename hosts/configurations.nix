@@ -1,12 +1,17 @@
 # Host configurations
 
-{ self, inputs, nixpkgs, sops-nix, home-manager, hosts, ppfmisc, ... }:
+{ self, inputs, nixpkgs, sops-nix, home-manager, hosts, ppfmisc, mailconfig, ...
+}:
 let
   nixosSystem = nixpkgs.lib.makeOverridable nixpkgs.lib.nixosSystem;
   customModules = import ../modules/modules-list.nix;
   overlays = [
     (final: prev: {
-      local = import ../pkgs { pkgs = prev; };
+      local = import ../pkgs {
+        mailconfig = mailconfig.packages.${prev.system};
+        pkgs = prev;
+      };
+      dovecot = prev.dovecot.override { withPgSQL = true; };
     })
   ];
   baseModules = [

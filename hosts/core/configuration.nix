@@ -41,7 +41,7 @@ in {
 
   services.postgresql = {
     enable = true;
-    enableTCPIP = true;
+    settings.listen_addresses = mkOverride 50 "core.vpn";
     authentication = ''
       host all all ${ppfmisc.internalIP 1}/24 trust
     '';
@@ -63,6 +63,8 @@ in {
     };
     compression = "auto,lzma";
   };
+
+  pepperfish.mailcore.enable = true;
 
   networking.firewall.allowedTCPPorts = [ 443 ];
 

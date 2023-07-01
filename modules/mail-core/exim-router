@@ -1,0 +1,44 @@
+mailcore_aliases:
+  local_part_suffix = +*
+  local_part_suffix_optional
+  driver         = redirect
+  allow_fail     = true
+  file_transport = address_file
+  pipe_transport = address_pipe
+  data           = ${expand:${lookup pgsql {select expansion from mailentry where name='${quote_pgsql:$local_part}' and kind='alias' and maildomain=(select id from maildomain where domainname='${quote_pgsql:$domain}')} {$value}}}
+  #user           = mail
+  qualify_preserve_domain
+
+mailcore_delivery:
+  local_part_suffix = +*
+  local_part_suffix_optional
+  driver    = accept
+  transport = sieve_virtual
+  domains = ${lookup pgsql {select domainname from maildomain where domainname='${quote_pgsql:$domain}'}{$value}}
+  local_parts = ${lookup pgsql {select name from mailentry where name='${quote_pgsql:$local_part}' and kind='account' and maildomain=(select id from maildomain where domainname='${quote_pgsql:$domain_data}')}}
+  #condition = ${lookup pgsql {select * from mailentry where name='${quote_pgsql:$local_part_data}' and kind='account' and maildomain=(select id from maildomain where domainname='${quote_pgsql:$domain_data}')}{true}{fail}}
+
+mailcore_catchall:
+  local_part_suffix = +*
+  local_part_suffix_optional
+  driver         = redirect
+  file_transport = address_file
+  pipe_transport = address_pipe
+  allow_fail     = true
+  data           = ${expand:${lookup pgsql {select expansion from mailentry where name='*' and kind='alias' and maildomain=(select id from maildomain where domainname='${quote_pgsql:$domain}')} {$value}}}
+  #user           = mail
+  qualify_preserve_domain
+
+remote_cunning:
+  #debug_print = REMCUN: Checking for $local_part in $domain
+  driver      = manualroute
+  domains     = ${lookup pgsql {select domainname from maildomain where remotemx is not null}{$value}}
+  transport   = remote_smtp_cunning
+  more        = false
+  route_data  = ${lookup pgsql {select remotemx from maildomain where domainname='${quote_pgsql:$domain}'}{$value}}
+
+outgoing:
+  driver = dnslookup
+  domains = ! +local_domains
+  transport = remote_smtp
+  no_more

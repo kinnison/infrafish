@@ -1,0 +1,87 @@
+############################################################################
+
+ACL_slow_incoming:
+  accept
+    hosts = : +relay_from_hosts
+    message = ${primary_hostname} ESMTP ${tod_full} RELAY-OK
+
+  accept
+    delay = 2s
+
+
+############################################################################
+
+ACL_smtp_vrfy:
+  accept
+
+############################################################################
+
+ACL_check_mail:
+  # deny message = envelope sender $sender_address blacklisted.
+  #      senders = ${if exists{CONFDIR/local_sender_blacklist}\
+  #                            {CONFDIR/local_sender_blacklist}\
+  #                            {}}
+  # 
+  # deny message = sender IP address $sender_host_address is blacklisted here.
+  #      hosts = ${if exists{CONFDIR/local_host_blacklist}\
+  #                            {CONFDIR/local_host_blacklist}\
+  #                            {}}
+  # 
+  # # Keep authenticated users under control
+  # deny authenticated = *
+  #    message = You have sent too many mails today.
+  #    set acl_c_msg_limit=${lookup{$authenticated_id}nwildlsearch{/etc/exim4/send-limits}}
+  #    ratelimit = $acl_c_msg_limit / 1d / strict / $authenticated_id
+
+  accept
+
+############################################################################
+
+ACL_check_rcpt:
+
+  warn control = dkim_disable_verify 
+
+  deny   local_parts = ^.*[@%!|] : ^\\.
+
+  accept hosts       = @[]
+
+  accept authenticated = *
+    control = submission/sender_retain
+
+
+  accept local_parts = postmaster
+         domains     = +local_domains : +relay_to_domains
+
+  accept domains = +local_domains
+         endpass
+         hosts   = +unauthenticated_hosts
+         verify  = recipient/callout=15s,defer_ok
+         message = unknown user
+
+  accept domains = +relay_to_domains
+         endpass
+         hosts   = +unauthenticated_hosts
+         verify  = recipient/callout=15s,defer_ok
+         message = Undeliverable Address.
+
+  accept hosts  = +relay_from_hosts
+         hosts   = +unauthenticated_hosts
+
+  deny message = relay not permitted
+
+############################################################################
+
+ACL_check_data:
+
+   deny message = Message headers fail syntax check
+      condition = ${if match{$h_from:}{(?i)MAILER-DAEMON}{no}{yes}}
+        !verify = header_syntax
+
+   deny message = No verifiable sender address in message headers
+      condition = ${if match{$h_from:}{(?i)MAILER-DAEMON}{no}{yes}}
+        !verify = header_sender
+
+   deny message   = Message size $message_size > MESSAGE_SIZE_LIMIT
+        condition = ${if >{$message_size}{MESSAGE_SIZE_LIMIT}{yes}{no}}
+
+   accept
