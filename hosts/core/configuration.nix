@@ -66,6 +66,17 @@ in {
 
   pepperfish.mailcore.enable = true;
 
+  services.borgbackup.jobs.email = {
+    startAt = "*-*-* 03:15:00";
+    paths = [ "/var/spool/exim" "/var/mail" ];
+    repo = (ppfmisc.borgURI nodeData.storage-user "email");
+    encryption = {
+      mode = "repokey-blake2";
+      passCommand = "cat /run/secrets/backup-passphrase";
+    };
+    compression = "auto,lzma";
+  };
+
   networking.firewall.allowedTCPPorts = [ 443 ];
 
 }
