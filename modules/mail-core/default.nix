@@ -104,6 +104,19 @@ let
 
     # Eventually add dovecot auth in here?
 
+    dovecot_plain:
+      driver = dovecot
+      public_name = PLAIN
+      server_socket = /run/dovecot2/auth-userdb-exim
+      server_set_id = $auth1
+
+    dovecot_login:
+      driver = dovecot
+      public_name = LOGIN
+      server_socket = /run/dovecot2/auth-userdb-exim
+      server_set_id = $auth1
+
+
   '';
 
   dovecotConfig = ''
@@ -120,9 +133,8 @@ let
     }
 
     service auth {
-      unix_listener auth-userdb-mail {
-        user = mail
-        group = mail
+      unix_listener auth-userdb-exim {
+        user = exim
         mode = 0600
       }
     }
