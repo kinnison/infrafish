@@ -8,6 +8,7 @@
       pubkey = "ey+lwXdJID0SJWE/4d0hRLogacFxBCd9aJqS/1JlqxI=";
     };
     storage-user = "u356603-sub1";
+    mail = { core = true; };
   };
 
   services0 = {
@@ -18,6 +19,7 @@
       core = "core";
       pubkey = "7X4EaBuuuRKJirAYSTceGR7vWNeN+XtSMlodJid3AGs=";
     };
-   storage-user = "u356603-sub2";
+    storage-user = "u356603-sub2";
+    mail = { relay-ok = true; };
   };
 }

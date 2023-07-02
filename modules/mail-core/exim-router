@@ -3,8 +3,6 @@ mailcore_aliases:
   local_part_suffix_optional
   driver         = redirect
   allow_fail     = true
-  file_transport = address_file
-  pipe_transport = address_pipe
   data           = ${expand:${lookup pgsql {select expansion from mailentry where name='${quote_pgsql:$local_part}' and kind='alias' and maildomain=(select id from maildomain where domainname='${quote_pgsql:$domain}')} {$value}}}
   #user           = mail
   qualify_preserve_domain
@@ -18,12 +16,24 @@ mailcore_delivery:
   local_parts = ${lookup pgsql {select name from mailentry where name='${quote_pgsql:$local_part}' and kind='account' and maildomain=(select id from maildomain where domainname='${quote_pgsql:$domain_data}')}}
   #condition = ${lookup pgsql {select * from mailentry where name='${quote_pgsql:$local_part_data}' and kind='account' and maildomain=(select id from maildomain where domainname='${quote_pgsql:$domain_data}')}{true}{fail}}
 
+mailcore_bouncer:
+  local_part_suffix = +*
+  local_part_suffix_optional
+  driver         = redirect
+  allow_fail     = true
+  data           = ${expand:${lookup pgsql {select expansion from mailentry where name='${quote_pgsql:$local_part}' and kind='bouncer' and maildomain=(select id from maildomain where domainname='${quote_pgsql:$domain}')} {:fail:$value}}}
+
+mailcore_blackhole:
+  local_part_suffix = +*
+  local_part_suffix_optional
+  driver         = redirect
+  allow_fail     = true
+  data           = ${expand:${lookup pgsql {select expansion from mailentry where name='${quote_pgsql:$local_part}' and kind='blackhole' and maildomain=(select id from maildomain where domainname='${quote_pgsql:$domain}')} {:blackhole:$value}}}
+
 mailcore_catchall:
   local_part_suffix = +*
   local_part_suffix_optional
   driver         = redirect
-  file_transport = address_file
-  pipe_transport = address_pipe
   allow_fail     = true
   data           = ${expand:${lookup pgsql {select expansion from mailentry where name='*' and kind='alias' and maildomain=(select id from maildomain where domainname='${quote_pgsql:$domain}')} {$value}}}
   #user           = mail

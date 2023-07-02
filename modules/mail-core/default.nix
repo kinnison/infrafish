@@ -6,6 +6,9 @@ let
 
   coreip = ppfmisc.internalIP hosts.core.hostNumber;
   internalnet = "${ppfmisc.internalIP 0}/24";
+  relay_ok_hosts = lib.concatStringsSep " ; "
+    (lib.mapAttrsToList (n: d: ppfmisc.internalIP d.hostNumber)
+      (lib.filterAttrs (n: d: d.mail ? relay-ok && d.mail.relay-ok) hosts));
 
   cert = config.security.acme.certs."mail.infrafish.uk";
 
@@ -28,7 +31,7 @@ let
     domainlist local_domains = pgsql; select domainname from maildomain
     domainlist relay_to_domains =
     hostlist relay_from_hosts = <; 127.0.0.1 ; ::1 ; ${internalnet}
-    hostlist unauthenticated_hosts = <; 127.0.0.1 ; ::1
+    hostlist unauthenticated_hosts = <; 127.0.0.1 ; ::1 ; ${relay_ok_hosts}
 
     tls_advertise_hosts = *
     tls_certificate = ${cert.directory}/fullchain.pem

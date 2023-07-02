@@ -24,7 +24,15 @@ with lib;
     users.extraUsers.root.shell =
       mkOverride 50 "${pkgs.bashInteractive}/bin/bash";
 
-    environment.systemPackages = with pkgs; [ screen curl openssh less vim ];
+    environment.systemPackages = with pkgs; [
+      screen
+      curl
+      openssh
+      less
+      vim
+      swaks
+      tmux
+    ];
 
     services.fail2ban = {
       enable = true;
