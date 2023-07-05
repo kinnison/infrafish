@@ -28,7 +28,7 @@ let
     daemon_smtp_ports = 25 : 587 : 465
     local_interfaces = <; 127.0.0.1 ; ::1 ; ${coreip} ; ${hosts.core.ip}
 
-    domainlist local_domains = pgsql; select domainname from maildomain
+    domainlist local_domains = ''${sg {''${lookup pgsql {select domainname from maildomain}{$value}}}{\n}{ : }}
     domainlist relay_to_domains =
     hostlist relay_from_hosts = <; 127.0.0.1 ; ::1 ; ${internalnet}
     hostlist unauthenticated_hosts = <; 127.0.0.1 ; ::1 ; ${relay_ok_hosts}
@@ -182,7 +182,7 @@ in {
       config = eximConfig;
     };
 
-    # networking.firewall.allowedTCPPorts = [ 465 587 ];
+    networking.firewall.allowedTCPPorts = [ 465 587 993 995 ];
 
     systemd.services.mailcore-mailconfig = {
       enable = true;
