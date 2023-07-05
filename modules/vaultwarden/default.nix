@@ -27,8 +27,10 @@ in {
         websocketEnabled = true;
         websocketAddress = "127.0.0.1";
         websocketPort = 8223;
-
-        # TODO: Add SMTP configuration later
+        smtpHost = "core.vpn";
+        smtpFrom = "vaultwarden@infrafish.uk";
+        smtpAcceptInvalidCerts =
+          true; # the cert used is mail.infrafish.uk but we need to use core.vpn for forwarding
       };
       backupDir = "/var/lib/bitwarden_rs/backups";
     };
