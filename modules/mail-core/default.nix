@@ -73,6 +73,8 @@ let
     smtp_reserve_hosts = ${internalnet} ; 127.0.0.1 ; ::1
     smtp_accept_reserve = 10
 
+    dns_ipv4_lookup = *.google.com
+
     helo_allow_chars = _:
 
     #log_file_path=:syslog
