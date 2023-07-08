@@ -32,6 +32,7 @@ with lib;
       vim
       swaks
       tmux
+      jq
     ];
 
     services.fail2ban = {

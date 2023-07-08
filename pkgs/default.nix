@@ -5,8 +5,5 @@ with pkgs; {
     enablePgSQL = true;
     enableAuthDovecot = true;
   };
-  exim-inmail = callPackage ./exim.nix {
-    enableJSON = true;
-    enableSqlite = true;
-  };
+  exim-inmail = callPackage ./exim.nix { enableJSON = true; };
 }

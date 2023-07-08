@@ -7,4 +7,5 @@
   ./wireguard-vpn
   ./vaultwarden
   ./mail-core
+  ./mail-relay
 ]

@@ -1,0 +1,172 @@
+# This is part of debian's config and we seem have some content for it (boggle)
+acl_local_deny_exceptions:
+  accept
+    hosts = GLOBAL/host-local-deny-exceptions
+  accept
+    senders = GLOBAL/sender-local-deny-exceptions
+
+
+ACL_check_helo:
+  deny
+    message   = 550 5.7.1 invalid HELO
+    condition = ${if isip{$sender_helo_name}}
+
+  deny
+    message   = 550 7.5.1 invalid HELO
+    condition = ${if isip6{$sender_helo_name}{yes}{no}}
+
+  deny
+    message = 550 5.7.1 $sender_helo_name blacklisted
+    condition = ${if eq{${lookup{$sender_helo_name}nwildlsearch{GLOBAL/local-helo-blacklist}{1}}}{1}}
+    delay = 5s
+
+  accept
+
+ACL_check_mail:
+  deny
+    message = you should say hello first
+    condition = ${if def:sender_helo_name {no}{yes}}
+
+  warn
+    set acl_m_domain =
+
+  accept
+
+ACL_check_rcpt:
+
+  # If we're *secondarying* just accept here
+  #accept
+  #  domains = +secondary_domains
+
+  deny
+    message = relaying denied
+    !domains = +relay_to_domains
+    delay = 10s
+
+  defer
+        message = 452 4.3.0 Multiple destination domains per transaction is unsupported.  Please try again.
+        condition = ${if and{ {!eq{$acl_m_domain}{}} {!eq{$acl_m_domain}{$domain}} } {true}{false}}
+
+  warn
+        set acl_m_domain = $domain_data
+
+  accept
+    hosts = :
+    control = dkim_disable_verify
+
+  deny
+    domains = +relay_to_domains
+    local_parts = CHECK_RCPT_REMOTE_LOCALPARTS
+    message = restricted characters in address
+
+  accept
+    local_parts = postmaster
+    domains = +relay_to_domains
+
+  require
+    message = 550 5.7.1 $sender_address blacklisted
+    !condition = ${if eq{${lookup{$sender_address}nwildlsearch{GLOBAL/sender-deny-list}{1}}}{1}}
+    delay = 5s
+
+  deny
+    message = 550 5.1.1 user does not exist
+    !verify = recipient/defer_ok/callout=10s,defer_ok
+    delay = 5s
+
+  accept
+    condition = ${if eq{${lookup{$sender_address}nwildlsearch{CONF/sender_allow_list_${domain_data}}{1}}}{1}}
+    add_header = X-Pepperfish-RCPT: Skipped many MAIL FROM spam tests due to $sender_address matching a allow list entry
+
+  accept
+    condition = ${if eq{${lookup{$sender_address}nwildlsearch{GLOBAL/sender-allow-list}{1}}}{1}}
+    add_header = X-Pepperfish-RCPT: Skipped many spam tests due to $sender_address matching a global allow list entry
+
+  deny
+    message = 550 5.7.1 $sender_address blacklisted by domain owner
+    condition = ${if eq{${lookup{$sender_address}nwildlsearch{CONF/sender_deny_list_${domain_data}}{1}}}{1}}
+    delay = 5s
+
+  deny
+    message = 550 5.7.1 $sender_host_address blacklisted
+    !acl = acl_local_deny_exceptions
+    hosts = ${if exists{CONFDIR/local_host_blacklist}\
+                 {CONFDIR/local_host_blacklist}\
+                 {}}
+    log_message = PPF-MAIL-STAT $tod_epoch $acl_m_uniqueid RCPT DENIED <$local_part@$domain> $sender_host_address in global blacklist
+    delay = 5s
+
+  deny
+    message = 550 5.7.1 address is listed in $dnslist_domain ($dnslist_value: $dnslist_text)
+    dnslists = phish.dnsbl.rjek.com/${sha1:${lc:${sender_address}}}
+    log_message = PPF-MAIL-STAT $tod_epoch $acl_m_uniqueid RCPT DENIED <$local_part@$domain> $sender_address in phishing blacklist
+    delay = 5s
+
+  deny
+    message = 550 5.7.1 IP listed in $dnslist_domain ($dnslist_value: $dnslist_text)
+    dnslists = ${readfile {GLOBAL/default-ip-dnsbl} {:}}
+    delay = 5s
+
+  deny
+    message = 550 5.7.1 domain listed in $dnslist_domain ($dnslist_value: $dnslist_text)
+    dnslists = ${readfile {GLOBAL/default-domain-dnsbl} {/$sender_address_domain:}}
+    delay = 5s
+
+  deny spf = fail
+    message = $sender_host_address is not allowed to send mail from \
+              ${if def:sender_address_domain \
+                   {$sender_address_domain}{$sender_helo_name}}.  \
+              Please see http://www.open-spf.org/Why;\
+              identity=${if def:sender_address_domain \
+                            {$sender_address}{$sender_helo_name}};\
+              ip=$sender_host_address
+
+  deny
+    message = 550 5.7.1 sender verification failed, MX for $sender_address_domain says $sender_address is invalid
+    condition = ${if eq{${lookup {per_domain : $acl_m_domain : sender_verify_enable} json {JSON}}}{true} {1}}
+    !condition = ${if eq{${lookup{$sender_address}nwildlsearch{GLOBAL/ignore-sender-verify-addresses}{1}}}{1}}
+    !condition = ${if eq{${lookup{$sender_address}nwildlsearch{CONF/sender_allow_list_${acl_m_domain}}{1}}}{1}}
+    !verify = sender/callout=15s,defer_ok
+
+  # If we reach here, we're good because we're in relay_to_domains
+  accept
+
+ACL_check_data:
+
+  # rspamd
+  warn remove_header = x-spam-bar : x-spam-score : x-spam-score-int : x-spam-report : x-scanned-by : x-spam-status
+
+  warn spam = nobody:true
+    add_header = X-Spam-Score: $spam_score\n\
+              X-Spam-Score-int: $spam_score_int\n\
+              X-Spam-Bar: $spam_bar\n\
+              X-Scanned-By: infrafish.net, $tod_full\n\
+              X-Spam-Report: $spam_report
+
+  accept
+    condition = ${if eq{${lookup{$sender_address}nwildlsearch{CONF/sender_allow_list_${acl_m_domain}}{1}}}{1}}
+    add_header = X-Pepperfish-RCPT: Skipped many MAIL FROM spam tests due to $sender_address matching a allow list entry
+  
+  deny
+    message = invalid header syntax in message body: $acl_verify_message
+    condition = ${if match{$h_from:}{(?i)MAILER-DAEMON}{no}{yes}}
+    !acl = acl_local_deny_exceptions
+    !verify = header_syntax
+
+  defer message    = Please try again later
+        condition  = ${if eq{$spam_action}{soft reject}}
+
+  deny  message    = Message discarded as high-probability spam
+        condition  = ${if eq{$spam_action}{reject}}
+        condition  = ${if >{$spam_score_int}{${lookup {per_domain : $acl_m_domain : spamcheck_threshold} json {JSON}}}}
+
+  warn
+    ! condition  = ${if match{$spam_action}{^no action\$|^greylist\$|^\$}}
+    add_header = X-Spam-Status: Yes
+
+  drop
+    message = 550 5.7.0 malware detected in message ($malware_name)
+    condition = ${if eq{${lookup {per_domain : $acl_m_domain : viruscheck_enable} json {JSON}}}{true}}
+    malware = *
+    delay = 5s
+
+  accept

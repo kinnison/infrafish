@@ -157,8 +157,12 @@ in {
 
   config = mkIf cfg.enable {
 
+    users.groups.mailcert = {
+      members = [ config.services.exim.user config.services.nginx.user ];
+    };
+
     security.acme.certs."mail.infrafish.uk" = {
-      group = config.services.exim.group;
+      group = "mailcert";
       reloadServices = [ "exim.service" ];
     };
 
@@ -232,6 +236,17 @@ in {
       extraConfig = dovecotConfig;
       enablePAM = false;
       mailLocation = "maildir:~/";
+    };
+
+    services.nginx = {
+      enable = true;
+      virtualHosts = {
+        "mail.infrafish.uk" = {
+          onlySSL = true;
+          useACMEHost = "mail.infrafish.uk";
+          locations."/api" = { proxyPass = "http://127.0.0.1:1537/api"; };
+        };
+      };
     };
 
   };

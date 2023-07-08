@@ -92,5 +92,7 @@
   networking.firewall.allowedTCPPorts = [ 53 443 80 ];
   networking.firewall.allowedUDPPorts = [ 53 ];
 
-  environment.systemPackages = with pkgs; [ pdns ];
+  pepperfish.mail-frontend.enable = true;
+
+  environment.systemPackages = with pkgs; [ pdns strace ];
 }

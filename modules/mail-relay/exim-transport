@@ -1,0 +1,4 @@
+remote_smtp:
+  driver = smtp
+  hosts_avoid_tls = CORE_IP
+
