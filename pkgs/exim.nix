@@ -27,7 +27,7 @@ stdenv.mkDerivation rec {
     ++ lib.optional enableLDAP openldap
     ++ lib.optionals enableMySQL [ libmysqlclient zlib ]
     ++ lib.optional enablePgSQL postgresql
-    ++ lib.optionals enableSqlite [ sqlite sqlite.dev ]
+    ++ lib.optionals enableSqlite [ sqlite sqlite.dev zlib ]
     ++ lib.optional enableAuthDovecot dovecot
     ++ lib.optional enablePAM pam
     ++ lib.optional enableSPF libspf2
