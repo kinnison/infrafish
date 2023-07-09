@@ -254,6 +254,30 @@ in {
       hostName = "mail.infrafish.uk";
       maxAttachmentSize = 10;
       dicts = with pkgs.aspellDicts; [ en ];
+      package = pkgs.roundcube.withPlugins (plugins:
+        with plugins; [
+          persistent_login
+          carddav
+          custom_from
+          contextmenu
+          thunderbird_labels
+        ]);
+      plugins = [
+        "additional_message_headers"
+        "attachment_reminder"
+        "carddav"
+        "contextmenu"
+        "custom_from"
+        "emoticons"
+        "managesieve"
+        "newmail_notifier"
+        "persistent_login"
+        "show_additional_headers"
+        "thunderbird_labels"
+        "userinfo"
+        "vcard_attachments"
+        "zipdownload"
+      ];
     };
 
     services.nginx = {
