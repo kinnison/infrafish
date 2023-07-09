@@ -132,6 +132,10 @@ ACL_check_rcpt:
 
 ACL_check_data:
 
+  # Add in any auth results (SPF, DKIM etc)
+  warn
+    add_header = :at_start:${authresults {$primary_hostname}}
+
   # rspamd
   warn remove_header = x-spam-bar : x-spam-score : x-spam-score-int : x-spam-report : x-scanned-by : x-spam-status
 
