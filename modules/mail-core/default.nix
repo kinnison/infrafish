@@ -238,11 +238,31 @@ in {
       mailLocation = "maildir:~/";
     };
 
+    sops.secrets.mailcore-roundcube-password = {
+      sopsFile = ../../keys/mailcore-roundcube-password;
+      format = "binary";
+    };
+
+    services.roundcube = {
+      enable = true;
+      database = {
+        host = "core.vpn";
+        dbname = "roundcube";
+        username = "roundcube";
+        passwordFile = config.sops.secrets.mailcore-roundcube-password.path;
+      };
+      hostName = "mail.infrafish.uk";
+      maxAttachmentSize = 10;
+      dicts = with pkgs.aspellDicts; [ en ];
+    };
+
     services.nginx = {
       enable = true;
       virtualHosts = {
         "mail.infrafish.uk" = {
           onlySSL = true;
+          forceSSL = false;
+          enableACME = false;
           useACMEHost = "mail.infrafish.uk";
           locations."/api" = { proxyPass = "http://127.0.0.1:1537/api"; };
         };
