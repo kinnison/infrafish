@@ -94,5 +94,16 @@
 
   pepperfish.mail-frontend.enable = true;
 
-  environment.systemPackages = with pkgs; [ pdns strace ];
+  services.borgbackup.jobs.email = {
+    startAt = "*-*-* 03:15:00";
+    paths = [ "/var/spool/exim" ];
+    repo = (ppfmisc.borgURI nodeData.storage-user "email");
+    encryption = {
+      mode = "repokey-blake2";
+      passCommand = "cat /run/secrets/backup-passphrase";
+    };
+    compression = "auto,lzma";
+  };
+
+  environment.systemPackages = with pkgs; [ pdns ];
 }
