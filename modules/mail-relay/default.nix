@@ -193,7 +193,7 @@ in {
     users.groups.${config.services.rspamd.group}.members =
       [ config.services.exim.user ];
 
-    #networking.firewall.allowedTCPPorts = [ 465 587 993 995 ];
+    networking.firewall.allowedTCPPorts = [ 25 465 587 ];
 
     systemd.services.mail-frontend-acquire-config = {
       enable = true;
