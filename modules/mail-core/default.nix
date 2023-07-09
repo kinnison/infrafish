@@ -141,6 +141,10 @@ let
       }
     }
 
+    protocol lda {
+      mail_plugins = $mail_plugins sieve
+    }
+
   '';
 
 in {
@@ -188,7 +192,7 @@ in {
       config = eximConfig;
     };
 
-    networking.firewall.allowedTCPPorts = [ 465 587 993 995 ];
+    networking.firewall.allowedTCPPorts = [ 465 587 993 995 4190 ];
 
     systemd.services.mailcore-mailconfig = {
       enable = true;
@@ -235,7 +239,8 @@ in {
         "${config.security.acme.certs."mail.infrafish.uk".directory}/key.pem";
       extraConfig = dovecotConfig;
       enablePAM = false;
-      mailLocation = "maildir:~/";
+      mailLocation = "maildir:~/Maildir";
+      protocols = [ "sieve " ];
     };
 
     sops.secrets.mailcore-roundcube-password = {
