@@ -4,6 +4,10 @@ with pkgs; {
   exim-core = callPackage ./exim.nix {
     enablePgSQL = true;
     enableAuthDovecot = true;
+    enableSRS = true;
   };
-  exim-inmail = callPackage ./exim.nix { enableJSON = true; };
+  exim-inmail = callPackage ./exim.nix {
+    enableJSON = true;
+    enableSRS = true;
+  };
 }
