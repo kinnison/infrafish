@@ -37,7 +37,11 @@ with lib;
 
     services.fail2ban = {
       enable = true;
-
+      jails.sshd = ''
+        enabled = true
+        port = 22
+        mode = extra
+      '';
     };
 
     services.ntp.enable = true;
