@@ -131,8 +131,21 @@ ACL_check_rcpt:
   accept
 
 ACL_check_data:
+  # Do DMARC checks
+  warn    dmarc_status   = accept : none : off
+          !authenticated = *
+          log_message    = DMARC DEBUG: $dmarc_status $dmarc_used_domain
 
-  # Add in any auth results (SPF, DKIM etc)
+  warn    dmarc_status   = !accept
+          !authenticated = *
+          log_message    = DMARC DEBUG: '$dmarc_status' for $dmarc_used_domain
+
+  deny    dmarc_status   = reject
+          !authenticated = *
+          message        = Message from $dmarc_used_domain failed sender DMARC policy, REJECT
+
+
+  # Add in any auth results (SPF, DKIM, DMARC etc)
   warn
     add_header = :at_start:${authresults {$primary_hostname}}
 

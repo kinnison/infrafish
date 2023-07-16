@@ -94,6 +94,9 @@ let
     # Bits stolen from Debian
     CHECK_RCPT_REMOTE_LOCALPARTS = ^[./|] : ^.*[@%!`#&?] : ^.*/\\.\\./
 
+    # DMARC setup
+    dmarc_tld_file = ${./psl.dat}
+
     begin acl
 
     ${exim-acl}
