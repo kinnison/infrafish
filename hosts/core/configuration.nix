@@ -77,6 +77,18 @@ in {
     compression = "auto,lzma";
   };
 
+  services.redis.servers.rspamd = {
+    enable = true;
+    port = 6379;
+    requirePassFile = config.sops.secrets.rspamd-redis-passphrase.path;
+    bind = ppfmisc.internalIP nodeData.hostNumber;
+  };
+
+  sops.secrets.rspamd-redis-passphrase = {
+    sopsFile = ../../keys/rspamd-redis-passphrase;
+    format = "binary";
+  };
+
   networking.firewall.allowedTCPPorts = [ 443 ];
 
 }

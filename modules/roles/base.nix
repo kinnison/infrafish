@@ -50,7 +50,10 @@ with lib;
 
     services.fstrim.enable = true;
 
-    boot.kernel.sysctl = { "net.ipv4.tcp_sack" = 0; };
+    boot.kernel.sysctl = {
+      "net.ipv4.tcp_sack" = 0;
+      "vm.overcommit_memory" = 1;
+    };
 
     security.acme = {
       acceptTerms = true;

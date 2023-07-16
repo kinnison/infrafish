@@ -188,6 +188,48 @@ in {
           '';
         };
       };
+      locals = {
+        "redis.conf" = {
+          enable = true;
+          text = ''
+            servers = "${ppfmisc.internalIP hosts.core.hostNumber}:6379";
+            password = {= env.REDIS_PASSWORD =};
+          '';
+        };
+        "classifier-bayes.conf" = {
+          enable = true;
+          text = ''
+            per_user = <<EOD
+            return function(task)
+              local rcpt = task:get_recipients(1)
+
+              if rcpt then
+                one_rcpt = rcpt[1]
+                if one_rcpt['domain'] then
+                  return one_rcpt['domain']
+                end
+              end
+
+              return nil
+            end
+            EOD
+            autolearn {
+              spam_threshold = 7.5;
+              ham_threshold = -0.5;
+              check_balance = true;
+              min_balance = 0.9;
+            }
+          '';
+        };
+      };
+    };
+
+    systemd.services.rspamd.serviceConfig.EnvironmentFile =
+      config.sops.secrets.rspamd-redis-environment.path;
+
+    sops.secrets.rspamd-redis-environment = {
+      sopsFile = ../../keys/rspamd-redis-environment;
+      format = "binary";
     };
 
     sops.secrets.mail-exim-spf = {
