@@ -19,7 +19,7 @@ let
   eximConfig = ''
 
     # Bring in the secret settings
-    # .include something later
+    .include ${config.sops.secrets.mail-exim-spf.path}
 
     MESSAGE_SIZE_LIMIT = 40M
 
@@ -185,6 +185,11 @@ in {
           '';
         };
       };
+    };
+
+    sops.secrets.mail-exim-spf = {
+      sopsFile = ../../keys/mail-exim-spf;
+      format = "binary";
     };
 
     users.groups.clamav.members = [ config.services.exim.user ];

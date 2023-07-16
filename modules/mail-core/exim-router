@@ -1,3 +1,20 @@
+inbound_srs:
+  driver =    redirect
+  senders =   :
+  domains =   +local_domains
+  # detect inbound bounces which are SRS'd, and decode them
+  condition = ${if inbound_srs {$local_part} {SRS_SECRET}}
+  data =      $srs_recipient
+
+inbound_srs_failure:
+  driver =    redirect
+  senders =   :
+  domains =   +local_domains
+  # detect inbound bounces which look SRS'd but are invalid
+  condition = ${if inbound_srs {$local_part} {}}
+  allow_fail
+  data =      :fail: Invalid SRS recipient address
+
 mailcore_aliases:
   local_part_suffix = +*
   local_part_suffix_optional
@@ -50,5 +67,7 @@ remote_cunning:
 outgoing:
   driver = dnslookup
   domains = ! +local_domains
-  transport = remote_smtp
+  transport = ${if eq {$local_part@$domain} \
+                      {$original_local_part@$original_domain} \
+                {remote_smtp} {remote_forwarded_smtp}}
   no_more

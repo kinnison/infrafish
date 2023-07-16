@@ -44,6 +44,12 @@ creation_rules:
       - age:
         - *primary
         - *core
+  - path_regex: keys/mail-exim-
+    key_groups:
+      - age:
+        - *primary
+        - *core
+        - *services0
 
   # Fallback just uses the primary
   - key_groups:

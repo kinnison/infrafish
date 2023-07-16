@@ -20,6 +20,7 @@ let
 
     # Bring in the secret settings
     .include ${config.sops.secrets.mailcore-exim-settings.path}
+    .include ${config.sops.secrets.mail-exim-spf.path}
 
     MESSAGE_SIZE_LIMIT = 40M
     DOVECOT_LDA = ${pkgs.dovecot}/libexec/dovecot/dovecot-lda
@@ -186,6 +187,11 @@ in {
       format = "binary";
     };
 
+    sops.secrets.mail-exim-spf = {
+      sopsFile = ../../keys/mail-exim-spf;
+      format = "binary";
+    };
+
     services.exim = {
       enable = true;
       package = pkgs.local.exim-core;
@@ -302,21 +308,21 @@ in {
       enable = true;
       jails = {
         exim = ''
-        enabled = true
-        journalmatch = _SYSTEMD_UNIT=exim.service
-        port = 465,587
+          enabled = true
+          journalmatch = _SYSTEMD_UNIT=exim.service
+          port = 465,587
         '';
         dovecot = ''
-        enabled = true
-        port = 993,995,4190'';
+          enabled = true
+          port = 993,995,4190'';
       };
     };
 
     environment.etc = {
       "fail2ban/filter.d/exim-common.local" = {
         text = ''
-        [Definition]
-        pid = (?: \[\d+\]|\S?\w+ exim\[\d+\]:)? \S+ \S+
+          [Definition]
+          pid = (?: \[\d+\]|\S?\w+ exim\[\d+\]:)? \S+ \S+
         '';
       };
     };

@@ -15,3 +15,13 @@ remote_smtp:
   dkim_selector = ${lookup pgsql {select selector from maildomainkey where maildomain=(select id from maildomain where domainname='${quote_pgsql:$dkim_domain}') and signing=true}}
   dkim_private_key = ${lookup pgsql {select privkey from maildomainkey where maildomain=(select id from maildomain where domainname='${quote_pgsql:$dkim_domain}') and signing=true and selector='${quote_pgsql:$dkim_selector}'}}
   dkim_timestamps = 1209600
+
+remote_forwarded_smtp:
+  driver = smtp
+  max_rcpt = 1
+  return_path = ${srs_encode {SRS_SECRET} {$return_path} {$original_domain}}
+  # Note, dkim copied from above, but using $original_domain rather than $sender_address_domain
+  dkim_domain = ${lookup pgsql {select domainname from maildomain where id in (select maildomain from maildomainkey where signing=true) and domainname='${quote_pgsql:$original_domain}'}}
+  dkim_selector = ${lookup pgsql {select selector from maildomainkey where maildomain=(select id from maildomain where domainname='${quote_pgsql:$dkim_domain}') and signing=true}}
+  dkim_private_key = ${lookup pgsql {select privkey from maildomainkey where maildomain=(select id from maildomain where domainname='${quote_pgsql:$dkim_domain}') and signing=true and selector='${quote_pgsql:$dkim_selector}'}}
+  dkim_timestamps = 1209600
