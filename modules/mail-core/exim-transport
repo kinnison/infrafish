@@ -11,3 +11,7 @@ remote_smtp_cunning:
 
 remote_smtp:
   driver = smtp
+  dkim_domain = ${lookup pgsql {select domainname from maildomain where id in (select maildomain from maildomainkey where signing=true) and domainname='${quote_pgsql:$sender_address_domain}'}}
+  dkim_selector = ${lookup pgsql {select selector from maildomainkey where maildomain=(select id from maildomain where domainname='${quote_pgsql:$dkim_domain}') and signing=true}}
+  dkim_private_key = ${lookup pgsql {select privkey from maildomainkey where maildomain=(select id from maildomain where domainname='${quote_pgsql:$dkim_domain}') and signing=true and selector='${quote_pgsql:$dkim_selector}'}}
+  dkim_timestamps = 1209600
