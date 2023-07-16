@@ -22,7 +22,21 @@ let
           nix.extraOptions = ''
             experimental-features = nix-command flakes
           '';
+          nix.settings = { auto-optimise-store = true; };
           documentation.info.enable = false;
+          nix.registry.nixpkgs = {
+            from = {
+              id = "nixpkgs";
+              type = "indirect";
+            };
+            flake = inputs.nixpkgs;
+          };
+          nixpkgs.overlays = overlays;
+          nix.gc = {
+            automatic = true;
+            dates = "weekly";
+            options = "--delete-older-than 7d";
+          };
         })
         sops-nix.nixosModules.sops
         home-manager.nixosModules.home-manager
