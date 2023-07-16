@@ -1,0 +1,1136 @@
+# Add your own customisations to this file.  See 'man Mail::SpamAssassin::Conf'
+# for details of what can be tweaked.
+# 
+
+bayes_ignore_header X-Pepperfish-SpamCheck
+bayes_ignore_header X-Pepperfish-Spamcheck
+bayes_ignore_header X-Scanner
+bayes_ignore_header Received
+bayes_ignore_header X-UIDL
+bayes_ignore_header X-Mozilla-Status
+bayes_ignore_header X-Mozilla-Status2
+bayes_ignore_header Status
+bayes_ignore_header X-Evolution-Source
+bayes_ignore_header X-Pepperfish-SpamReport
+bayes_ignore_header X-Pepperfish-Spamreport
+bayes_ignore_header X-Pepperfish-SpamScore
+bayes_ignore_header X-Pepperfish-Spamscore
+
+score RP_MATCHES_RCVD -1.0
+
+header PPF_GTLD_LONG Received =~ /\(envelope-from <.*\.[^.]{4,}>\)/
+describe PPF_GTLD_LONG Long gTLD, probably cheap throw-away domain
+score PPF_GTLD_LONG 2.5
+
+# header PPF_FROM_CHINA eval:check_rbl('china', 'cn.country.dnsbl.rjek.com')
+# describe PPF_FROM_CHINA A Received line involves an address from China
+# tflags PPF_FROM_CHINA net
+# score PPF_FROM_CHINA 1.2
+
+# header PPF_FROM_RUSSIA eval:check_rbl('russia', 'ru.country.dnsbl.rjek.com')
+# describe PPF_FROM_RUSSIA A Received line involves an address from Russia
+# tflags PPF_FROM_RUSSIA net
+# score PPF_FROM_RUSSIA 1.2
+
+# header PPF_FROM_INDIA eval:check_rbl('in', 'in.country.dnsbl.rjek.com')
+# describe PPF_FROM_INDIA A Received line involves an address from India
+# tflags PPF_FROM_INDIA net
+# score PPF_FROM_INDIA 1.2
+
+# header PPF_FROM_BELGIUM eval:check_rbl('be', 'be.country.dnsbl.rjek.com')
+# describe PPF_FROM_BELGIUM A Received line involves an address from Belgium
+# tflags PPF_FROM_BELGIUM net
+# score PPF_FROM_BELGIUM 1.2
+
+# header PPF_FROM_UK eval:check_rbl('uk', 'gb.country.dnsbl.rjek.com')
+# describe PPF_FROM_UK A Received line involves an address from the UK
+# tflags PPF_FROM_UK net
+# score PPF_FROM_UK -0.3
+
+# header PPF_FROM_ASIA eval:check_rbl('as', 'as.continent.dnsbl.rjek.com')
+# describe PPF_FROM_ASIA A Received line involves an address in Asia
+# tflags PPF_FROM_ASIA net
+# score PPF_FROM_ASIA 1.2
+
+# header PPF_FROM_VN eval:check_rbl('vn', 'vn.country.dnsbl.rjek.com')
+# describe PPF_FROM_VN A Received line involves an address from Vietnam
+# score PPF_FROM_VN 1.2
+# tflags PPF_FROM_VN net
+
+# header PPF_FROM_BRAZIL eval:check_rbl('br', 'br.country.dnsbl.rjek.com')
+# describe PPF_FROM_BRAZIL A Received line involves an address from Brazil
+# tflags PPF_FROM_BRAZIL net
+# score PPF_FROM_BRAZIL -0.3
+
+# header          RCVD_IN_UCEPROTECT2	eval:check_rbl_txt('uceprotect2', 'dnsbl-2.uceprotect.net')
+# describe        RCVD_IN_UCEPROTECT2	Network listed in dnsbl-2.uceprotect.net
+# tflags          RCVD_IN_UCEPROTECT2	net
+# score           RCVD_IN_UCEPROTECT2	1.0
+
+# header		RCVD_IN_UCEPROTECT3	eval:check_rbl('uceprotect3', 'dnsbl-3.uceprotect.net')
+# describe        RCVD_IN_UCEPROTECT3	Network listed in dnsbl-3.uceprotect.net
+# tflags          RCVD_IN_UCEPROTECT3	net
+# score           RCVD_IN_UCEPROTECT3	1.5
+
+# urirhsbl RJEK_URISL urlsl.dnsbl.rjek.com. A
+# body RJEK_URISL eval:check_uridnsbl('RJEK_UBISL')
+# describe RJEK_URISL URI Listed on the rjek.com shitlist
+# score RJEK_URISL 1.5
+
+score RCVD_IN_SORBS_SPAM 1.5
+
+asn_lookup asn.routeviews.org _ASN_ _ASNCIDR_
+add_header all ASN _ASN_ _ASNCIDR_
+
+# Spam Eating Monkey
+
+# header RCVD_IN_SEMBACKSCATTER eval:check_rbl('sembackscatter-lastexternal', 'backscatter.spameatingmonkey.net')
+# tflags RCVD_IN_SEMBACKSCATTER net
+# describe RCVD_IN_SEMBACKSCATTER Received from an IP listed by SEM-BACKSCATTER
+# score RCVD_IN_SEMBACKSCATTER 0.5
+# 
+# header RCVD_IN_SEMBLACK eval:check_rbl('semblack-lastexternal', 'bl.spameatingmonkey.net')
+# tflags RCVD_IN_SEMBLACK net
+# describe RCVD_IN_SEMBLACK Received from an IP listed by SEM-BLACK
+# score RCVD_IN_SEMBLACK 0.5
+# 
+# urirhssub SEM_URI uribl.spameatingmonkey.net. A 2
+# body SEM_URI eval:check_uridnsbl('SEM_URI')
+# describe SEM_URI Contains a URI listed by SEM-URI
+# tflags SEM_URI net
+# score SEM_URI 0.5
+# 
+# urirhssub SEM_URIRED urired.spameatingmonkey.net. A 2
+# body SEM_URIRED eval:check_uridnsbl('SEM_URIRED')
+# describe SEM_URIRED Contains a URI listed by SEM-URIRED
+# tflags SEM_URIRED net
+# score SEM_URIRED 0.5
+
+# urirhssub SEM_FRESH fresh10.spameatingmonkey.net. A 2
+# body SEM_FRESH eval:check_uridnsbl('SEM_FRESH')
+# describe SEM_FRESH Contains a domain registered less than 10 days ago
+# tflags SEM_FRESH net
+# score SEM_FRESH 0.5 
+
+score FORM_FRAUD 0.75
+score STYLE_GIBBERISH 2.0
+score T_OBFU_DOC_ATTACH 2.0
+score WEIRD_PORT 2.0
+score T_HK_SPAMMY_FILENAME 1.0
+score FREEMAIL_ENVFROM_END_DIGIT 1.5
+
+# This list is meant to list domains that are less than 5 days old.
+# It listed rjek.com when it was a decade old.
+score URIBL_RHS_DOB 0.0
+
+# It seems these people only "certify" spammers
+score RCVD_IN_RP_CERTIFIED 0.4
+score RCVD_IN_RP_SAFE 0.4
+
+score T_OBFU_HTML_ATTACH 0.8
+score T_HTML_ATTACH 0.8
+score FORGED_OUTLOOK_HTML 0.8
+score T_FILL_THIS_FORM_LONG 1.0
+score FORM_FRAUD_5 1.0
+score ADVANCE_FEE_5_NEW_FORM 0.8
+
+score SHORT_TERM_PRICE 1.5
+score T_FSL_HELO_BARE_IP_2 0.3
+
+score FSL_CTYPE_WIN1251 0.8
+score FROM_MISSP_MSFT 0.8
+score FROM_MISSP_XPRIO 0.8
+
+
+score T_FILL_THIS_FORM_SHORT 1.0
+score MARKETING_PARTNERS 1.0
+score HTML_IMAGE_RATIO_08 0.5
+score SUBJ_ILLEGAL_CHARS 2.5
+score LOTS_OF_MONEY 1.5
+score HTML_MESSAGE 0.3
+score FREEMAIL_FROM 1.0
+score SPF_FAIL 0.5
+score RCVD_IN_DNSWL_MED -1.5
+score T_REMOTE_IMAGE 0.8
+score TO_EQ_FM_DOM_SPF_FAIL 1.0
+score TO_EQ_FM_SPF_FAIL 1.0
+score FM_LOTTO_MONEY 1.5
+score HTML_IMAGE_ONLY_32 1.5
+score BAYES_999 4.0
+
+score NO_DNS_FOR_FROM 1.0
+score HTML_FONT_SIZE_HUGE 0.5
+
+score PYZOR_CHECK 3.0 
+score MISSING_MID 1.5
+score FREEMAIL_FROM 1.2
+score FREEMAIL_REPLYTO 2.0
+score FILL_THIS_FORM 1.0
+score T_FRT_CONTACT 0.5
+score FREEMAIL_FORGED_REPLYTO 2.5
+score FREEMAIL_REPLYTO_END_DIGIT 0.8
+score URIBL_DBL_REDIR 1.5
+score URIBL_DBL_ABUSE_REDIR 1.0
+
+score RDNS_NONE 1.3
+score FORGED_YAHOO_RCVD 2.1
+score URIBL_PH_SURBL 1.1
+score URIBL_BLACK 2.5
+score UNPARSABLE_RELAY 0.5
+
+score RCVD_IN_BRBL_LASTEXT 2.5
+score FSL_HELO_NON_FQDN_1 1.2
+
+score URIBL_RED 1.0
+score HTML_FONT_LOW_CONTRAST 1.0
+
+score RCVD_IN_BL_SPAMCOP_NET 7.0
+score T_TVD_FUZZY_SECURITIES 2.0
+score BAYES_50 1.0
+
+score LOTTO_DEPT 1.5
+score ADVANCE_FEE_4_NEW 1.0
+score ADVANCE_FEE_5_NEW 1.0
+score ADVANCE_FEE_3_NEW 1.0
+score ADVANCE_FEE_4_NEW_MONEY 1.0
+score ADVANCE_FEE_3_NEW_MONEY 1.0
+
+score XFER_LOTSA_MONEY 1.1
+
+score DIGEST_MULTIPLE 1.5
+
+# Rescore the DNS Blacklists
+score RCVD_IN_BL_SPAMCOP_NET 5.0 
+score RCVD_IN_SBL 2.5
+score RCVD_IN_DSBL 2.5
+score RCVD_IN_SORBS_DUL 2.5
+score DNS_FROM_OPENWHOIS 0.0
+score TVD_RCVD_IP 0.5
+score MISSING_DATE 1.5
+score MISSING_MID 0.8
+score URIBL_WS_SURBL 2.5
+score URIBL_JP_SURBL 2.5
+score MIME_HTML_ONLY 1.0
+score RAZOR2_CF_RANGE_E8_51_100 2.5
+score RAZOR2_CHECK 2.0
+score ANONWHOIS_18 0.5
+score ANONWHOIS_3 0.5
+score ANONWHOIS_46 0.5
+score ANONWHOIS_8 0.5
+score ANONWHOIS_15 0.5
+score URIBL_BLACK 4.0 
+
+score URIBL_SC_SURBL 2.5
+
+score FORGED_OUTLOOK_TAGS 1.5
+score BAD_ENC_HEADER 0.2
+
+score RCVD_IN_IADB_OPTIN_GT50 0.0
+score RCVD_IN_IADB_OPTIN 0.0
+score RCVD_IN_IADB_LISTED 0.0
+score RCVD_IN_IADB_VOUCHED 0.0
+score RCVD_IN_IADB_SPF 0.0
+score RCVD_IN_IADB_SENDERID 0.0
+score RCVD_IN_IADB_DK 0.0
+score RCVD_IN_IADB_RDNS 0.0
+
+score DIET_1 2.0
+
+score AXB_X_FF_SEZ_S 3.0
+
+# When we trust, we trust a lot
+#
+score ALL_TRUSTED -3.0
+
+ok_locales en 
+
+# Our rules...
+
+# Spammers who use Gmail like to use GSM for mail merging
+
+body PPF_GMAIL_GSM /powered by GSM. Free mail merge and email/
+describe PPF_GMAIL_GSM GSM GMail mail merge software often abused
+score PPF_GMAIL_GSM 1.2
+
+# Chinese spams 
+header __RP_SUBJ_UTF8 Subject:raw =~/=\?utf-8\?B/i 
+header __RP_SUBJ_GB2312 Subject:raw =~ /=\?gb2312\?B/i 
+header __RP_SUBJ_CJK  Subject =~ /[\xe4-\xe9]/ 
+full   __RP_8BIT_FNAME /name=.{0,30}[\x80-\xff]/ 
+full   __RP_EXCEL /application\/vnd.ms-excel/i 
+full   __RP_DOC   /application\/msword/i 
+full   __RP_GB2312_FNAME /name=.?=\?gb2312\?/i 
+meta     RP_D_00032 (__RP_SUBJ_UTF8 && __RP_SUBJ_CJK && (__RP_EXCEL || __RP_DOC || __RP_8BIT_FNAME)) || (__RP_SUBJ_GB2312 && (__RP_GB2312_FNAME || __RP_EXCEL || __RP_DOC || __RP_8BIT_FNAME)) 
+describe RP_D_00032 Looks like a Chinese spam 
+score	 RP_D_00032 5.0 
+
+header PPF_GMAIL DKIM-Signature =~ /gmail\.com/ 
+describe PPF_GMAIL GMail is especially bad for spam
+score PPF_GMAIL 3.0
+
+# meta PPF_HOTMAIL_JUNE22 (KAM_MANYTO && FREEMAIL_FROM && T_FREEMAIL_DOC_PDF)
+# describe PPF_HOTMAIL_JUNE22 Follows pattern of flurry of spam June 2022
+# score PPF_HOTMAIL_JUNE22 8.0
+
+# score T_FREEMAIL_DOC_PDF 3.0
+
+body PPF_BITCOIN_ADDRESS /\b(bc1|1|3)[a-zA-HJ-NP-Z0-9]{25,39}\b/
+describe PPF_BITCOIN_ADDRESS Body contains a Bitcoin address
+score PPF_BITCOIN_ADDRESS 2.5
+
+body PPF_MISPELLED_UNSUB /unsubscirbe/
+describe PPF_MISPELLED_UNSUB They can't spell unsubscribe
+score PPF_MISPELLED_UNSUB 0.2
+
+body PPF_PRINCE2 /prince ?2/i
+describe PPF_PRINCE2 Body mentions PRINCE2
+score PPF_PRINCE2 2.0
+
+header PPF_PRINCE2_SUBJECT Subject =~ /prince ?2/i
+describe PPF_PRINCE2_SUBJECT Subject mentions PRINCE2
+score PPF_PRINCE2_SUBJECT 2.5
+
+body PPF_UNSUB_SPACES /u\s*n\s*s\s*u\s*b\s*s\s*c\s*r\s*i\s*b\s*e/
+describe PPF_UNSUB_SPACES unsubscribe with optional spaces
+score PPF_UNSUB_SPACES 0.4
+
+header PPF_COM_DIG_END From =~ /\d\.com/i
+describe PPF_COM_DIG_END From domain ends in digits
+score PPF_COM_DIG_END 1.5
+
+body PPF_EU_URL /https?:\/\/[^\/]+\.eu\.?\/?/i
+describe PPF_EU_URL Contains a URL with a .eu domain
+score PPF_EU_URL 1.0
+
+body PPF_WEBSITE_URL /https?:\/\/[^\/]+\.website\.?\/?/i
+describe PPF_WEBSITE_URL Contains a URL with a .website domain
+score PPF_WEBSITE_URL 1.0
+
+body PPF_RU_URL /https?:\/\/[^\/]+\.ru\.?\/?/i
+describe PPF_RU_URL Contains a URL with a .ru domain
+score PPF_RU_URL 1.0
+
+body PPF_IN_URL /https?:\/\/[^\/]+\.in\.?\/?/i
+describe PPF_IN_URL Contains a URL with a .in domain
+score PPF_IN_URL 1.5
+
+body PPF_LINK_URL /https?:\/\/[^\/]+\.link\.?\/?/i
+describe PPF_LINK_URL Contains a URL with a .link domain
+score PPF_LINK_URL 1.5
+
+uri PPF_LINK_URI /\.link\b/
+describe PPF_LINK_URI Contains a URI with a .link domain
+score PPF_LINK_URL 1.5
+
+full PPF_FAUX_HEX_HEADER /^[A-Za-z]*: [0-9a-fA-F]$/
+describe PPF_FAUX_HEX_HEADER Fake-looking header with hex value
+score PPF_FAUX_HEX_HEADER 1.5
+
+header PPF_OUTLOOK_SPAM X-Forefront-Antispam-Report =~ /SFV:SPM/
+describe PPF_OUTLOOK_SPAM Microsoft think this is spam, and they sent it.
+score PPF_OUTLOOK_SPAM 5.0
+
+header PPF_GOOGLE_CLASSROOM Subject =~ /^Class invitation: "/
+describe PPF_GOOGLE_CLASSROOM Google Classroom invitations often abused
+score PPF_GOOGLE_CLASSROOM 6.5
+
+
+# SEO
+
+header PPF_SEO_SUBJ Subject =~ /seo/i
+describe PPF_SEO_SUBJ Subject mentions 'SEO'
+score PPF_SEO_SUBJ 1.1
+
+header PPF_SEO_SKYPE rawbody =~ /webmarketing.sales/i
+describe PPF_SEO_SKYPE SEO skype address in body
+score PPF_SEO_SKYPE 4.0
+
+header PPF_SEO_SKYPE2 rawbody =~ /webdigital.marketing/i
+describe PPF_SEO_SKYPE2 skype address in body
+score PPF_SEO_SKYPE2 4.0
+
+header PPF_ONE_TIME rawbody =~ /onetime email/i
+describe PPF_ONE_TIME Only emailing you the once, honest
+score PPF_ONE_TIME 2.0
+
+header PPF_BIG_REMOVE rawbody =~ /REMOVE/
+describe PPF_BIG_REMOVE Body has REMOVE in capitals
+score PPF_BIG_REMOVE 1.1
+
+header PPF_CARD Subject =~ /card/i
+describe PPF_CARD Subject mentions 'card'
+score PPF_CARD 0.5
+
+header PPF_DEBT Subject =~ /debt/i
+describe PPF_DEBT Subject mentions 'debt'
+score PPF_DEBT 0.5
+
+header PPF_FREE Subject =~ /free/i
+describe PPF_FREE Subject mentions 'free'
+score PPF_FREE 0.5
+
+body PPF_BIG_FREE /FREE/
+describe PPF_BIG_FREE Body has big FREE
+score PPF_BIG_FREE 0.5
+
+body PPF_MATT_BRITTIN /Matt Brittin/
+describe PPF_MATT_BRITTIN Google prize spam
+score PPF_MATT_BRITTIN 2.0
+
+body PPF_SKYPE_MARKETING /skype.*market/i
+describe PPF_SKYPE_MARKETING Skype marketing address
+score PPF_SKYPE_MARKETING 0.8
+
+body PPF_ONETIME /one[ -]?time e\-?mail/i
+describe PPF_ONETIME One time email, apparently
+score PPF_ONETIME 0.8
+
+body PPF_GMAIL_STRAT /marketing strategy.*gmail/i
+describe PPF_GMAIL_STRAT Marketing strategy involves gmail
+score PPF_GMAIL_STRAT 0.8
+
+meta PPF_CARD_DEBT_FREE PPF_CARD && PPF_DEBT && PPF_FREE
+describe PPF_CARD_DEBT_FREE Subject mentions 'card' 'debt' and 'free'
+score PPF_CARD_DEBT_FREE 1.5
+
+header PPF_ROLEX Subject =~ /r[o0]l[e3]x/i
+describe PPF_ROLEX Subject mentions rolex watches
+score PPF_ROLEX 3.5
+
+header PPF_FOSTERING User-Agent =~ /Program V/i
+describe PPF_FOSTERING User-Agent field is the fostering Program V mta
+score PPF_FOSTERING 0.3
+
+header PPF_TO_DEBIAN_NUMS To =~ /\d.*debian.org/i
+describe PPF_TO_DEBIAN_NUMS To field includes numbers and debian.org (sorry 93sam)
+score PPF_TO_DEBIAN_NUMS 1.5
+
+header PPF_UA_AOL User-Agent =~ /aol/i
+describe PPF_UA_AOL User-Agent is AOL
+score PPF_UA_AOL 0.5
+
+rawbody PPF_GOLDFISH /You are receiving this email from Goldfish Marketing as you opted in for 3rd party marketing from one of our partners/i
+describe PPF_GOLDFISH Goldfish marketing spam, you didn't opt-in
+score PPF_GOLDFISH 5.0
+
+rawbody PPF_GOLDFISH2 /Goldfish Marketing/
+describe PPF_GOLDFISH2 Goldfish marketing spam, you didn't opt-in
+score PPF_GOLDFISH2 3.5
+
+header PPF_ASMTP Received =~ /mx.pepperfish.net with asmtp/
+describe PPF_ASMTP Received via authenticated SMTP to pepperfish
+score PPF_ASMTP -5
+
+header PPF_CATFISH Received =~ /catfish.pepperfish.net/
+describe PPF_CATFISH Received via catfish (secondary)
+score PPF_CATFISH 2
+
+rawbody PPF_MUST_ENABLE_HTML /You must enable HTML to view this message/i
+describe PPF_MUST_ENABLE_HTML You must enable HTML to view this message?
+score PPF_MUST_ENABLE_HTML 2
+
+header PPF_KEYWORDS Keywords =~ /./
+describe PPF_KEYWORDS The Keywords: header is present
+score PPF_KEYWORDS 0.3
+
+header PPF_COMMENTS Comments =~ /./
+describe PPF_COMMENTS The Comments: header is present
+score PPF_COMMENTS 0.3
+
+header PPF_NDR_PREVENT Prevent-NonDelivery-Report =~ /./
+describe PPF_NDR_PREVENT The Prevent-NonDelivery-Report is present
+score PPF_NDR_PREVENT 0.3
+
+header PPF_DISTRIB_INAD Distribution =~ /inadv/
+describe PPF_DISTRIB_INAD The Distribution header states 'inadvisable'
+score PPF_DISTRIB_INAD 0.3
+
+header PPF_SUBJ_MICROSOFT Subject =~ /microsoft/i
+describe PPF_SUBJ_MICROSOFT Subject mentions microsoft
+score PPF_SUBJ_MICROSOFT 0.3
+
+header PPF_SUBJ_DISCOUNT Subject =~ /d.?i.?s.?c.?o.?u.?n.?t.?/i
+describe PPF_SUBJ_DISCOUNT Subject mentions a discount
+score PPF_SUBJ_DISCOUNT 0.3
+
+rawbody PPF_PRICES /\.\d\d\n.*\.\d\d\n/ms
+describe PPF_PRICES Body appears to contain at least two lines ending in prices
+score PPF_PRICES 0.3
+
+header PPF_MENTIONS_AURIC To =~ /auric/i
+describe PPF_MENTIONS_AURIC To line mentions auric.debian.org
+score PPF_MENTIONS_AURIC 2.5
+
+
+header PPF_XMAILER_IPLANET X-Mailer =~ /iplanet/i
+describe PPF_XMAILER_IPLANET X-Mailer contains iPlanet
+score PPF_XMAILER_IPLANET 0.5
+
+header PPF_USERAGENT_ASPMAIL User-Agent =~ /AspMail/i
+describe PPF_USERAGENT_ASPMAIL User-Agent header says 'AspMail'
+score PPF_USERAGENT_ASPMAIL 2
+
+body PPF_MAGICACTION /magicaction\.net/i
+describe PPF_MAGICACTION Body mentions magicaction.net
+score PPF_MAGICACTION 3
+
+header PPF_BASE64 Content-Transfer-Encoding =~ /base64/i
+describe PPF_BASE64 Body is encoded in base64?!
+score PPF_BASE64 1
+
+header PPF_WINDOWS_CHARSET Content-Type =~ /windows-/i
+describe PPF_WINDOWS_CHARSET Content-Type is in a Windows-* charset
+score PPF_WINDOWS_CHARSET 0.4
+
+header PPF_XMAILER_MICROSOFT X-Mailer =~ /microsoft/i
+describe PPF_XMAILER_MICROSOFT X-Mailer mentions Microsoft
+score PPF_XMAILER_MICROSOFT 0.20
+
+header PPF_XMAILER_THEBAT X-Mailer =~ /the ?bat/i
+describe PPF_XMAILER_THEBAT X-Mailer mentions 'The Bat!'
+score PPF_XMAILER_THEBAT 2
+
+header PPF_USERAGENT_THEBAT User-Agent =~ /the ?bat/i
+describe PPF_USERAGENT_THEBAT User-Agent mentions 'The Bat!'
+score PPF_USERAGENT_THEBAT 2
+
+header PPF_XMAILER_HIVEMAIL X-Mailer =~ /hivemail/i
+describe PPF_XMAILER_HIVEMAIL X-Mailer mentions Hivemail
+score PPF_XMAILER_HIVEMAIL 1
+
+header PPF_XMAILER_WINANTISPAM X-Mailer =~ /winantispam/i
+describe PPF_XMAILER_WINANTISPAM X-Mailer mentions WinAntiSPAM
+score PPF_XMAILER_WINANTISPAM 1
+
+
+body PPF_ADMINISTRIVIA /Administrivia report: \d\d\d\d-\d\d-\d\d \d\d:\d\d/
+describe PPF_ADMINISTRIVIA Pepperfish administrivia report
+score PPF_ADMINISTRIVIA -5
+
+body PPF_SELECT_BELOW /select\s+below/i
+describe PPF_SELECT_BELOW Just as bad as 'click below'
+score PPF_SELECT_BELOW 1
+
+header PPF_XPRIORITY X-Priority =~ /./
+describe PPF_XPRIORITY X-Priority header exists
+score PPF_XPRIORITY 0.40
+
+header PPF_MSGID_DEBIAN Message-Id =~ /\.debian\.org/
+describe PPF_MSGID_DEBIAN By being open lists, debian relays a lot of spam
+score PPF_MSGID_DEBIAN 2
+
+header PPF_BUILDD_CVS X-Mailer =~ /cvs-syncmail/
+describe PPF_BUILDD_CVS Sent by the cvs syncmail script
+score PPF_BUILDD_CVS -5
+
+header PPF_XKATIE X-Katie =~ /./
+describe PPF_XKATIE Debian's X-Katie header indicates it's important
+score PPF_XKATIE -2
+
+header PPF_DEBIAN_LISTID List-Id =~ /\.debian\.org/
+describe PPF_DEBIAN_LISTID Debian List-Id header is present
+score PPF_DEBIAN_LISTID -1
+
+header PPF_NEW_BYHAND_DEBIAN Subject =~ /NEW and BYHAND on/
+describe PPF_NEW_BYHAND_DEBIAN Debian's NEW and BYHAND listing
+score PPF_NEW_BYHAND_DEBIAN -20
+
+header PPF_DEBIAN_INSTALL Subject =~ /Install for \d\d\/\d\d\/\d\d/
+describe PPF_DEBIAN_INSTALL Mentions the Install for Debian in Subject
+score PPF_DEBIAN_INSTALL -10
+
+rawbody PPF_SUBSCRIBE_SPLIT /s\s*u\s*b\s*s\s*c\s*r\s*i\s*b\s*e/i
+describe PPF_SUBSCRIBE_SPLIT Contains the text 'subscribe' with optional whitespace
+score PPF_SUBSCRIBE_SPLIT 0.75
+
+header PPF_XMAILER_WEBMAIL X-Mailer =~ /webmail/i
+describe PPF_XMAILER_WEBMAIL Contains 'webmail' in the X-Mailer header
+score PPF_XMAILER_WEBMAIL 0.25
+
+rawbody PPF_BODY_RESPONSE /opt out response/i
+describe PPF_BODY_RESPONSE Mispelling of respond in opt-out
+score PPF_BODY_RESPONSE 1.1
+
+rawbody PPF_BODY_JSCRIPT /\<\s*script/is
+describe PPF_BODY_JSCRIPT Body contains a <script> tag ?
+score PPF_BODY_JSCRIPT 0.5
+
+header PPF_XMAILER_FOXMAIL X-Mailer =~ /Foxmail/i
+describe PPF_XMAILER_FOXMAIL X-Mailer line mentions foxmail
+score PPF_XMAILER_FOXMAIL 1
+
+header PPF_SUBJECT_GAMES Subject =~ /games/i
+describe PPF_SUBJECT_GAMES Subject line mentions games
+score PPF_SUBJECT_GAMES 0.5
+
+header PPF_FROM_ARCADETOWN From =~ /arcadetown/i
+describe PPF_FROM_ARCADETOWN From line mentions arcadetown
+score PPF_FROM_ARCADETOWN 0.75
+
+header PPF_MESSAGEID_CPANELDNS Message-Id =~ /cpanel-dns\.com/i
+describe PPF_MESSAGEID_CPANELDNS Message-Id mentions cpanel-dns.com
+score PPF_MESSAGEID_CPANELDNS 1
+
+rawbody PPF_ARCADE_TOWN /arcadetown\.com/
+describe PPF_ARCADE_TOWN Body mentions arcadetown.com
+score PPF_ARCADE_TOWN 1.5
+
+rawbody PPF_ONLY_DOLLARS /only\s+\$/i
+describe PPF_ONLY_DOLLARS Body says 'only $someprice'
+score PPF_ONLY_DOLLARS 0.75
+
+header PPF_ENC_SUBJ Subject =~ /=\?iso-\d/i
+describe PPF_ENC_SUBJ Subject is encoded with some ISO charset
+score PPF_ENC_SUBJ 1
+
+header PPF_XMAILER_SMTP32 X-Mailer =~ /smtp32/i
+describe PPF_XMAILER_SMTP32 X-Mailer mentions SMTP32
+score PPF_XMAILER_SMTP32 1
+
+header PPF_ENC_SUBJ_WIN Subject =~ /=\?wind/i
+describe PPF_ENC_SUBJ_WIN Subject is encoded with a windows charset
+score PPF_ENC_SUBJ_WIN 1.5
+
+header PPF_MUA_OUTLOOK_IMO X-Mailer =~ /outlook\s*imo/i
+describe PPF_MUA_OUTLOOK_IMO X-Mailer mentions Outlook IMO
+score PPF_MUA_OUTLOOK_IMO 0.25
+
+header PPF_MSGID_LOOKS_LIKE_EXIM Message-Id =~ /[0-9A-Za-z]{6}-[0-9A-Za-z]{6}-[0-9]{2}\@/
+describe PPF_MSGID_LOOKS_LIKE_EXIM Looks like exim added a message-id
+score PPF_MSGID_LOOKS_LIKE_EXIM 0.5
+
+header PPF_MAILER_GOTO X-Mailer =~ /GOTO/
+describe PPF_MAILER_GOTO X-Mailer contains 'GOTO'
+score PPF_MAILER_GOTO 1
+
+header PPF_SMELLS_LIKE_EROL Subject =~ /^EROL Order$/
+describe PPF_SMELLS_LIKE_EROL Subject is 'EROL Order' -- it smells like EROL
+score PPF_SMELLS_LIKE_EROL -5
+
+header PPF_XXX From =~ /xxx/i
+describe PPF_XXX From: contains xxx
+score PPF_XXX 2
+
+header PPF_SEEKER_CENTER	From =~ /seekercenter/
+describe PPF_SEEKER_CENTER	From: contains seekercenter (spammers)
+score PPF_SEEKER_CENTER     50
+
+header PPF_TRAFFICMAGNET	From =~ /trafficmagnet/
+describe PPF_TRAFFICMAGNET	From: contains trafficmagnet (spammers)
+score PPF_TRAFFICMAGNET     50
+
+header PPF_COOLSTATS From =~ /coolstats/
+describe PPF_COOLSTATS From: contains coolstats (spammers)
+score PPF_COOLSTATS 50
+
+rawbody PPF_REMOVE_FROM_LIST /taken off.*list/i
+describe PPF_REMOVE_FROM_LIST Contains the text 'taken off...list'
+score PPF_REMOVE_FROM_LIST 1
+
+header PPF_EBAY_TRACKER X-eBay-MailTracker =~ /\d+/
+describe PPF_EBAY_TRACKER Headers contain a vaguely right-looking ebay mail tracker
+score PPF_EBAY_TRACKER -2
+
+header PPF_USER_AGENT User-Agent =~ /../
+describe PPF_USER_AGENT User-Agent: exists
+score PPF_USER_AGENT -0.5
+
+header PPF_USER_AGENT_MUTT User-Agent =~ /Mutt/
+describe PPF_USER_AGENT_MUTT User-Agent: contains Mutt (Mutt isn't a spam tool)
+score PPF_USER_AGENT_MUTT -1
+
+header PPF_USER_AGENT_OUTLOOK User-Agent =~ /Outlook/i
+describe PPF_USER_AGENT_OUTLOOK User-Agent: contains Outlook (spam tool)
+score PPF_USER_AGENT_OUTLOOK 1.5
+
+header PPF_WIZSYSTEMS From =~ /wizsystems/i
+describe PPF_WIZSYSTEMS From: contains wizsystems (spammers)
+score PPF_WIZSYSTEMS 50
+
+rawbody PPF_DEAR_SIR /^\s*dear\s+sirs?,?/i
+describe PPF_DEAR_SIR Body contains a line of the form "Dear Sir"
+score PPF_DEAR_SIR 1
+
+header PPF_FROM_CONTAINS_MAIL From =~/\@.*mail/i
+describe PPF_FROM_CONTAINS_MAIL The From header contains 'mail'
+score PPF_FROM_CONTAINS_MAIL 1
+
+header PPF_FROM_XYZ From =~/\@.*\.xyz/i
+describe PPF_FROM_XYZ From contains .xyz
+score PPF_FROM_XYZ 2.0
+
+#rawbody PPF_LINE_OF_PUNC /^[\s\.,_+=]+$/
+#describe PPF_LINE_OF_PUNC The body contains a line of pure punctuation
+#score PPF_LINE_OF_PUNC 0.5
+
+body PPF_SIGSEP /^-- $/
+describe PPF_SIGSEP The body contains a correct signature separator
+score PPF_SIGSEP -1.5
+
+header PPF_TO_NO_AT To !~ /\@/
+describe PPF_TO_NO_AT The To header contains no @ symbol
+score PPF_TO_NO_AT 1.5
+
+body PPF_FREE_PRODUCT /free\s+product/i
+describe PPF_FREE_PRODUCT The body mentions a free product
+score PPF_FREE_PRODUCT 1
+
+header PPF_TO_FRIEND To =~ /friend/i
+describe PPF_TO_FRIEND The To header says 'friend'
+score PPF_TO_FRIEND 1
+
+body PPF_REMOVE_YOURSELF /remove\s+yourself/i
+describe PPF_REMOVE_YOURSELF The body mentions a way to 'remove yourself'
+score PPF_REMOVE_YOURSELF 1
+
+body PPF_REMOVE_DEBT /(elimin|rem)\S+\s+debt/i
+describe PPF_REMOVE_DEBT Eliminate or remove debt
+score PPF_REMOVE_DEBT 1
+
+#header PPF_ID_IS_SPAM Message-Id =~ /spam/i
+#describe PPF_ID_IS_SPAM Message-Id contains 'spam'
+#score PPF_ID_IS_SPAM 1
+
+header PPF_SUBJ_SPACES Subject =~ /   +/
+describe PPF_SUBJ_SPACES Subject contains three or more consecutive spaces
+score PPF_SUBJ_SPACES 1
+
+header PPF_NGMARKET From =~ /ngmarket/
+describe PPF_NGMARKET From contains 'ngmarket'
+score PPF_NGMARKET 1
+
+body PPF_REM_DB /remove.{1,20}database/i
+describe PPF_REM_DB Mentions removal and databases
+score PPF_REM_DB 1
+
+header PPF_MILLION Subject =~ /million/i
+describe PPF_MILLION Subjection mentions a million
+score PPF_MILLION 2
+
+header PPF_ALTERNATIVES Content-Type =~ /alternative/
+describe PPF_ALTERNATIVES Body in multipart/alternative
+score PPF_ALTERNATIVES 0.2
+
+header PPF_MSGID_DIGITS Message-ID =~ /\@\d+/
+describe PPF_MSGID_DIGITS Message ID has @<digits> in it
+score PPF_MSGID_DIGITS 1
+
+header PPF_CRON_ENV X-Cron-Env =~ /./
+describe PPF_CRON_ENV Message contains a cron environment
+score PPF_CRON_ENV -5
+
+rawbody PPF_SMALL_FONT /font\s+style="font-size:\s+1;?"/i
+describe PPF_SMALL_FONT Body contains a font-size of 1
+score PPF_SMALL_FONT 3
+
+rawbody PPF_LIGHT_TEXT /\#cccccc/i
+describe PPF_LIGHT_TEXT Body contains light text
+score PPF_LIGHT_TEXT 0.2
+
+header PPF_MISSPELT_VIAGRA_1 Subject =~ /vi[a\@]gr.?a/i
+describe PPF_MISSPELT_VIAGRA_1 Subject matches vi[a@]gr.?a
+score PPF_MISSPELT_VIAGRA_1 1
+
+header PPF_SUBJECT_ENCODED Subject =~ /=\?(windows|iso).+=\?=/
+describe PPF_SUBJECT_ENCODED Subject is encoded rather than being ascii
+score PPF_SUBJECT_ENCODED 1
+
+rawbody PPF_YIH /yihmarket/i
+describe PPF_YIH Body mentions yihmarketers.com
+score PPF_YIH 1
+
+rawbody PPF_KAMAL /kamalmalesra/i
+describe PPF_KAMAL Body mentions kamalmalesra.com
+score PPF_KAMAL 1
+
+rawbody PPF_CID /src=["']?cid:/
+describe PPF_CID Body contains a src="cid:..."
+score PPF_CID 1
+
+header PPF_BROKEN_MAILER X-Mailer =~ /\s[bcdfghjklmnpqrstvwxyz]+\b/i
+describe PPF_BROKEN_MAILER X-Mailer header contains a word with no vowels
+score PPF_BROKEN_MAILER 0.5
+
+rawbody PPF_NUMERIC_ENTITY /\&\#[0-9a-f]+;/i
+describe PPF_NUMERIC_ENTITY Body contains numeric HTML entities
+score PPF_NUMERIC_ENTITY 0.2
+
+header PPF_UNK_SUBJ_ENC Subject =~ /\?UNKNOWN\?/
+describe PPF_UNK_SUBJ_ENC Subject contains unknown encoding
+score PPF_UNK_SUBJ_ENC 2
+
+header PPF_MESSAGEID_NODOTS Message-Id =~ /\@[^\.]+\>/
+describe PPF_MESSAGEID_NODOTS Message-Id contains no dots after the @
+score PPF_MESSAGEID_NODOTS 0.5
+
+header PPF_REFERENCES_NODOTS References =~ /\@[^\.]+\>/
+describe PPF_REFERENCES_NODOTS References contains no dots after the @
+score PPF_REFERENCES_NODOTS 0.2
+
+header PPF_INREPLYTO_NODOTS In-Reply-To =~ /\@[^\.]+\>/
+describe PPF_INREPLYTO_NODOTS In-Reply-To contains no dots after the @
+score PPF_INREPLYTO_NODOTS 0.2
+
+rawbody PPF_COLOUR_VERYLIGHT /font\s+color="?\#f.f.f."?/msi
+describe PPF_COLOUR_VERYLIGHT The body contains a very light font colour
+score PPF_COLOUR_VERYLIGHT 0.5
+
+header PPF_CANT_READ_JAP Subject =~ /iso-2022-jp/i
+describe PPF_CANT_READ_JAP Not many peperfish customers read japanese
+score PPF_CANT_READ_JAP 0.5
+
+header PPF_MESSAGEID_JAVAMAIL Message-Id =~ /JavaMail/i
+describe PPF_MESSAGEID_JAVAMAIL Message-Id contains 'javamail'
+score PPF_MESSAGEID_JAVAMAIL 0.8
+
+header PPF_SEVENTWOFOUR_MAILER X-Mailer =~ /724/
+describe PPF_SEVENTWOFOUR_MAILER X-Mailer is from 724 (spamming bastards)
+score PPF_SEVENTWOFOUR_MAILER 1
+
+header PPF_BROKEN_LINK Subject =~ /broken\s+link/i
+describe PPF_BROKEN_LINK Mails about broken links are usually spam
+score PPF_BROKEN_LINK 0.75
+
+rawbody PPF_SEVENTWOFOUR_BODY /seventwentyfour/i
+describe PPF_SEVENTWOFOUR_BODY Body mentions SEVENtwentyFour Inc
+score PPF_SEVENTWOFOUR_BODY 0.5
+
+header PPF_XAUTH_WARN X-Authentication-Warning =~ /./
+describe PPF_XAUTH_WARN X-Authentication-Warning is spammers mostly
+score PPF_XAUTH_WARN 0.75
+
+rawbody PPF_FONTSIZE_ZERO /font-size:\s*0/i
+describe PPF_FONTSIZE_ZERO Body contains 'font-size: 0'
+score PPF_FONTSIZE_ZERO 0.5 
+
+header PPF_RECEIVED_ENCRYPTED Received =~ /DES-CBC3-SHA/i
+describe PPF_RECEIVED_ENCRYPTED Received header mentions DES-CBC3-SHA
+score PPF_RECEIVED_ENCRYPTED 1
+
+header PPF_RECEIVED_HTTP Received =~ /http/i
+describe PPF_RECEIVED_HTTP Received header mentions http
+score PPF_RECEIVED_HTTP 0.5
+
+header PPF_FROM_KWMAP From =~ /kwmap\.net/i
+describe PPF_FROM_KWMAP From kwmap.net (spammers)
+score PPF_FROM_KWMAP 2
+
+header PPF_VIA_METAHUSKY Received =~ /metahusky.net/
+describe PPF_VIA_METAHUSKY Received via metahusky (as most of our spam is)
+score PPF_VIA_METAHUSKY 1.5
+
+header PPF_MSGID_YAHOO Message-Id =~ /yahoo/i
+describe PPF_MSGID_YAHOO Message-Id indicates yahoo mail
+score PPF_MSGID_YAHOO 0.5
+
+rawbody PPF_NBSPS /\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;/i
+describe PPF_NBSPS More than four &nbsp; entities in a row
+score PPF_NBSPS 0.4
+
+rawbody PPF_SPAMGUARD /spamguard/i
+describe PPF_SPAMGUARD Body mentions spamguard
+score PPF_SPAMGUARD 0.75
+
+rawbody PPF_HEAVEN /heaven/i
+describe PPF_HEAVEN Body mentions heaven
+score PPF_HEAVEN 0.25
+
+rawbody PPF_THYGOD /thy\s+god/i
+describe PPF_THYGOD Body mentions thy god
+score PPF_THYGOD 0.25
+
+rawbody PPF_NIGERIA /nigeria/i
+describe PPF_NIGERIA Body mentions nigeria
+score PPF_NIGERIA 0.25
+
+header PPF_SUBJ_NOVOWEL Subject =~ /[^aeiou ]{12,}/i
+describe PPF_SUBJ_NOVOWEL Subject contains at least twelve non-vowels in a row
+score PPF_SUBJ_NOVOWEL 0.3
+
+rawbody PPF_LATE_RELATIVE /late\s+(father|mother|sister|brother|son|daughter|cousin)/msi
+describe PPF_LATE_RELATIVE Body mentions a late relative
+score PPF_LATE_RELATIVE 0.75
+
+header PPF_MESSAGEID_WWW Message-Id=~ /\@www\./i
+describe PPF_MESSAGEID_WWW Message-Id contains @www.
+score PPF_MESSAGEID_WWW 1
+
+header PPF_OPTINID OptinId =~ /./
+describe PPF_OPTINID Presence of OptinId header indicates spam
+score PPF_OPTINID 0.5
+
+header PPF_REFID RefId =~ /./
+describe PPF_REFID Presence of RefId header indicates spam
+score PPF_REFID 0.5
+
+header PPF_FROM_NOSPACE From =~ /\S+\</
+describe PPF_FROM_NOSPACE From contains a non-space followed by <
+score PPF_FROM_NOSPACE 0.5
+
+header PPF_HAVE_RUNNER Subject =~ /WE HAVE A RUNNER/
+describe PPF_HAVE_RUNNER Subject contains 'we have a runner' in caps
+score PPF_HAVE_RUNNER 4
+
+header PPF_TO_NOSPACE To =~ /\S+\</
+describe PPF_TO_NOSPACE To contains a non-space followed by <
+score PPF_TO_NOSPACE 0.5
+
+rawbody PPF_SMALL_FONT_ONEPX /font-size:\s*1px/i
+describe PPF_SMALL_FONT_ONEPX Body contains font-size: 1px
+score PPF_SMALL_FONT_ONEPX 1
+
+rawbody PPF_SPLIT_TAG /\<[^>]+\n/ms
+describe PPF_SPLIT_TAG Body contains a split HTML tag
+score PPF_SPLIT_TAG 0.1
+
+header PPF_NO_LOWERCASE_SUBJ Subject =~ /^[^a-z]+$/
+describe PPF_NO_LOWERCASE_SUBJ Subject contains no lowercase letters at all
+score PPF_NO_LOWERCASE_SUBJ 0.5
+
+header PPF_SUBJ_ALL_SPACES Subject =~ /^\s+$/
+describe PPF_SUBJ_ALL_SPACES Subject is only whitespace
+score PPF_SUBJ_ALL_SPACES 1
+
+rawbody PPF_COLOUR_SPLIT /color="?\n/ms
+describe PPF_COLOUR_SPLIT Font colour split over two lines
+score PPF_COLOUR_SPLIT 1
+
+rawbody PPF_DEEPDUG /deepdug\.com/i
+describe PPF_DEEPDUG Body mentions deepdug.com
+score PPF_DEEPDUG 1
+
+rawbody PPF_PORTISMOUNT /portismount.com/i
+describe PPF_PORTISMOUNT Body mentions portismount.com
+score PPF_PORTISMOUNT 1
+
+rawbody PPF_BLANK /_blank/i
+describe PPF_BLANK Body contains _blank
+score PPF_BLANK 1
+
+header PPF_SUBJ_ARTS_PICS Subject =~ /Arts Picturehouse/
+describe PPF_SUBJ_ARTS_PICS Subject mentions the Arts Picturehouse
+score PPF_SUBJ_ARTS_PICS -4
+
+header PPF_TO_ARTS_PICS To =~ /Arts Picturehouse/
+describe PPF_TO_ARTS_PICS To mentions the Arts Picturehouse
+score PPF_SUBJ_ARTS_PICS -4
+
+header PPF_TO_LUAL_BOUNCES To =~ /lua\-l\-bounces\@lists\.lua\.org/
+describe PPF_TO_LUAL_BOUNCES Mess to lua-l-bounces@lists.lua.org
+score PPF_TO_LUAL_BOUNCES -50
+
+rawbody PPF_JAVASCRIPT /\<script/i
+describe PPF_JAVASCRIPT Contains a script tag
+score PPF_JAVASCRIPT 1.5
+
+## The following are borrowed/adapted from rules by dsvr...
+
+header DSVR_TM_CMDMAILER X-Mailer =~ /Command-Line Mailer/i
+score DSVR_TM_CMDMAILER 5.0
+describe DSVR_TM_CMDMAILER Command-Line Mailer is a known spam sender
+
+header DSVR_TM_PYMAILER X-Mailer =~ /Python Email Injector/i
+score DSVR_TM_PYMAILER 5.0
+describe DSVR_TM_PYMAILER Python Email Injector is a known spam sender
+
+header DSVR_TM_MMMAILER X-Mailer =~ /MIME Master/i
+score DSVR_TM_MMMAILER 5.0
+describe DSVR_TM_MMMAILER MIME Master is a known spam sender
+
+rawbody DSVR_MS_CONSUMER /^MS Consumer/i
+score DSVR_MS_CONSUMER 2.0
+describe DSVR_MS_CONSUMER MS Consumer
+
+rawbody DSVR_IAW_SEC_RULE /^this is the latest version of security update, the/i
+score DSVR_IAW_SEC_RULE 8.0
+describe DSVR_IAW_SEC_RULE SEC rule
+
+rawbody DSVR_IAW_IFRAME_RULE /^<iframe src=.*\"cid:.*\"/i
+score DSVR_IAW_IFRAME_RULE 8.0
+describe DSVR_IAW_IFRAME_RULE IAW iframe rule
+
+body DSVR_MY_NIGERIAN_BANK1 /GURANTEE TRUST BANK/
+score DSVR_MY_NIGERIAN_BANK1 1.2
+describe DSVR_MY_NIGERIAN_BANK1 Looks like a Nigerian spam
+
+rawbody DSVR_JEN_THICKER_1 /http:\/\/www.grasphere.com\/1.html/i
+score DSVR_JEN_THICKER_1 2.0
+describe DSVR_JEN_THICKER_1 Jenny grasphere URL
+
+rawbody DSVR_JEN_THICKER_2 /http:\/\/srd.yahoo.com\/drst\//i
+score DSVR_JEN_THICKER_2 2.0
+describe DSVR_JEN_THICKER_2 Jenny Yahoo URL
+
+rawbody DSVR_JEN_THICKER_3 /^I'll pass on this offer: /i
+score DSVR_JEN_THICKER_3 0.3
+describe DSVR_JEN_THICKER_3 Jenny phrase
+
+rawbody DSVR_PRIV_FIRST /privacyfirst/i
+score DSVR_PRIV_FIRST 0.5
+describe DSVR_PRIV_FIRST Contains privacyfirst phrase
+
+rawbody DSVR_BLUE_ROCKET /bluerocketonline/i
+score DSVR_BLUE_ROCKET 0.5
+describe DSVR_BLUE_ROCKET Contains bluerocketonline domain
+
+rawbody DSVR_TM_SPAMDOM1 /http:\/\/.*daddymack.biz/i
+rawbody DSVR_TM_SPAMDOM2 /http:\/\/.*wesurehavegooddeals.com/i
+rawbody DSVR_TM_SPAMDOM3 /http:\/\/.*optinenterprises.com/i
+rawbody DSVR_TM_SPAMDOM4 /http:\/\/.*iloveemaildeals.net/i
+rawbody DSVR_TM_SPAMDOM5 /http:\/\/.*optinspecialists.biz/i
+rawbody DSVR_TM_SPAMDOM6 /http:\/\/.*koshechka.net/i
+rawbody DSVR_TM_SPAMDOM7 /http:\/\/.*genericforless.biz/i
+rawbody DSVR_TM_SPAMDOM8 /http:\/\/.*site.voila.fr/i
+body DSVR_TM_SPAMDOM9 /http:\/\/.*(rx359|530000x|2004hosting|e-hostzz).(com|net|org)[\s]*\/cable\//i
+body DSVR_TM_SPAMDOM10 /http:\/\/.*(rx359|530000x|2004hosting|e-hostzz).(com|net|org)[\s]*\/fiter[0-9]*.jpg/i
+body DSVR_TM_SPAMDOM11 /http:\/\/[0-9]*.*mailerz.com/i
+body DSVR_TM_SPAMDOM12 /http:\/\/.*quickforms.biz/i
+body DSVR_TM_SPAMDOM13 /http:\/\/.*greatsize.biz/i
+body DSVR_TM_SPAMDOM14 /http:\/\/.*trymetodey.com/i
+
+score DSVR_TM_SPAMDOM1 2.5
+score DSVR_TM_SPAMDOM2 2.5
+score DSVR_TM_SPAMDOM3 2.5
+score DSVR_TM_SPAMDOM4 2.5
+score DSVR_TM_SPAMDOM5 2.5
+score DSVR_TM_SPAMDOM6 2.5
+score DSVR_TM_SPAMDOM7 2.5
+score DSVR_TM_SPAMDOM8 2.5
+score DSVR_TM_SPAMDOM9 4.5
+score DSVR_TM_SPAMDOM10 4.5
+score DSVR_TM_SPAMDOM11 4.5
+score DSVR_TM_SPAMDOM12 4.5
+score DSVR_TM_SPAMDOM13 4.5
+score DSVR_TM_SPAMDOM14 2.5
+
+describe DSVR_TM_SPAMDOM1 Contains known spam domain: daddymack.biz
+describe DSVR_TM_SPAMDOM2 Contains known spam domain: wesurehavegooddeals.com
+describe DSVR_TM_SPAMDOM3 Contains known spam domain: optinenterprises.com
+describe DSVR_TM_SPAMDOM4 Contains known spam domain: iloveemaildeals.net
+describe DSVR_TM_SPAMDOM5 Contains known spam domain: optinspecialists.biz
+describe DSVR_TM_SPAMDOM6 Contains known spam domain: koshechka.net
+describe DSVR_TM_SPAMDOM7 Contains known spam domain: genericforless.biz
+describe DSVR_TM_SPAMDOM8 Contains known spam domain: site.voila.fr
+describe DSVR_TM_SPAMDOM9 Free cable TV spam 1
+describe DSVR_TM_SPAMDOM10 Free cable TV spam 2
+describe DSVR_TM_SPAMDOM11 Contains known spam domain: ...mailerz.com
+describe DSVR_TM_SPAMDOM12 Contains known spam domain: quickforms.biz
+describe DSVR_TM_SPAMDOM13 Contains known spam domain: greatsize.biz
+describe DSVR_TM_SPAMDOM14 Contains known spam domain: trymetodey.com
+
+body DSVR_TM_MYDOOM1 /Mail transaction failed. Partial message is available./
+body DSVR_TM_MYDOOM2 /The message contains Unicode characters and has been sent as a binary attachment./
+body DSVR_TM_MYDOOM3 /The message cannot be represented in 7-bit ASCII encoding and has been sent as a binary attachment./
+describe DSVR_TM_MYDOOM1 Virus Novarg
+describe DSVR_TM_MYDOOM2 Virus Novarg
+describe DSVR_TM_MYDOOM3 Virus Novarg
+score DSVR_TM_MYDOOM1 3.0
+score DSVR_TM_MYDOOM2 3.0
+score DSVR_TM_MYDOOM3 3.0
+
+body DSVR_TM_DEGREE1 /Get a degree online(,|, | )today(.|!)/i
+describe DSVR_TM_DEGREE1 Online degree spam
+score DSVR_TM_DEGREE1 5.0
+
+body DSVR_TM_DRUGS1 /(V(l|i)agra|Soma|Tramadol|Phentermine).*(erectile.*dysfu(n)*ction|pain.*relief|weight.*loss)/i
+describe DSVR_TM_DRUGS1 Mentions drug and pain relief or weight loss
+score DSVR_TM_DRUGS1 5.0
+
+header DSVR_TM_DRUGS2 Subject =~ /(Tramadol|Phentermine)/i
+describe DSVR_TM_DRUGS2 Contains drug spam reference
+score DSVR_TM_DRUGS2 2.5
+
+body DSVR_TM_DRUGS3 /Getting rid of our entire stock/i
+describe DSVR_TM_DRUGS3 Suggests getting rid of entire stock
+score DSVR_TM_DRUGS3 1.0
+
+body DSVR_TM_DRUGS4 /get(s)* your m(.)*e(.)*d(.)*s/i
+describe DSVR_TM_DRUGS4 Contains phrase: get your meds
+score DSVR_TM_DRUGS4 0.7
+
+body DSVR_TM_DRUGS5 /(d(i|e)screet shipping|shipped d(i|e)scretely)/i
+describe DSVR_TM_DRUGS5 Contains phrase: discreet shipping
+score DSVR_TM_DRUGS5 0.7
+
+body DSVR_TM_DRUGS6 /save a lot of \$/i
+describe DSVR_TM_DRUGS6 Mentions saving a lot of $
+score DSVR_TM_DRUGS6 0.7
+
+body DSVR_TM_FREECABLE /Free.*Cable.*TV/i
+describe DSVR_TM_FREECABLE Free Cable TV spam
+score DSVR_TM_FREECABLE 5.0
+
+rawbody DSVR_MX_SMTP /mx[0-9][0-9]\.com/i
+score DSVR_MX_SMTP 7.0
+describe DSVR_MX_SMTP Refers to a mxXX.com server
+
+rawbody DSVR_DC_SMTP /dc[0-9][0-9]\.com/i
+score DSVR_DC_SMTP 7.0
+describe DSVR_DC_SMTP Refers to a dcXX.com server
+
+full DSVR_DQ_SMTP /dq[0-9][0-9]\.net/i
+score DSVR_DQ_SMTP 7.0
+describe DSVR_DQ_SMTP Refers to a dqXX.net server
+
+rawbody DSVR_PN_SMTP /pn[0-9][0-9]\.com/i
+score DSVR_PN_SMTP 7.0
+describe DSVR_PN_SMTP Refers to a pnXX.com server
+
+rawbody DSVR_BLUE_SMTP /blue-[0-9][0-9]\.com/i
+score DSVR_BLUE_SMTP 7.0
+describe DSVR_BLUE_SMTP Refers to a blue-XX.com server
+
+rawbody DSVR_SS_SMTP /ss[0-9][0-9]\.net/i
+score DSVR_SS_SMTP 7.0
+describe DSVR_SS_SMTP Refers to a ssXX.net server
+
+body DSVR_VPRX_PILLS /Introducing VP-RX Pills/i
+score DSVR_VPRX_PILLS 5.0
+describe DSVR_VPRX_PILLS Contains Introducing VP-RX Pills phrase
+
+body DSVR_VPRX_1 /VP-RX/i
+score DSVR_VPRX_1 1.0
+describe DSVR_VPRX_1 Contains word VP-RX
+
+rawbody DSVR_DIV_THANKS_1 /<DIV>Thanks, bye.<\/DIV><\/FONT><\/DIV><\/BODY><\/HTML>/
+score DSVR_DIV_THANKS_1 5.0
+describe DSVR_DIV_THANKS_1 Template spam
+
+rawbody DSVR_GAS_SPAM_1 /http:\/\/www.qqds.org\?axel/i
+score DSVR_GAS_SPAM_1 7.0
+describe DSVR_GAS_SPAM_1 Fuel saver spam
+
+# Our own again
+
+header LJMSGID Message-Id =~ /comment-\d+-\d+\@livejournal.com/
+describe LJMSGID Message-Id is from livejournal comment system
+score LJMSGID -4
+
+header JAMJOBS From =~ /jamjobs\.co\.uk/
+describe JAMJOBS Mail from jamjobs
+score JAMJOBS -4
+
+header DAINTREE Message-Id =~ /daintree/
+describe DAINTREE Daintree networks
+score DAINTREE -10
+
+header SUBJ_NOSPACE Subject =~ /^ *[^ ]* *$/
+describe SUBJ_NOSPACE Subject has no spaces in it
+score SUBJ_NOSPACE 1
+
+header FROM_VIRGIN From =~ /virginmedia/
+describe FROM_VIRGIN Message is from virgin media
+score FROM_VIRGIN -200
+
+header FROM_SIMTEC_CUST X-SpamReport =~ /SIMTEC_CUST_/
+describe FROM_SIMTEC_CUST Message is from a Simtec customer
+score FROM_SIMTEC_CUST -20
+
+header PPF_B_DOMAIN From =~ /\@b/
+describe PPF_B_DOMAIN Message is from a domain beginning with b
+score PPF_B_DOMAIN 0.2
+
+header PPF_BE_DOMAIN From =~/\.be$/
+describe PPF_BE_DOMAIN Message is from a domain ending in .be
+score PPF_BE_DOMAIN 0.8
+

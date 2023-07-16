@@ -221,6 +221,14 @@ in {
             }
           '';
         };
+        "spamassassin.conf" = {
+          enable = true;
+          text = ''
+            ruleset = [
+              "${./sa-rules/ppf.cf}";
+            ]
+          '';
+        };
       };
     };
 
