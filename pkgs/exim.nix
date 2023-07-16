@@ -9,6 +9,7 @@
 , enableDMARC ? true, opendmarc
 , enableRedis ? false, hiredis
 , enableJSON ? false, jansson
+, enableSRS ? false,
 }:
 
 stdenv.mkDerivation rec {
@@ -89,6 +90,9 @@ stdenv.mkDerivation rec {
       ''}
       ${lib.optionalString enableAuthDovecot ''
         s:^# \(AUTH_DOVECOT\)=.*:\1=yes:
+      ''}
+      ${lib.optionalString enableSRS ''
+        s:^# \(SUPPORT_SRS\)=.*:\1=yes:
       ''}
       ${lib.optionalString enablePAM ''
         s:^# \(SUPPORT_PAM\)=.*:\1=yes:
