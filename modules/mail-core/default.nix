@@ -298,5 +298,28 @@ in {
       };
     };
 
+    services.fail2ban = {
+      enable = true;
+      jails = {
+        exim = ''
+        enabled = true
+        journalmatch = _SYSTEMD_UNIT=exim.service
+        port = 465,587
+        '';
+        dovecot = ''
+        enabled = true
+        port = 993,995,4190'';
+      };
+    };
+
+    environment.etc = {
+      "fail2ban/filter.d/exim-common.local" = {
+        text = ''
+        [Definition]
+        pid = (?: \[\d+\]|\S?\w+ exim\[\d+\]:)? \S+ \S+
+        '';
+      };
+    };
+
   };
 }
