@@ -243,11 +243,13 @@ in {
     sops.secrets.mail-exim-spf = {
       sopsFile = ../../keys/mail-exim-spf;
       format = "binary";
+      group = config.services.exim.group;
+      mode = "0440";
     };
 
     users.groups.clamav.members = [ config.services.exim.user ];
     users.groups.${config.services.exim.group}.members =
-      [ config.services.clamav.daemon.settings.User ];
+      [ config.services.clamav.daemon.settings.User "munin" ];
     users.groups.${config.services.rspamd.group}.members =
       [ config.services.exim.user ];
 
@@ -313,6 +315,26 @@ in {
       "exim/ignore-sender-verify-addresses" = {
         enable = true;
         source = ./ignore-sender-verify-addresses;
+      };
+    };
+
+    services.fail2ban = {
+      enable = true;
+      jails = {
+        exim = ''
+          enabled = true
+          journalmatch = _SYSTEMD_UNIT=exim.service
+          port = 25,465,587
+        '';
+      };
+    };
+
+    environment.etc = {
+      "fail2ban/filter.d/exim-common.local" = {
+        text = ''
+          [Definition]
+          pid = (?: \[\d+\]|\S?\w+ exim\[\d+\]:)? \S+ \S+
+        '';
       };
     };
 
