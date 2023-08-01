@@ -19,7 +19,6 @@ let
   eximConfig = ''
 
     # Bring in the secret settings
-    .include ${config.sops.secrets.mail-exim-spf.path}
 
     MESSAGE_SIZE_LIMIT = 40M
 
@@ -240,16 +239,9 @@ in {
       format = "binary";
     };
 
-    sops.secrets.mail-exim-spf = {
-      sopsFile = ../../keys/mail-exim-spf;
-      format = "binary";
-      group = config.services.exim.group;
-      mode = "0440";
-    };
-
     users.groups.clamav.members = [ config.services.exim.user ];
     users.groups.${config.services.exim.group}.members =
-      [ config.services.clamav.daemon.settings.User "munin" ];
+      [ config.services.clamav.daemon.settings.User ];
     users.groups.${config.services.rspamd.group}.members =
       [ config.services.exim.user ];
 

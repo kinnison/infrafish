@@ -20,7 +20,7 @@ let
 
     # Bring in the secret settings
     .include ${config.sops.secrets.mailcore-exim-settings.path}
-    .include ${config.sops.secrets.mail-exim-spf.path}
+    .include ${config.sops.secrets.mail-exim-srs.path}
 
     MESSAGE_SIZE_LIMIT = 40M
     DOVECOT_LDA = ${pkgs.dovecot}/libexec/dovecot/dovecot-lda
@@ -187,8 +187,8 @@ in {
       format = "binary";
     };
 
-    sops.secrets.mail-exim-spf = {
-      sopsFile = ../../keys/mail-exim-spf;
+    sops.secrets.mail-exim-srs = {
+      sopsFile = ../../keys/mail-exim-srs;
       format = "binary";
     };
 
