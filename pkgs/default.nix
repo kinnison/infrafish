@@ -10,4 +10,6 @@ with pkgs; {
     enableJSON = true;
     enableSRS = true;
   };
+
+  dmarc-report-converter = callPackage ./dmarc-report-converter.nix { };
 }
