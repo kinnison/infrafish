@@ -22,4 +22,16 @@
     storage-user = "u356603-sub2";
     mail = { relay-ok = true; };
   };
+
+  shell = {
+    hostNumber = 3;
+    ip = "188.246.206.184";
+    port = 22;
+    vpn = {
+      core = "core";
+      pubkey = "GLlW/SsDZ37+iDctVNAIi0IxsmgHy3iI7w2S6HgySQE=";
+    };
+    storage-user = "u356603-sub4";
+    mail = { relay-ok = true; };
+  };
 }

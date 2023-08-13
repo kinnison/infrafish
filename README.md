@@ -50,6 +50,9 @@ can then be used to support backups etc. Do this with the aptly named
 `tools/make-root-ssh` utility. It will put them into the right SOPS
 file for you. As with the WG keys, this might overwrite so be careful.
 
+Next in order to support backing things up you will need to log into
+the backup service and create a dir and user for the host.
+
 ## Required data in `hosts.nix`
 
 The host must be present in the `hosts.nix` file. Each entry provides
@@ -66,6 +69,29 @@ Note, the VPN is only for connection between hosts, and does not grant
 NAT or other access. Any support for such an additional VPN will be
 in host specific configuration.
 
+You also **MUST** provide the backup details otherwise the host config
+will not build successfully.
+
+## How to set up the backup stuff
+
+Firstly log into robot; then ssh as the main user on port 23 to the
+backup box and `mkdir infrafish/$hostname`
+
+Next, on the robot, find the storage box, and go to sub-account/create
+Choose the right base directory, enable SSH and external access, and
+put a sensible comment: "Infrafish $hostname backups" for example.
+
+Make a note of the username and add it to `hosts.nix`.
+
+Next, you want to copy in the right keys, to do this do:
+
+`ssh-copy-id -p 23 -s $subuser@$storagebox`
+then
+`ssh-copy-id -p 23 -s -i keys/hosts/$hostname_root_ssh_key.pub $subuser@$storagebox`
+
+The first will need the password displayed on the create page, the second
+should work via the SSH key, if this all works then you're done for this part.
+
 ## Basic configuration in hosts/$systemname
 
 You need to get some basic configuration into hosts/$systemname - you can
@@ -73,4 +99,21 @@ begin by acquiring this from /etc/nixos on the system
 
 Then you can go ahead and configure it how you want.
 
+Note that `deploy` will ssh with an IP address so you should probably
+ensure you've acquired the keys for the new host this way first
+
 To deploy just one host you can do `deploy -i '.#systemname.system`
+
+If during deployment you get errors along the lines of:
+
+"Activation script snippet 'setupSecrets' failed (1)"
+
+Then you probably forgot to use sops to update the keys for things
+like the acme-credentials which are used for everyone. Look at
+`.sops.yaml` and decide what `updatekeys` you need to run.
+
+After the first full deploy, you'll want to log in and reboot the
+system, watching the console. If all looks good then you're clear
+to treat your new system like any other infrafish system, though
+you probably need to deploy the other systems to ensure they have
+the new VPN details for the newly added system

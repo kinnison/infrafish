@@ -2,6 +2,7 @@ keys:
   - &primary age1kmyypm3zq50ul5wrswxwp669jm7nt56z9kpc2d5awtv2etwzzpmqr6fr5k
   - &core age1w7gfrlckwurlrmjdmy4jst472wkvrrdffmycrr853cak68hfjsss8lrnjw
   - &services0 age1kllehtqjxl802lew2zd8lwn5emxewdd4p9aq9zaaykln8rkp2gaq7057ln
+  - &shell age1wgxga97yamczltecv688z8nfsss8dn6dfca4pwxhptcrxpu34ewq2l95vn
 
 creation_rules:
 
@@ -17,6 +18,12 @@ creation_rules:
         - *primary
         - *services0
 
+  - path_regex: keys/hosts/shell_.*
+    key_groups:
+      - age:
+        - *primary
+        - *shell
+
   - path_regex: keys/pdns-
     key_groups:
       - age:
@@ -28,6 +35,7 @@ creation_rules:
         - *primary
         - *core
         - *services0
+        - *shell
   - path_regex: keys/vaultwarden-
     key_groups:
       - age:
@@ -39,6 +47,7 @@ creation_rules:
         - *primary
         - *core
         - *services0
+        - *shell
   - path_regex: keys/mailcore-
     key_groups:
       - age:
