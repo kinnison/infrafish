@@ -117,3 +117,5 @@ system, watching the console. If all looks good then you're clear
 to treat your new system like any other infrafish system, though
 you probably need to deploy the other systems to ensure they have
 the new VPN details for the newly added system
+
+If all is well you can ping the other VPN boxes
