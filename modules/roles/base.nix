@@ -19,10 +19,17 @@ with lib;
     networking.hostName = nodeName;
     networking.domain = "infrafish.uk";
 
+    users.mutableUsers = false;
+    users.users.root.shell = mkOverride 50 "${pkgs.bashInteractive}/bin/bash";
     users.users.root.openssh.authorizedKeys.keys = ppfmisc.rootPermittedKeys;
 
-    users.extraUsers.root.shell =
-      mkOverride 50 "${pkgs.bashInteractive}/bin/bash";
+    sops.secrets.shared-fallback-root = {
+      sopsFile = ../../keys/shared-fallback-root;
+      format = "binary";
+    };
+    users.users.root.passwordFile =
+      config.sops.secrets.shared-fallback-root.path;
+    users.users.root.hashedPassword = null;
 
     environment.systemPackages = with pkgs; [
       screen

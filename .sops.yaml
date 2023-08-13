@@ -66,6 +66,14 @@ creation_rules:
         - *core
         - *services0
 
+  - path_regex: keys/shared-
+    key_groups:
+      - age:
+        - *primary
+        - *core
+        - *services0
+        - *shell
+
   # Fallback just uses the primary
   - key_groups:
       - age:
