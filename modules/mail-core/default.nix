@@ -291,6 +291,11 @@ in {
       ];
     };
 
+    # Roundcube has a setup service which needs to run, but it depends on postgresql
+    # which is a service we're running on the same box; so let's depend on it in
+    # the systemd unit
+    systemd.services.roundcube-setup = { after = [ "postgresql.service" ]; };
+
     services.nginx = {
       enable = true;
       virtualHosts = {
