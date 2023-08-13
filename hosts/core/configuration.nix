@@ -93,4 +93,7 @@ in {
 
   # environment.systemPackages = [ pkgs.local.dmarc-report-converter ];
 
+  # So that the wireguard on core can route between endpoints
+  boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+
 }
