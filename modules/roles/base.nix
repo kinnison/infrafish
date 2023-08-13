@@ -20,7 +20,8 @@ with lib;
     networking.domain = "infrafish.uk";
 
     users.mutableUsers = false;
-    users.users.root.shell = mkOverride 50 "${pkgs.bashInteractive}/bin/bash";
+    users.defaultUserShell = pkgs.bashInteractive;
+    users.users.root.shell = mkOverride 50 pkgs.bashInteractive;
     users.users.root.openssh.authorizedKeys.keys = ppfmisc.rootPermittedKeys;
 
     sops.secrets.shared-fallback-root = {
