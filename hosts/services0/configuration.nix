@@ -28,6 +28,7 @@
       webserver-allow-from=${ppfmisc.internalIP nodeData.hostNumber}/24
       api=yes
       api-key=$PDNSWEBPASSWORD
+      default-soa-content=ns0.infrafish.uk hostmaster.@ 0 10800 3600 604800 3600
     '';
     secretFile = config.sops.secrets.pdns-secrets.path;
   };
