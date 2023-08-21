@@ -1,6 +1,6 @@
 sieve_virtual:
   driver = pipe
-  command = DOVECOT_LDA -d ${local_part_data}@${domain_data} -a ${local_part_data}${local_part_suffix}@${domain_data} -f ${sender_address_data}
+  command = DOVECOT_LDA -d ${local_part_data}@${domain_data} -a "${local_part_data}SAFESUFFIX@${domain_data}" -f ${sender_address_data}
   current_directory = /var/mail
   home_directory = /var/mail/${domain}/${local_part}/
   user = mail

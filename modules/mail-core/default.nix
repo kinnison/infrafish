@@ -16,6 +16,10 @@ let
   routerfile = builtins.readFile ./exim-router;
   transportfile = builtins.readFile ./exim-transport;
 
+  detaintFile = pkgs.writeText "exim-detaint" ''
+    *
+  '';
+
   eximConfig = ''
 
     # Bring in the secret settings
@@ -24,6 +28,10 @@ let
 
     MESSAGE_SIZE_LIMIT = 40M
     DOVECOT_LDA = ${pkgs.dovecot}/libexec/dovecot/dovecot-lda
+
+    DETAINTFILE = ${detaintFile}
+    BADCHARS = \N[^A-Za-z0-9_.+-]+\N
+    SAFESUFFIX = ''${lookup {''${sg{$local_part_suffix}{BADCHARS}{_}}} lsearch*,ret=key{DETAINTFILE}}
 
     primary_hostname = mail.infrafish.uk
     daemon_smtp_ports = 25 : 587 : 465
