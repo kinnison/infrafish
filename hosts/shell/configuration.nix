@@ -74,4 +74,18 @@ in {
 
   services.borgbackup.jobs = user-backups;
   systemd.timers = user-backups-jitter;
+
+  networking.firewall.allowedUDPPortRanges = [{
+    from = 60000;
+    to = 61000;
+  }];
+
+  environment.systemPackages = with pkgs; [
+    httpie
+    screen
+    tmux
+    tinyfugue
+    neomutt
+    mosh
+  ];
 }
