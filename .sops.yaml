@@ -74,6 +74,12 @@ creation_rules:
         - *services0
         - *shell
 
+  - path_regex: keys/user-vpn-master-key
+    key_groups:
+      - age:
+        - *primary
+        - *shell
+
   # Fallback just uses the primary
   - key_groups:
       - age:
