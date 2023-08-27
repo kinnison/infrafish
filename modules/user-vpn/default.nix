@@ -46,6 +46,7 @@ in {
           access-control = [ "127.0.0.1/8 allow" "${networkIP 0} allow" ];
         };
       };
+      resolveLocalQueries = false;
     };
   };
 }
