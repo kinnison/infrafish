@@ -54,6 +54,15 @@ let
     };
   }) raw-users;
 
+  motdBanner = pkgs.writeText "motd-banner.txt" ''
+     ___        __            __ _     _     
+    |_ _|_ __  / _|_ __ __ _ / _(_)___| |__  
+     | || '_ \| |_| '__/ _` | |_| / __| '_ \ 
+     | || | | |  _| | | (_| |  _| \__ \ | | |
+    |___|_| |_|_| |_|  \__,_|_| |_|___/_| |_|
+
+  '';
+
 in {
   imports = [ ./hardware-configuration.nix ./networking.nix ];
 
@@ -79,6 +88,24 @@ in {
     from = 60000;
     to = 61000;
   }];
+
+  programs.rust-motd = {
+    enable = true;
+    enableMotdInSSHD = true;
+    settings = {
+      banner = {
+        color = "light_blue";
+        command = "cat ${motdBanner}";
+      };
+      uptime.prefix = "Up";
+      filesystems.root = "/";
+      memory.swap_pos = "beside";
+      fail2_ban.jails = [ "sshd" ];
+      last_run = { };
+    };
+  };
+
+  systemd.services.rust-motd.path = with pkgs; [ bash fail2ban ];
 
   environment.systemPackages = with pkgs; [
     httpie
