@@ -89,6 +89,8 @@ in {
     to = 61000;
   }];
 
+  networking.firewall.allowedTCPPorts = [ 443 80 ];
+
   programs.rust-motd = {
     enable = true;
     enableMotdInSSHD = true;
@@ -106,6 +108,27 @@ in {
   };
 
   systemd.services.rust-motd.path = with pkgs; [ bash fail2ban ];
+
+  services.nginx = {
+    enable = true;
+    virtualHosts = {
+      "shell.infrafish.uk" = {
+        onlySSL = true;
+        useACMEHost = "shell.infrafish.uk";
+        locations."~ ^/~(.+?)(/.*)?$" = {
+          alias = "/home/$1/public_html$2";
+          index = "index.html index.htm";
+          extraConfig = "autoindex on;";
+        };
+      };
+    };
+  };
+
+  security.acme.certs = {
+    "shell.infrafish.uk" = { group = config.services.nginx.group; };
+  };
+
+  systemd.services.nginx.serviceConfig = { ProtectHome = false; };
 
   environment.systemPackages = with pkgs; [
     httpie
