@@ -93,6 +93,9 @@ let
     # Environment purge
     keep_environment =
 
+    # For simplicity for now, disable IPv6 because many hosts cock it up
+    disable_ipv6 = true
+
     begin acl
 
     ${aclfile}
