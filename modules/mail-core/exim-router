@@ -59,7 +59,7 @@ mailcore_catchall:
 remote_cunning:
   #debug_print = REMCUN: Checking for $local_part in $domain
   driver      = manualroute
-  domains     = ${lookup pgsql {select domainname from maildomain where remotemx is not null}{$value}}
+  domains     = ${lookup pgsql {select domainname from maildomain where remotemx is not null and domainname='${quote_pgsql:$domain}'}{$value}}
   transport   = remote_smtp_cunning
   more        = false
   route_data  = ${lookup pgsql {select remotemx from maildomain where domainname='${quote_pgsql:$domain}'}{$value}}
