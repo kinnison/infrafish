@@ -26,4 +26,12 @@
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCt+rzeHl8fYF5wX0p3MOiJWRvMTOluJh8n/r0qLfPyWdYq6z4pL+DlKOjO3KiZw0HjgkCMmk2E847aslMMTx0E113cWBqPZ0uP5lgfG5WrkZ1vMXRmy/k1itBd5FET5YQaB0lReoXk60wr2v9F41v8bG3RWEuZ9NbK4nqQjjIZKFmS04Y+NYtdUxtBaOp7hSTdbwHD1hC7j5Y+1Bucxi8DoLMUdk6E6kuvJST62X2tV8JlqFgukPgVOX+QXnIeqom51IcSvTuI+fLG0O6WtZhBw7wKG9uf5ye3Px5P9TQjU0Ejp3UJGdksUak3WCqTCyRGT0w/hpVY6THxSo87f5Jt dkscully@hex.geah.org"
     ];
   };
+
+  mhy = {
+    name = "Mark Hymers";
+    email = "mark@hymers.org.uk";
+    defaultKeys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDfp061wC7kU6sn7EVmkjG3l/wVomoia6oEY5ASUyIAlkUeagp4y/uR4CRTGhCf23Pf+miyZcbkBohPnfUEORvvyaKvLDR1ChYgxGw3ZOG8KB7WTQrajLt8nAJYVVBvjPONq0lxejxdjp8Rb18Zd+9pF/h+4MO6Am5FbeDiPNG/d6T5e5XYwMi/XMfJ+U3RxM5Vo86j3wn0t9ccIioZ/KR50mBrl1wbKlU48Xt91kPhiryaV7fVPQSJNAqysZZqt6br8XJs23ARxTXrgPRvp7dxPr5ZbZq7kZ+0PmGHYLwiX/alGeGMz4NSdkxvZqVdMS9DlRBTy0vdbhdj5wW7zDo/YfbXa/3oG0o3LfYSj6q2BXcO9xgRD/CZQgG4RhbcHodwDkaI9VTMoCp7XG+hel4Ov8u3TmKuNjluImk/VxmXM9tMqslTfzCOxhLQwF5ZFQl6IdL+I/B0ITTizsGtM0YwKFMVW6EUyi3WEDnFfPHr+WwNQC4K3Y907tA+qb8zx9k= mark@ariana"
+    ];
+  };
 }
