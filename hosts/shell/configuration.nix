@@ -61,7 +61,24 @@ let
      | || | | |  _| | | (_| |  _| \__ \ | | |
     |___|_| |_|_| |_|  \__,_|_| |_|___/_| |_|
 
+    Mail config help can be found online at:
+      https://github.com/kinnison/infrafish-mailconfig/blob/main/USING.md
+
   '';
+
+  mailconfig-bin = pkgs.writeShellApplication {
+    name = "mailconfig";
+
+    runtimeInputs = with pkgs; [ httpie jq ];
+
+    text = ''
+      method=$(echo "$1" | tr "[:lower:]" "[:upper:]")
+      shift
+      uri="$1"
+      shift
+      https -A bearer -a "$(cat ~/.mailconfig.token)" "''${method}" "https://mail.infrafish.uk/api/''${uri}" "$@"
+    '';
+  };
 
 in {
   _module.args = { inherit raw-users; };
@@ -138,5 +155,6 @@ in {
     tinyfugue
     neomutt
     mosh
+    mailconfig-bin
   ];
 }
