@@ -20,7 +20,7 @@
   };
 
   dkscully = {
-    name = "Lesley Mitchell";
+    name = "Gray Mitchell";
     email = "dkscully@geah.org";
     defaultKeys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCt+rzeHl8fYF5wX0p3MOiJWRvMTOluJh8n/r0qLfPyWdYq6z4pL+DlKOjO3KiZw0HjgkCMmk2E847aslMMTx0E113cWBqPZ0uP5lgfG5WrkZ1vMXRmy/k1itBd5FET5YQaB0lReoXk60wr2v9F41v8bG3RWEuZ9NbK4nqQjjIZKFmS04Y+NYtdUxtBaOp7hSTdbwHD1hC7j5Y+1Bucxi8DoLMUdk6E6kuvJST62X2tV8JlqFgukPgVOX+QXnIeqom51IcSvTuI+fLG0O6WtZhBw7wKG9uf5ye3Px5P9TQjU0Ejp3UJGdksUak3WCqTCyRGT0w/hpVY6THxSo87f5Jt dkscully@hex.geah.org"
