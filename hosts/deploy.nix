@@ -12,6 +12,6 @@ in {
   user = "root";
   sshUser = "root";
   nodes =
-    builtins.mapAttrs (nodename: data: mkNode nodename data.ip data.port true)
+    builtins.mapAttrs (nodename: data: mkNode nodename data.ip data.port false)
     hosts;
 }
