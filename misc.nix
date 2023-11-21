@@ -30,11 +30,18 @@ in {
       pubkey = "syfTfFBXHlAD3OdHxc6RdJUwDP6EMxCrITVwLRWFokA=";
       nodeNumber = 1;
     };
-    hosts = [{
-      name = "mobile";
-      nodeNumber = 2;
-      pubkey = "R4u1+TG2y45bZZeeDQH+ELOjYb/ZxJiADBfv3EGr01A=";
-    }];
+    hosts = [
+      {
+        name = "mobile";
+        nodeNumber = 2;
+        pubkey = "R4u1+TG2y45bZZeeDQH+ELOjYb/ZxJiADBfv3EGr01A=";
+      }
+      {
+        name = "cataplexy";
+        nodeNumber = 3;
+        pubkey = "Prc1AWSusVWqovEvGVqmwN3kCTAa5wixCj4JSrlJZS0=";
+      }
+    ];
 
   };
 
