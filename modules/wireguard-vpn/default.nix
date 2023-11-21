@@ -10,7 +10,8 @@ let
     filterAttrs (n: d: d ? vpn && d.vpn.core == nodeName) inputs.hosts;
   genCorePeers = mapAttrsToList (n: d: {
     publicKey = d.vpn.pubkey;
-    allowedIPs = [ (wglib.host d.hostNumber) ];
+    allowedIPs = [ (wglib.host d.hostNumber) ]
+      ++ (if n == "shell" then [ "${ppfmisc.uservpnIP 0}/24" ] else [ ]);
   }) myClients;
   myCore = inputs.hosts."${nodeData.vpn.core}";
   genClientPeers = [{
@@ -47,5 +48,12 @@ in {
       value = [ "${n}.vpn" ];
     }) allHostsInVPN;
     networking.firewall.trustedInterfaces = [ "wg0" ];
+    #networking.interfaces.wg0 = mkIf (nodeData.vpn.core == "") {
+    #  ipv4.routes = [{
+    #    address = ppfmisc.uservpnIP 0;
+    #    prefixLength = 24;
+    #    via = ppfmisc.internalIP (inputs.hosts.shell.hostNumber);
+    #  }];
+    #};
   };
 }

@@ -13,6 +13,7 @@ let
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIICf9svRenC/PLKIL9nk6K/pxQgoiFC41wTNvoIncOxs";
 in {
   internalIP = hostNumber: "10.105.102.${builtins.toString hostNumber}";
+  uservpnIP = hostNumber: "10.105.103.${builtins.toString hostNumber}";
   munin-core = "core";
   rootPermittedKeys = [ danielSSHKey rauhaKey danielShellKey ];
   primary-ns = "services0";

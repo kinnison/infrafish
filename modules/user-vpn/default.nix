@@ -3,9 +3,8 @@
 with lib;
 let
   wgPort = 51821;
-  networkPrefix = "10.105.103";
-  networkIP = nr: "${networkPrefix}.${builtins.toString nr}/24";
-  hostIP = nr: "${networkPrefix}.${builtins.toString nr}/32";
+  networkIP = nr: "${ppfmisc.uservpnIP nr}/24";
+  hostIP = nr: "${ppfmisc.uservpnIP nr}/32";
 in {
   config = mkIf (nodeName == "shell") {
     sops.secrets.user-vpn-master-key = {
@@ -42,7 +41,7 @@ in {
       enable = true;
       settings = {
         server = {
-          interface = [ "${networkPrefix}.1" ];
+          interface = [ "${ppfmisc.uservpnIP 1}" ];
           access-control = [ "127.0.0.1/8 allow" "${networkIP 0} allow" ];
         };
       };
