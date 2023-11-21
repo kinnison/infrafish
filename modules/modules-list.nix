@@ -9,4 +9,5 @@
   ./vaultwarden
   ./mail-core
   ./mail-relay
+  ./nix-store-server
 ]

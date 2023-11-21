@@ -37,4 +37,7 @@ in {
     }];
 
   };
+
+  store-public-key =
+    "infrafish.vpn-1:RTv8dMmNefaBEH41vdEJX+DIDtXEwBwUQ2atHcc0Koo=%";
 }
