@@ -34,4 +34,12 @@
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDfp061wC7kU6sn7EVmkjG3l/wVomoia6oEY5ASUyIAlkUeagp4y/uR4CRTGhCf23Pf+miyZcbkBohPnfUEORvvyaKvLDR1ChYgxGw3ZOG8KB7WTQrajLt8nAJYVVBvjPONq0lxejxdjp8Rb18Zd+9pF/h+4MO6Am5FbeDiPNG/d6T5e5XYwMi/XMfJ+U3RxM5Vo86j3wn0t9ccIioZ/KR50mBrl1wbKlU48Xt91kPhiryaV7fVPQSJNAqysZZqt6br8XJs23ARxTXrgPRvp7dxPr5ZbZq7kZ+0PmGHYLwiX/alGeGMz4NSdkxvZqVdMS9DlRBTy0vdbhdj5wW7zDo/YfbXa/3oG0o3LfYSj6q2BXcO9xgRD/CZQgG4RhbcHodwDkaI9VTMoCp7XG+hel4Ov8u3TmKuNjluImk/VxmXM9tMqslTfzCOxhLQwF5ZFQl6IdL+I/B0ITTizsGtM0YwKFMVW6EUyi3WEDnFfPHr+WwNQC4K3Y907tA+qb8zx9k= mark@ariana"
     ];
   };
+
+  vince = {
+    name = "Vincent Sanders";
+    email = "vince@kyllikki.org";
+    defaultKeys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAnPPorVliZfr8fv3gDOGuy86axBe8ObrgjFA6yDdGDjICP4HjqtqBLVur8CF9UOWQlawbffu7LU5DLQUgeXfd8C7PpClmLb7boNXMMQH78CbAEI36daRoIjEoCkZRv7wjjTwQdpoTCmKa1hsS8yki51a6Cg4rGg7Ns93hFxM3H9cL0BjoCgpWDFj4li2kblQFkleDppIh/maNFOhkBfNe5wJvXTRNifuSA8NLmDGv0F37F30aRJIIdlGC49Jz2cQ18IladhyOWIV0u28h7uvviyoApxTrJB5dDB9GeRZOwfksYb2MztYOFeAYJm086llClp0QTjeDmDqDQCG91Ol1rQ== vince@gerald"
+    ];
+  };
 }
