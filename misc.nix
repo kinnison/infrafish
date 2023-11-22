@@ -42,6 +42,11 @@ in {
         nodeNumber = 3;
         pubkey = "Prc1AWSusVWqovEvGVqmwN3kCTAa5wixCj4JSrlJZS0=";
       }
+      {
+        name = "kyllikki-mail";
+        nodeNumber = 4;
+        pubkey = "WUGWUqKlOLTvpGAETyYvtvwFMwN+UFKZZ7J1RbloRQA=";
+      }
     ];
 
   };
