@@ -41,5 +41,6 @@
     defaultKeys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAnPPorVliZfr8fv3gDOGuy86axBe8ObrgjFA6yDdGDjICP4HjqtqBLVur8CF9UOWQlawbffu7LU5DLQUgeXfd8C7PpClmLb7boNXMMQH78CbAEI36daRoIjEoCkZRv7wjjTwQdpoTCmKa1hsS8yki51a6Cg4rGg7Ns93hFxM3H9cL0BjoCgpWDFj4li2kblQFkleDppIh/maNFOhkBfNe5wJvXTRNifuSA8NLmDGv0F37F30aRJIIdlGC49Jz2cQ18IladhyOWIV0u28h7uvviyoApxTrJB5dDB9GeRZOwfksYb2MztYOFeAYJm086llClp0QTjeDmDqDQCG91Ol1rQ== vince@gerald"
     ];
+    websites = { "www.kyllikki.org" = { listings = true; }; };
   };
 }
