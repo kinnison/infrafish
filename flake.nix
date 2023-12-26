@@ -18,6 +18,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     mailconfig.url = "github:kinnison/infrafish-mailconfig";
     mailconfig.inputs.nixpkgs.follows = "nixpkgs";
+    mailconfig.inputs.flake-utils.follows = "flake-utils";
   };
 
   outputs = { ... }@args:
