@@ -129,6 +129,7 @@ in {
 
   services.nginx = {
     enable = true;
+    resolver.addresses = [ "193.108.199.129" ];
     virtualHosts = {
       "shell.infrafish.uk" = {
         onlySSL = true;
@@ -137,6 +138,13 @@ in {
           alias = "/home/$1/public_html$2";
           index = "index.html index.htm";
           extraConfig = "autoindex on;";
+        };
+      };
+      "autoconfig.infrafish.uk" = {
+        serverAliases = [ "autoconfig.*" ];
+        onlySSL = false;
+        locations."~ .*" = {
+            proxyPass = "https://mail.infrafish.uk/api/autoconfig/$http_host";
         };
       };
     };
