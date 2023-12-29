@@ -76,4 +76,12 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG+upxqY9isY9KngOfF73JCvkMDt9MCcv9UtqlPYCwrN thowat@marmot4"
     ];
   };
+
+  tlsa = {
+    name = "Michael Drake";
+    email = "mdrake.unique@gmail.com";
+    defaultKeys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD4JbI1zGL6a5iyC+iiSSJxSPQUnaXoz1YOcoBuwMz+i0Pq+vcKXzd/qkdBJnAgAFcanKSLevG95AMCTQ5KZipO3aPfHJJNuPHutb8aVFfqpUtuExh/fk0Vr3R6b2u9tzZsWHP5GjZfajSViGdQoP0G6G16Vh1EoxzGVaSvrtB3n2gDEzz2RyjRU2dOd723awnp8PziqyJ9WKmZPZDu9G3IrcXXMnCeRUSlOKf68bBeHGtTjm6XrPkNmMlXfDH0fMysO4aWHCrSeeXAqf5b2mHNMzukBl3xMU5U9PZJn0EXJPGhmPmQya49UEygheGYW0aZT7cCkq4k/blmQ5KwaEhx"
+    ];
+  };
 }
