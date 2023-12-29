@@ -171,6 +171,7 @@ ACL_check_data:
 
   defer message    = Please try again later
         condition  = ${if eq{$spam_action}{soft reject}}
+        condition  = ${if eq{true}{${lookup {per_domain : $acl_m_domain : greylisting_enable} json {JSON}}}}
 
   deny  message    = Message discarded as high-probability spam
         condition  = ${if eq{$spam_action}{reject}}
