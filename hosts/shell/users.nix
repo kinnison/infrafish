@@ -68,4 +68,12 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFFhjczMCFU4ecQAfDQLX1m7QV/wUj05zch3o7HwP8s0 paul@kokoro"
     ];
   };
+
+  thowat = {
+    name = "Tony Howat";
+    email = "arhowat@hotmail.com";
+    defaultKeys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG+upxqY9isY9KngOfF73JCvkMDt9MCcv9UtqlPYCwrN thowat@marmot4"
+    ];
+  };
 }
