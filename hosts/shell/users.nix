@@ -95,4 +95,10 @@
     email = "eddie@tinyted.net";
     defaultKeys = [];
   };
+
+  sotk = {
+    name = "Adam Coldrick";
+    email = "adam@sotk.co.uk";
+    defaultKeys = [];
+  };
 }
