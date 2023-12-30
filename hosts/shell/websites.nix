@@ -27,7 +27,7 @@ let
       index_conf = if conf.listings then "autoindex on;" else "";
     in {
       root = "/home/${conf.user}/websites/${name}/html";
-      onlySSL = conf.ssl;
+      forceSSL = conf.ssl;
       useACMEHost = mkIf conf.ssl name;
       extraConfig = ''
         ${log_conf}
