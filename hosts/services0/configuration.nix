@@ -29,6 +29,8 @@
       api=yes
       api-key=$PDNSWEBPASSWORD
       default-soa-content=ns0.infrafish.uk hostmaster.@ 0 10800 3600 604800 3600
+      resolver=127.0.0.1
+      expand-alias=yes
     '';
     secretFile = config.sops.secrets.pdns-secrets.path;
   };
