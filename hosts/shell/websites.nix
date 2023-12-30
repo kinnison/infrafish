@@ -12,6 +12,7 @@ let
         ssl = if data ? ssl then data.ssl else true;
         logging = if data ? logging then data.logging else false;
         listings = if data ? listings then data.listings else false;
+        extraNames = if data ? extraNames then data.extraNames else [];
       })) websites;
 
   all-websites = concatMapAttrs (user: data:
@@ -25,6 +26,11 @@ let
       '' else
         "";
       index_conf = if conf.listings then "autoindex on;" else "";
+      rewrite_conf = if conf.extraNames != [] then ''
+        if ($http_host != '${name}') {
+          return 301 $scheme://${name}$request_uri;
+        }
+      '' else "";
     in {
       root = "/home/${conf.user}/websites/${name}/html";
       forceSSL = conf.ssl;
@@ -32,8 +38,9 @@ let
       extraConfig = ''
         ${log_conf}
         ${index_conf}
+        ${rewrite_conf}
       '';
-
+      serverAliases = conf.extraNames;
     };
 
   ssl-sites = filterAttrs (n: d: d.ssl) all-websites;
@@ -43,7 +50,7 @@ in {
   services.nginx.virtualHosts = builtins.mapAttrs mkConfig all-websites;
 
   security.acme.certs =
-    builtins.mapAttrs (n: d: { group = config.services.nginx.group; })
+    builtins.mapAttrs (n: d: { group = config.services.nginx.group; extraDomainNames = d.extraNames; })
     ssl-sites;
 
 }

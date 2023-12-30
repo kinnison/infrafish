@@ -18,14 +18,14 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHyMBjB5w6D9y2tHfegm/yCXjjbsUq8gM1ivBc0sDG7w rjek@edgar"
     ];
     shell = "bash";
-    websites = { "www.rjek.com" = { listings = true; }; };
+    websites = { "www.rjek.com" = { listings = true; extraNames = [ "rjek.com" ]; }; };
   };
 
   holly = {
     name = "Holly Kendrick";
     email = "holly@planet-tranquility.org.uk";
     defaultKeys = [];
-    websites = { "www.planet-tranquility.org.uk" = { listings = true; }; };
+    websites = { "www.planet-tranquility.org.uk" = { listings = true; extraNames = [ "planet-tranquility.org.uk" ]; }; };
   };
 
   dkscully = {
