@@ -13,11 +13,14 @@ let
         logging = if data ? logging then data.logging else false;
         listings = if data ? listings then data.listings else false;
         extraNames = if data ? extraNames then data.extraNames else [];
+        cgi = if data ? cgi then data.cgi else false;
       })) websites;
 
   all-websites = concatMapAttrs (user: data:
     if data ? websites then (augment-with-user user data.websites) else { })
     raw-users;
+
+  socketName = name: conf: "/run/nginx/fcgiwrap-${conf.user}-${name}.sock";
 
   mkConfig = name: conf:
     let
@@ -31,6 +34,11 @@ let
           return 301 $scheme://${name}$request_uri;
         }
       '' else "";
+      cgi_conf = if conf.cgi then ''
+        location ~ .cgi$ {
+          fastcgi_pass unix:${socketName name conf};
+        }
+      '' else "";
     in {
       root = "/home/${conf.user}/websites/${name}/html";
       forceSSL = conf.ssl;
@@ -39,11 +47,32 @@ let
         ${log_conf}
         ${index_conf}
         ${rewrite_conf}
+        ${cgi_conf}
       '';
       serverAliases = conf.extraNames;
     };
 
   ssl-sites = filterAttrs (n: d: d.ssl) all-websites;
+  cgi-sites = filterAttrs (n: d: d.cgi) all-websites;
+
+  mkService = name: conf: lib.nameValuePair ("fcgiwrap-${name}") {
+    after = [ "nss-user-lookup.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.fcgiwrap}/sbin/fcgiwrap -c 1";
+      User = conf.user;
+      Group = conf.user;
+      Environment = "PATH=/run/wrappers/bin:/home/${conf.user}/.nix-profile/bin:/nix/profile/bin:/home/${conf.user}/.local/state/nix/profile/bin:/etc/profiles/per-user/${conf.user}/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin";
+    };
+  };
+
+  mkSocket = name: conf: lib.nameValuePair ("fcgiwrap-${name}") {
+    wantedBy = [ "sockets.target" ];
+    socketConfig = {
+      ListenStream = socketName name conf;
+      SocketUser = "nginx";
+      SocketGroup = "nginx";
+    };
+  };
 
 in {
 
@@ -52,5 +81,8 @@ in {
   security.acme.certs =
     builtins.mapAttrs (n: d: { group = config.services.nginx.group; extraDomainNames = d.extraNames; })
     ssl-sites;
+
+  systemd.services = lib.mapAttrs' mkService cgi-sites;
+  systemd.sockets = lib.mapAttrs' mkSocket cgi-sites;
 
 }
