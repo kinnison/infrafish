@@ -20,7 +20,7 @@ let
     if data ? websites then (augment-with-user user data.websites) else { })
     raw-users;
 
-  socketName = name: conf: "/run/nginx/fcgiwrap-${conf.user}-${name}.sock";
+  socketName = name: conf: "/run/nginx-fcgiwrap-${conf.user}-${name}.sock";
 
   mkConfig = name: conf:
     let

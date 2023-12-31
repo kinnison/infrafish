@@ -73,6 +73,9 @@
         locations."/" = { proxyPass = "http://127.0.0.1:8000"; };
       };
     };
+    appendHttpConfig = ''
+      ssl_session_cache shared:SSL:10m;
+    '';
   };
 
   security.acme.certs = {

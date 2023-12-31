@@ -148,6 +148,9 @@ in {
         };
       };
     };
+    appendHttpConfig = ''
+      ssl_session_cache shared:SSL:10m;
+    '';
   };
 
   security.acme.certs = {

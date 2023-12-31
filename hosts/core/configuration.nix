@@ -33,6 +33,9 @@ in {
         root = "/var/www/munin";
       };
     };
+    appendHttpConfig = ''
+      ssl_session_cache shared:SSL:10m;
+    '';
   };
 
   security.acme.certs = {
