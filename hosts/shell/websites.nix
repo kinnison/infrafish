@@ -39,11 +39,16 @@ let
           fastcgi_pass unix:${socketName name conf};
         }
       '' else "";
+      # Ideally we'd do a year 31536000 but for now we're doing a day 86400
+      hsts_conf = if conf.ssl then ''
+        add_header Strict-Transport-Security "max-age=86400" always;
+      '' else "";
     in {
       root = "/home/${conf.user}/websites/${name}/html";
       forceSSL = conf.ssl;
       useACMEHost = mkIf conf.ssl name;
       extraConfig = ''
+        ${hsts_conf}
         ${log_conf}
         ${index_conf}
         ${rewrite_conf}
