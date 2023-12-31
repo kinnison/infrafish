@@ -169,6 +169,9 @@ ACL_check_data:
     !acl = acl_local_deny_exceptions
     !verify = header_syntax
 
+  deny  message    = Message discarded, spam score higher than user configuration
+        condition  = ${if >{$spam_score_int}{${lookup {per_domain : $acl_m_domain : spamcheck_threshold} json {JSON}}}}
+
   defer message    = Please try again later
         condition  = ${if eq{$spam_action}{soft reject}}
         condition  = ${if eq{true}{${lookup {per_domain : $acl_m_domain : greylisting_enable} json {JSON}}}}
