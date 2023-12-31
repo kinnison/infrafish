@@ -18,7 +18,10 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHyMBjB5w6D9y2tHfegm/yCXjjbsUq8gM1ivBc0sDG7w rjek@edgar"
     ];
     shell = "bash";
-    websites = { "www.rjek.com" = { listings = true; extraNames = [ "rjek.com" ]; cgi = true; }; };
+    websites = {
+      "www.rjek.com" = { listings = true; extraNames = [ "rjek.com" ]; cgi = true; };
+      "www.yeoldevic.com" = { listings = false; extraNames = [ "yeoldevic.com" "www.yeoldevic.pub" "yeoldevic.pub" "www.yeoldevic.co.uk" "yeoldevic.co.uk"]; };
+    };
   };
 
   holly = {
