@@ -25,6 +25,17 @@
     };
   };
 
+  mh = {
+    name = "Metahills Talker";
+    email = "rjek@rjek.com";
+    defaultKeys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDgk5rUMqzf+I8lfBxIvr21mgcTSLB47bxKCPkH2AS3o2mLIdGgocP/LWHT5thM3yZkvucAJoP+mPyTSFDhIrFYTWoLc7zaebYoOJ8V9ZmyV0vcxZZssjx+VkKMYHAkLKw0u+7LOeUqizuE7WApqre5RO5YPIcZAGkQgObPCTNh3enL5tjxWr+5rApBAXhAf7YrfZgS/zs0RyxQ0bOaaTgHkjAcJ96EiY3oB3PaICz+KYxE/6Hwt56bu0MWdO3iLoKDOT7pjDTNkFyWVhB3H97t/gEShJtio1/QuPpBrOiLEx+bauUS4MpgJvG72S5yHU8AOjUGyh15ibMcM8f/X2Pe8rIsdtCIjPd4Y4rUBnmjdGm7uZOXszbatzm6ugnfJUPffgQfwyKyizHOdvaYxr8Mri6Evt8f7PYiTI/0B7kHxpT+/FBY2WAhwst67bzLgSZC6ohNFtSF5QlMvjuzRe/0i/POG9CYHBUlWPxb9qDgn06G9sPeJh26qFItIMMMdv8= rjek@cliche"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHyMBjB5w6D9y2tHfegm/yCXjjbsUq8gM1ivBc0sDG7w rjek@edgar"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEU2uahBUwG0ftqTeDUYqsBUu7Z948ib/NXfiO03WFdY rjek@shodan"
+    ];
+    shell = "bash";
+  };
+
   holly = {
     name = "Holly Kendrick";
     email = "holly@planet-tranquility.org.uk";
