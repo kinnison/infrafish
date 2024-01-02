@@ -316,11 +316,11 @@ in {
     services.fail2ban = {
       enable = true;
       jails = {
-        exim = ''
-          enabled = true
-          journalmatch = _SYSTEMD_UNIT=exim.service
-          port = 25,465,587
-        '';
+        exim = {
+          enabled = true;
+          journalmatch = "_SYSTEMD_UNIT=exim.service";
+          port = "25,465,587";
+        };
       };
     };
 
