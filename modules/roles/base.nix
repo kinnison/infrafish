@@ -30,7 +30,6 @@ with lib;
     };
     users.users.root.hashedPasswordFile =
       config.sops.secrets.shared-fallback-root.path;
-    users.users.root.hashedPassword = null;
 
     environment.systemPackages = with pkgs; [
       screen
