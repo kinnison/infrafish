@@ -144,7 +144,7 @@ in {
         serverAliases = [ "autoconfig.*" ];
         onlySSL = false;
         locations."~ .*" = {
-            proxyPass = "https://mail.infrafish.uk/api/autoconfig/$http_host";
+          proxyPass = "https://mail.infrafish.uk/api/autoconfig/$http_host";
         };
       };
     };
