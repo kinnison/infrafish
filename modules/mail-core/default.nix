@@ -323,12 +323,12 @@ in {
     services.fail2ban = {
       enable = true;
       jails = {
-        exim = {
+        exim.settings = {
           enabled = true;
           journalmatch = "_SYSTEMD_UNIT=exim.service";
           port = "465,587";
         };
-        dovecot = {
+        dovecot.settings = {
           enabled = true;
           port = "993,995,4190";
         };

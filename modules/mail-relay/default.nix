@@ -316,7 +316,7 @@ in {
     services.fail2ban = {
       enable = true;
       jails = {
-        exim = {
+        exim.settings = {
           enabled = true;
           journalmatch = "_SYSTEMD_UNIT=exim.service";
           port = "25,465,587";
