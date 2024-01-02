@@ -3,7 +3,8 @@
 { self, deploy, hosts, ... }:
 let
   mkNode = server: ip: port: fast: {
-    hostname = "${ip}:${builtins.toString port}";
+    hostname = "${ip}";
+    sshOpts = [ "-p" "${builtins.toString port}" ];
     fastConnection = fast;
     profiles.system.path = deploy.lib.x86_64-linux.activate.nixos
       self.nixosConfigurations."${server}";
