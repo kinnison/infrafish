@@ -2,7 +2,7 @@
 (flake-utils.lib.eachDefaultSystem (system:
   let pkgs = nixpkgs.legacyPackages."${system}";
   in {
-    devShell = pkgs.callPackage ./shell.nix {
+    devShells.default = pkgs.callPackage ./shell.nix {
       inherit (deploy.packages."${pkgs.system}") deploy-rs;
     };
   })) // {
