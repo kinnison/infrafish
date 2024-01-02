@@ -58,7 +58,7 @@
     ];
     websites = {
       "personal.geah.org" = { listings = true; };
-      "photos.geah.org" = { listings = true; };
+      "photos.geah.org" = { listings = true; cgi = true; };
     };
   };
 
