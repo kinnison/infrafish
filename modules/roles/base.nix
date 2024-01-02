@@ -27,6 +27,7 @@ with lib;
     sops.secrets.shared-fallback-root = {
       sopsFile = ../../keys/shared-fallback-root;
       format = "binary";
+      neededForUsers = true;
     };
     users.users.root.hashedPasswordFile =
       config.sops.secrets.shared-fallback-root.path;
