@@ -20,16 +20,34 @@
     ];
     shell = "bash";
     websites = {
-      "www.rjek.com" = { listings = true; extraNames = [ "rjek.com" ]; cgi = true; };
-      "www.yeoldevic.com" = { listings = false; extraNames = [ "yeoldevic.com" "www.yeoldevic.pub" "yeoldevic.pub" "www.yeoldevic.co.uk" "yeoldevic.co.uk"]; };
+      "www.rjek.com" = {
+        listings = true;
+        extraNames = [ "rjek.com" ];
+        cgi = true;
+      };
+      "www.yeoldevic.com" = {
+        listings = false;
+        extraNames = [
+          "yeoldevic.com"
+          "www.yeoldevic.pub"
+          "yeoldevic.pub"
+          "www.yeoldevic.co.uk"
+          "yeoldevic.co.uk"
+        ];
+      };
     };
   };
 
   holly = {
     name = "Holly Kendrick";
     email = "holly@planet-tranquility.org.uk";
-    defaultKeys = [];
-    websites = { "www.planet-tranquility.org.uk" = { listings = true; extraNames = [ "planet-tranquility.org.uk" ]; }; };
+    defaultKeys = [ ];
+    websites = {
+      "www.planet-tranquility.org.uk" = {
+        listings = true;
+        extraNames = [ "planet-tranquility.org.uk" ];
+      };
+    };
   };
 
   dkscully = {
@@ -64,10 +82,9 @@
   gillian = {
     name = "Gillian Simpson";
     email = "gillian.d.simpson@gmail.com";
-    defaultKeys = [
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC9V7Ur1man51zynAorR3gkE0JUxWZFLK98uGrypbLV5Z8lo62/3z8YU7quNQXEoQqBdw3YSxkTbT61rVZ+nwzYpQgn1E0spUCsk3KMYopneJUJBEeQv0UYov342xw8vjtTFa29gJC1qV4MNL1LmmeXtG9X1u8Yo24VZKrAszVVGyioVBDRM6miaCCS3LZdKlVbb9aC+NwWe3mU4ms0DQwxrlxD4459ThCsbmmeDK2pFpSTFISHBa31G2v7A9tRCvw/JHyP3g77wK5WO5JT6YFf46YQCuqsjsnM8TLqHEw6yyHWvtqjabmCPklj5JXuPI9DneQwTqUUVDVW4eCKaPy1CygL+AI/J02PCOfAI/PyBs3H6pG0Ov/hjR6wscCKDYmuAeQoCZWnAZl8Iq4U3QvVXxBBOQVKnElP6JfPIb+kuPVon9xaxQJ5O8GVr8kQgdjt6X3KbeCya+XmocEuH2FOEdW3f6M9ea7GMm/uaDDXs4V/xPCDsuM8hfB8jOJfvnbrTKY3TcGhKrkxrU+YqZMuE8Xt76+S/S3vkv29+zGK1v9flHdoUyqCJh2v1Gtd/6ZuZU2mev1phjcHY2sYEIophW3k+eaBZyan/l6fElaP53H+Y51XJzvQ/QEvGCTS17nfeooVMsfNHO2HsnAZl6vChn7CNLr2hunvSvlCgjmJtQ== gillian@gillian-Vostro-3580
-"
-    ];
+    defaultKeys = [''
+      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC9V7Ur1man51zynAorR3gkE0JUxWZFLK98uGrypbLV5Z8lo62/3z8YU7quNQXEoQqBdw3YSxkTbT61rVZ+nwzYpQgn1E0spUCsk3KMYopneJUJBEeQv0UYov342xw8vjtTFa29gJC1qV4MNL1LmmeXtG9X1u8Yo24VZKrAszVVGyioVBDRM6miaCCS3LZdKlVbb9aC+NwWe3mU4ms0DQwxrlxD4459ThCsbmmeDK2pFpSTFISHBa31G2v7A9tRCvw/JHyP3g77wK5WO5JT6YFf46YQCuqsjsnM8TLqHEw6yyHWvtqjabmCPklj5JXuPI9DneQwTqUUVDVW4eCKaPy1CygL+AI/J02PCOfAI/PyBs3H6pG0Ov/hjR6wscCKDYmuAeQoCZWnAZl8Iq4U3QvVXxBBOQVKnElP6JfPIb+kuPVon9xaxQJ5O8GVr8kQgdjt6X3KbeCya+XmocEuH2FOEdW3f6M9ea7GMm/uaDDXs4V/xPCDsuM8hfB8jOJfvnbrTKY3TcGhKrkxrU+YqZMuE8Xt76+S/S3vkv29+zGK1v9flHdoUyqCJh2v1Gtd/6ZuZU2mev1phjcHY2sYEIophW3k+eaBZyan/l6fElaP53H+Y51XJzvQ/QEvGCTS17nfeooVMsfNHO2HsnAZl6vChn7CNLr2hunvSvlCgjmJtQ== gillian@gillian-Vostro-3580
+    ''];
   };
 
   probertson = {
@@ -97,7 +114,7 @@
   eddie = {
     name = "Eddie Edwards";
     email = "eddie@tinyted.net";
-    defaultKeys = [];
+    defaultKeys = [ ];
   };
 
   sotk = {
