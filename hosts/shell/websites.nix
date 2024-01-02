@@ -12,7 +12,7 @@ let
         ssl = if data ? ssl then data.ssl else true;
         logging = if data ? logging then data.logging else false;
         listings = if data ? listings then data.listings else false;
-        extraNames = if data ? extraNames then data.extraNames else [];
+        extraNames = if data ? extraNames then data.extraNames else [ ];
         cgi = if data ? cgi then data.cgi else false;
       })) websites;
 
@@ -29,20 +29,23 @@ let
       '' else
         "";
       index_conf = if conf.listings then "autoindex on;" else "";
-      rewrite_conf = if conf.extraNames != [] then ''
+      rewrite_conf = if conf.extraNames != [ ] then ''
         if ($http_host != '${name}') {
           return 301 $scheme://${name}$request_uri;
         }
-      '' else "";
+      '' else
+        "";
       cgi_conf = if conf.cgi then ''
         location ~ .cgi$ {
           fastcgi_pass unix:${socketName name conf};
         }
-      '' else "";
+      '' else
+        "";
       # Ideally we'd do a year 31536000 but for now we're doing a day 86400
       hsts_conf = if conf.ssl then ''
         add_header Strict-Transport-Security "max-age=86400" always;
-      '' else "";
+      '' else
+        "";
     in {
       root = "/home/${conf.user}/websites/${name}/html";
       forceSSL = conf.ssl;
@@ -60,32 +63,36 @@ let
   ssl-sites = filterAttrs (n: d: d.ssl) all-websites;
   cgi-sites = filterAttrs (n: d: d.cgi) all-websites;
 
-  mkService = name: conf: lib.nameValuePair ("fcgiwrap-${name}") {
-    after = [ "nss-user-lookup.target" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.fcgiwrap}/sbin/fcgiwrap -c 1";
-      User = conf.user;
-      Group = conf.user;
-      Environment = "PATH=/run/wrappers/bin:/home/${conf.user}/.nix-profile/bin:/nix/profile/bin:/home/${conf.user}/.local/state/nix/profile/bin:/etc/profiles/per-user/${conf.user}/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin";
+  mkService = name: conf:
+    lib.nameValuePair ("fcgiwrap-${name}") {
+      after = [ "nss-user-lookup.target" ];
+      serviceConfig = {
+        ExecStart = "${pkgs.fcgiwrap}/sbin/fcgiwrap -c 1";
+        User = conf.user;
+        Group = conf.user;
+        Environment =
+          "PATH=/run/wrappers/bin:/home/${conf.user}/.nix-profile/bin:/nix/profile/bin:/home/${conf.user}/.local/state/nix/profile/bin:/etc/profiles/per-user/${conf.user}/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin";
+      };
     };
-  };
 
-  mkSocket = name: conf: lib.nameValuePair ("fcgiwrap-${name}") {
-    wantedBy = [ "sockets.target" ];
-    socketConfig = {
-      ListenStream = socketName name conf;
-      SocketUser = "nginx";
-      SocketGroup = "nginx";
+  mkSocket = name: conf:
+    lib.nameValuePair ("fcgiwrap-${name}") {
+      wantedBy = [ "sockets.target" ];
+      socketConfig = {
+        ListenStream = socketName name conf;
+        SocketUser = "nginx";
+        SocketGroup = "nginx";
+      };
     };
-  };
 
 in {
 
   services.nginx.virtualHosts = builtins.mapAttrs mkConfig all-websites;
 
-  security.acme.certs =
-    builtins.mapAttrs (n: d: { group = config.services.nginx.group; extraDomainNames = d.extraNames; })
-    ssl-sites;
+  security.acme.certs = builtins.mapAttrs (n: d: {
+    group = config.services.nginx.group;
+    extraDomainNames = d.extraNames;
+  }) ssl-sites;
 
   systemd.services = lib.mapAttrs' mkService cgi-sites;
   systemd.sockets = lib.mapAttrs' mkSocket cgi-sites;
