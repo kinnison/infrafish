@@ -36,7 +36,11 @@ let
       '' else
         "";
       cgi_conf = if conf.cgi then ''
-        location ~ .cgi$ {
+        location ~ ^(.+\.cgi)(.*)$ {
+          fastcgi_split_path_info ^(.+\.cgi)(.*)$;
+          fastcgi_param SCRIPT_FILENAME /home/${conf.user}/websites/${name}/html$fastcgi_script_name;
+          fastcgi_param PATH_INFO $fastcgi_path_info;
+          fastcgi_param DOCUMENT_ROOT /home/${conf.user}/websites/${name}/html;
           fastcgi_pass unix:${socketName name conf};
         }
       '' else
