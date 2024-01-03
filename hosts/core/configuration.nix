@@ -44,8 +44,8 @@ in {
 
   services.postgresql = {
     enable = true;
-    # At some point we need to upgrade to pg15
-    package = pkgs.postgresql_14;
+    # This can be removed as soon as we update stateVersion to 23.11
+    package = pkgs.postgresql_15;
     settings.listen_addresses = mkOverride 50 "core.vpn";
     authentication = ''
       host all all ${ppfmisc.internalIP 1}/24 trust
