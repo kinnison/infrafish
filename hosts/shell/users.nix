@@ -79,6 +79,17 @@
     websites = { "www.kyllikki.org" = { listings = true; }; };
   };
 
+  netsurf = {
+    name = "NeSsurf Admin";
+    email = "admin@netsurf-browser.org";
+    defaultKeys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAnPPorVliZfr8fv3gDOGuy86axBe8ObrgjFA6yDdGDjICP4HjqtqBLVur8CF9UOWQlawbffu7LU5DLQUgeXfd8C7PpClmLb7boNXMMQH78CbAEI36daRoIjEoCkZRv7wjjTwQdpoTCmKa1hsS8yki51a6Cg4rGg7Ns93hFxM3H9cL0BjoCgpWDFj4li2kblQFkleDppIh/maNFOhkBfNe5wJvXTRNifuSA8NLmDGv0F37F30aRJIIdlGC49Jz2cQ18IladhyOWIV0u28h7uvviyoApxTrJB5dDB9GeRZOwfksYb2MztYOFeAYJm086llClp0QTjeDmDqDQCG91Ol1rQ== vince@gerald"
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOgi5G6r/21IH5p0gDWQPomQPRcyGYtVK6D3uIl+A1QMvT6g9M6D+ecjvtQ8e1Rx5vGI2vgWxLN9fwIuoeWTRE9uRxD0fy6OHgSF95XY82OFC3RK1Bc3jLAVMP/BZUCqyXYbvgp6ggsc2fgEi+h+ZPG5bXwGgbwz0+vUJjMWZJKq0DVbKuVf41sOttBJ6FFZ7VbQ4t6qrq5HEnfXUPdCWtlfc+kDKwy+QLCB/xXBfkMzOsXrFfUdrx/80rWlaGa+0BuzHYst7xyP38KytEqHoz7txMv4HiLf2fkOcfpgIlFi+KPEcWfIUSgCKfC/7lyb2LHNec5IG/HYL59a2TCmIl cardno:5407828"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHJQNkNYNGj+O//LldKl9wSjIrrtgI79nIArijEGNRgM danielsilverstone@rauha"
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD4JbI1zGL6a5iyC+iiSSJxSPQUnaXoz1YOcoBuwMz+i0Pq+vcKXzd/qkdBJnAgAFcanKSLevG95AMCTQ5KZipO3aPfHJJNuPHutb8aVFfqpUtuExh/fk0Vr3R6b2u9tzZsWHP5GjZfajSViGdQoP0G6G16Vh1EoxzGVaSvrtB3n2gDEzz2RyjRU2dOd723awnp8PziqyJ9WKmZPZDu9G3IrcXXMnCeRUSlOKf68bBeHGtTjm6XrPkNmMlXfDH0fMysO4aWHCrSeeXAqf5b2mHNMzukBl3xMU5U9PZJn0EXJPGhmPmQya49UEygheGYW0aZT7cCkq4k/blmQ5KwaEhx"
+    ];
+  };
+
   gillian = {
     name = "Gillian Simpson";
     email = "gillian.d.simpson@gmail.com";
