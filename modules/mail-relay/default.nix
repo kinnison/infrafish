@@ -65,6 +65,8 @@ let
          by ''${primary_hostname} \
          ''${if def:received_protocol {with ''${received_protocol}}} \
          (Exim ''${version_number} #''${compile_number} (Infrafish))\n\t\
+         ''${if def:sender_address \
+           {(envelope-from <$sender_address>)\n\t}}\
          id ''${message_id}\
          ''${if def:received_for {\n\tfor <$received_for>}}"
 
