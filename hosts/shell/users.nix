@@ -136,4 +136,12 @@
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCywoOxiPDPyC2ROaY1hYC8jeyLQKSuvo3E3wn0CxFM9MmqCi2hbPml/1Kr/5anQD7bW94ZBfxokDUYwFNjlbquxosZxRiA6/qNPQxK+9kSQdT9Cw4cO9xhz7Ddyq38iNACMf30pqyN69ggFEpN6r1tR6Hum7taCdiU5KEJ7NUqAjJc+0SnDM3gKJedjp5pdeVLT3oCaN3poefQ73YL8dEJN0XMQQ0GZQ6XnkYlsVRKe6da9hnEhd7b0c0EWRCTyMUWibRTmG2p2mR7aMzL2T3jMrVbqC4KtsSmn7Zn+06SjxJnArUjs16zVJQNT1jPjB/Dg48Zvj1OlpTkZMP2Jeb3z4NJTV75PaT7u59zrGwMk5DNIsvHcVqwltCD6glQRLAUTBHDR/SrtqJ9nY0cUaRfO10JqeiLgPaIzYAuEwoOsfBglpLUBoeoBPlLF0IUkSVZV9wXGFNA8KBE2E4VoYcRf6c5MEcvLPXkI+hYfV87e0lWWTbVqaNV7Gn8L2ti60s= adam@AdamColdrick-PC"
     ];
   };
+
+  liw = {
+    name = "Lars Wirzenius";
+    email = "liw@liw.fi";
+    defaultKeys = [
+      "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOB1DlOdcSKhJ6hbNZRTXwEUQTrnmMVHVW0orNFwbs0fAAAABHNzaDo= liw personal systems"
+    ];
+  };
 }
