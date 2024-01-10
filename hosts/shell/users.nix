@@ -142,6 +142,7 @@
     email = "liw@liw.fi";
     defaultKeys = [
       "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIOB1DlOdcSKhJ6hbNZRTXwEUQTrnmMVHVW0orNFwbs0fAAAABHNzaDo= liw personal systems"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPQe6lsTapAxiwhhEeE/ixuK+5N8esCsMWoekQqjtxjP"
     ];
   };
 }
