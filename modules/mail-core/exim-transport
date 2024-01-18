@@ -8,6 +8,7 @@ sieve_virtual:
 
 remote_smtp_cunning:
   driver    = smtp
+  message_linelength_limit = MESSAGE_LINE_LENGTH_LIMIT
 
 remote_smtp:
   driver = smtp
@@ -15,6 +16,7 @@ remote_smtp:
   dkim_selector = ${lookup pgsql {select selector from maildomainkey where maildomain=(select id from maildomain where domainname='${quote_pgsql:$dkim_domain}') and signing=true}}
   dkim_private_key = ${lookup pgsql {select privkey from maildomainkey where maildomain=(select id from maildomain where domainname='${quote_pgsql:$dkim_domain}') and signing=true and selector='${quote_pgsql:$dkim_selector}'}}
   dkim_timestamps = 1209600
+  message_linelength_limit = MESSAGE_LINE_LENGTH_LIMIT
 
 remote_forwarded_smtp:
   driver = smtp
@@ -25,3 +27,4 @@ remote_forwarded_smtp:
   dkim_selector = ${lookup pgsql {select selector from maildomainkey where maildomain=(select id from maildomain where domainname='${quote_pgsql:$dkim_domain}') and signing=true}}
   dkim_private_key = ${lookup pgsql {select privkey from maildomainkey where maildomain=(select id from maildomain where domainname='${quote_pgsql:$dkim_domain}') and signing=true and selector='${quote_pgsql:$dkim_selector}'}}
   dkim_timestamps = 1209600
+  message_linelength_limit = MESSAGE_LINE_LENGTH_LIMIT

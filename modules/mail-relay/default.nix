@@ -21,6 +21,9 @@ let
     # Bring in the secret settings
 
     MESSAGE_SIZE_LIMIT = 40M
+    # RFC defines this as 998 but mailgun sometimes makes bad mail
+    # This needs to be kept in sync with the mail-core settings
+    MESSAGE_LINE_LENGTH_LIMIT = 2048
 
     primary_hostname = mx.infrafish.uk
     daemon_smtp_ports = 25 : 587 : 465

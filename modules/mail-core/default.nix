@@ -27,6 +27,11 @@ let
     .include ${config.sops.secrets.mail-exim-srs.path}
 
     MESSAGE_SIZE_LIMIT = 40M
+    # The RFC defines this as 998 but Mailgun sometimes gives huge lines
+    # This should be kept in-sync with mail-relay
+    # Note, there is a risk here that this limit may cause us to get bounces
+    # but it's a risk worth taking.
+    MESSAGE_LINE_LENGTH_LIMIT = 2048
     DOVECOT_LDA = ${pkgs.dovecot}/libexec/dovecot/dovecot-lda
 
     DETAINTFILE = ${detaintFile}

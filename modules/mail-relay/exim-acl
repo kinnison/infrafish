@@ -131,6 +131,13 @@ ACL_check_rcpt:
   accept
 
 ACL_check_data:
+  # Incoming content syntax checks
+  deny    condition = ${if > {$max_received_linelength}{MESSAGE_LINE_LENGTH_LIMIT}}
+          message = Maximum body line length exceeded
+
+  deny    message   = Message size $message_size > MESSAGE_SIZE_LIMIT
+          condition = ${if >{$message_size}{MESSAGE_SIZE_LIMIT}{yes}{no}}
+
   # Do DMARC checks
   warn    dmarc_status   = accept : none : off
           !authenticated = *
