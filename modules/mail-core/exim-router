@@ -15,6 +15,18 @@ inbound_srs_failure:
   allow_fail
   data =      :fail: Invalid SRS recipient address
 
+mailcore_lists:
+  driver         = redirect
+  allow_fail     = true
+  data           = ${expand:${lookup pgsql {select expansion from mailentry where name='${quote_pgsql:$local_part}' and kind='list' and maildomain=(select id from maildomain where domainname='${quote_pgsql:$domain}')} {$value}}}
+  senders        = ${addresses:${expand:${lookup pgsql {select expansion from mailentry where name='${quote_pgsql:$local_part}' and kind='list' and maildomain=(select id from maildomain where domainname='${quote_pgsql:$domain}')} {$value}}}}
+  qualify_preserve_domain
+  errors_to      = ${local_part}-owner@${domain}
+  syntax_errors_to = ${local_part}-owner@${domain}
+  headers_add    = "Reply-To: <${local_part}@${domain}>"
+  headers_add    = "List-Id: ${local_part} <${local_part}.${domain}>"
+
+
 mailcore_aliases:
   local_part_suffix = +*
   local_part_suffix_optional
