@@ -45,6 +45,11 @@ with lib;
 
     services.fail2ban = {
       enable = true;
+      ignoreIP = [
+        "${ppfmisc.internalIP 0}/24"
+        "${ppfmisc.uservpnIP 0}/24"
+        "194.163.232.22"
+      ];
       jails.sshd.settings = {
         enabled = true;
         port = 22;
