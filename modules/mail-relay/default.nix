@@ -212,13 +212,16 @@ in {
         "classifier-bayes.conf" = {
           enable = true;
           text = ''
+            new_schema = true;
             per_user = <<EOD
+            local info = require("rspamd_logger").info
             return function(task)
               local rcpt = task:get_recipients(1)
 
               if rcpt then
                 one_rcpt = rcpt[1]
                 if one_rcpt['domain'] then
+                  info("Setting classifier user to %1", one_rcpt['domain'])
                   return one_rcpt['domain']
                 end
               end
@@ -226,12 +229,24 @@ in {
               return nil
             end
             EOD
+            statfile {
+                symbol = "BAYES_SPAM";
+                spam = true;
+            }
+            statfile {
+                symbol = "BAYES_HAM";
+                spam = false;
+            }
             autolearn {
               spam_threshold = 7.5;
               ham_threshold = -0.5;
               check_balance = true;
               min_balance = 0.9;
             }
+            tokenizer {
+              name = "osb";
+            }
+            name = "bayes";
           '';
         };
         "spamassassin.conf" = {

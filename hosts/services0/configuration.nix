@@ -13,6 +13,12 @@
     format = "binary";
   };
 
+  sops.secrets.rspamd-ui-password = {
+    sopsFile = ../../keys/rspamd-ui-password;
+    format = "binary";
+    owner = "rspamd";
+  };
+
   services.powerdns = {
     enable = true;
     extraConfig = ''
@@ -72,6 +78,23 @@
         useACMEHost = "pdns-admin.infrafish.uk";
         locations."/" = { proxyPass = "http://127.0.0.1:8000"; };
       };
+      "rspamui.infrafish.uk" = {
+        onlySSL = true;
+        useACMEHost = "rspamui.infrafish.uk";
+        locations = {
+          "/" = {
+            root = "${pkgs.rspamd}/share/rspamd/www";
+            tryFiles = "$uri @proxy";
+          };
+          "@proxy" = {
+            proxyPass = "http://127.0.0.1:11334";
+            extraConfig = ''
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_set_header Host $host;
+            '';
+          };
+        };
+      };
     };
     appendHttpConfig = ''
       ssl_session_cache shared:SSL:10m;
@@ -80,6 +103,7 @@
 
   security.acme.certs = {
     "pdns-admin.infrafish.uk" = { group = config.services.nginx.group; };
+    "rspamui.infrafish.uk" = { group = config.services.nginx.group; };
   };
 
   pepperfish.vaultwarden.enable = true;
@@ -110,6 +134,8 @@
     };
     compression = "auto,lzma";
   };
+
+  services.rspamd.locals."worker-controller.inc".source = config.sops.secrets.rspamd-ui-password.path;
 
   environment.systemPackages = with pkgs; [ pdns ];
 }
