@@ -104,6 +104,12 @@ let
     # For simplicity for now, disable IPv6 because many hosts cock it up
     disable_ipv6 = true
 
+    # Callout settings
+    callout_domain_negative_expire = 30s
+    callout_domain_positive_expire = 30s
+    callout_negative_expire = 30s
+    callout_positive_expire = 30s
+
     begin acl
 
     ${exim-acl}
