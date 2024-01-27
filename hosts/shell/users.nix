@@ -7,7 +7,16 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHJQNkNYNGj+O//LldKl9wSjIrrtgI79nIArijEGNRgM danielsilverstone@rauha"
     ];
     shell = "zsh";
-    websites = { "www.digital-scurf.org" = { listings = true; }; };
+    websites = { 
+      "www.digital-scurf.org" = { listings = true; };
+      "url.ppfm.net" = {
+        listings = false;
+        cgi = true;
+        extraConfig = ''
+          rewrite ^/(?!url.cgi)(.*)$ /url.cgi?$1;
+        '';
+      };
+    };
   };
 
   rjek = {
