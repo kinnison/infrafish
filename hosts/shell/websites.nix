@@ -14,6 +14,7 @@ let
         listings = if data ? listings then data.listings else false;
         extraNames = if data ? extraNames then data.extraNames else [ ];
         cgi = if data ? cgi then data.cgi else false;
+        extraConfig = if data ? extraConfig then data.extraConfig else "";
       })) websites;
 
   all-websites = concatMapAttrs (user: data:
@@ -61,6 +62,7 @@ let
         ${index_conf}
         ${rewrite_conf}
         ${cgi_conf}
+        ${conf.extraConfig}
       '';
       serverAliases = conf.extraNames;
     };
