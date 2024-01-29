@@ -254,6 +254,7 @@ in {
           text = ''
             ruleset = [
               "${./sa-rules/ppf.cf}";
+              "${./sa-rules/KAM.cf}";
             ]
           '';
         };

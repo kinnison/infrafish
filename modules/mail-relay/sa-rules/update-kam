@@ -1,0 +1,11 @@
+#!/bin/sh
+
+curl -o KAM.cf.new https://mcgrail.com/downloads/KAM.cf
+
+if cmp -s KAM.cf.new KAM.cf; then
+  echo "No update needed"
+  rm -f KAM.cf.new
+else
+  mv KAM.cf.new KAM.cf
+  echo "Updated, please make a commit and deploy"
+fi
