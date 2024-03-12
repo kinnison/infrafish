@@ -89,11 +89,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1705592439,
-        "narHash": "sha256-+PjtEPyXz6t+X9syTL0iOh/0e38UI9aB4THTJpw9zMs=",
+        "lastModified": 1710283890,
+        "narHash": "sha256-fT6ifeJ8y4VvRP1l/gyGmg4K/6EgQ3l+RgxiLnafaVE=",
         "owner": "kinnison",
         "repo": "infrafish-mailconfig",
-        "rev": "607392eb5f7ba61ccd2b30e31a4dba9e96efbe46",
+        "rev": "da252dba5b141a5acb6205db08cf9bfd3e137259",
         "type": "github"
       },
       "original": {
