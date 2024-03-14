@@ -1056,9 +1056,9 @@ body DSVR_TM_DRUGS6 /save a lot of \$/i
 describe DSVR_TM_DRUGS6 Mentions saving a lot of $
 score DSVR_TM_DRUGS6 0.7
 
-body DSVR_TM_FREECABLE /Free.*Cable.*TV/i
-describe DSVR_TM_FREECABLE Free Cable TV spam
-score DSVR_TM_FREECABLE 5.0
+#body DSVR_TM_FREECABLE /Free.*Cable.*TV/i
+#describe DSVR_TM_FREECABLE Free Cable TV spam
+#score DSVR_TM_FREECABLE 5.0
 
 rawbody DSVR_MX_SMTP /mx[0-9][0-9]\.com/i
 score DSVR_MX_SMTP 7.0
