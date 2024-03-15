@@ -70,7 +70,7 @@ ACL_check_rcpt:
 
   deny
     message = 550 5.1.1 user does not exist
-    !verify = recipient/defer_ok/callout=10s,defer_ok
+    !verify = recipient/defer_ok/callout=10s,defer_ok,use_sender
     delay = 5s
 
   accept
