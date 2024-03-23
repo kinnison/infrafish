@@ -132,7 +132,7 @@ in {
     resolver.addresses = [ "193.108.199.129" ];
     virtualHosts = {
       "shell.infrafish.uk" = {
-        onlySSL = true;
+        forceSSL = true;
         useACMEHost = "shell.infrafish.uk";
         locations."~ ^/~(.+?)(/.*)?$" = {
           alias = "/home/$1/public_html$2";
