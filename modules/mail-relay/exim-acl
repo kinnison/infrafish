@@ -74,7 +74,7 @@ ACL_check_rcpt:
     delay = 5s
 
   accept
-    condition = ${if eq{${lookup{$sender_address}nwildlsearch{CONF/sender_allow_list_${domain_data}}{1}}}{1}}
+    condition = ${if eq{${lookup{$sender_address}nwildlsearch{CONF/sender_allow_list_${acl_m_domain}}{1}}}{1}}
     add_header = X-Pepperfish-RCPT: Skipped many MAIL FROM spam tests due to $sender_address matching a allow list entry
 
   accept
@@ -83,7 +83,7 @@ ACL_check_rcpt:
 
   deny
     message = 550 5.7.1 $sender_address blacklisted by domain owner
-    condition = ${if eq{${lookup{$sender_address}nwildlsearch{CONF/sender_deny_list_${domain_data}}{1}}}{1}}
+    condition = ${if eq{${lookup{$sender_address}nwildlsearch{CONF/sender_deny_list_${acl_m_domain}}{1}}}{1}}
     delay = 5s
 
   deny
