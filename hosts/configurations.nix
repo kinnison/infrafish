@@ -19,24 +19,29 @@ let
     {
       imports = [
         ({ pkgs, ... }: {
-          nix.extraOptions = ''
-            experimental-features = nix-command flakes
-          '';
-          nix.settings = { auto-optimise-store = true; };
           documentation.info.enable = false;
-          nix.registry.nixpkgs = {
-            from = {
-              id = "nixpkgs";
-              type = "indirect";
+          nix = {
+            extraOptions = ''
+              experimental-features = nix-command flakes
+            '';
+            settings = { auto-optimise-store = true; };
+            registry.nixpkgs = {
+              from = {
+                id = "nixpkgs";
+                type = "indirect";
+              };
+              flake = inputs.nixpkgs;
             };
-            flake = inputs.nixpkgs;
+            gc = {
+              automatic = true;
+              dates = "weekly";
+              options = "--delete-older-than 7d";
+            };
+            nixPath = [
+              "nixpkgs=${nixpkgs}"
+            ];
           };
           nixpkgs.overlays = overlays;
-          nix.gc = {
-            automatic = true;
-            dates = "weekly";
-            options = "--delete-older-than 7d";
-          };
         })
         sops-nix.nixosModules.sops
         home-manager.nixosModules.home-manager
