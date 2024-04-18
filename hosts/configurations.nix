@@ -38,7 +38,7 @@ let
               options = "--delete-older-than 7d";
             };
             nixPath = [
-              "nixpkgs=${nixpkgs}"
+              "nixpkgs=${inputs.nixpkgs}"
             ];
           };
           nixpkgs.overlays = overlays;
