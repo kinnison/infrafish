@@ -23,8 +23,11 @@ mailcore_lists:
   qualify_preserve_domain
   errors_to      = ${local_part}-owner@${domain}
   syntax_errors_to = ${local_part}-owner@${domain}
-  headers_add    = "Reply-To: <${local_part}@${domain}>"
+  # We do not add reply-to because it can break existing DKIM for sky.com et al.
+  #headers_add    = "Reply-To: <${local_part}@${domain}>"
+  # We do add List headers, but right now only List-Id - It's also recommended we hit up Sender
   headers_add    = "List-Id: ${local_part} <${local_part}.${domain}>"
+  headers_add    = "Sender: <${local_part}@${domain}>"
 
 
 mailcore_aliases:
