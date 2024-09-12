@@ -6,6 +6,8 @@ let
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHJQNkNYNGj+O//LldKl9wSjIrrtgI79nIArijEGNRgM danielsilverstone@rauha";
   danielShellKey =
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAatCszLRng2E9q0a8rSVwK5ZZlADJtKCfv3tDFlNISX dsilvers@shell";
+  robShellKey =
+    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC0zrxWAJyiHxqrCamlYeKbTxwLtQdSDR91GgaBp5KW+T/2jgUFUympyo+10nWcogEbYp6cJ+aFBCCt57eud6ivHCuXwBc2gKtoBv6vp/MRCTeRGpGh8gGKP6Muwrxio8zMEMOtBuG6sz87BFY0JZQ2Ge78Fub5BRrn/MRtAFjpReYp8gOZU09PXs5T7YOT2kPogrq62RXzafL49WeBkHA5EoI1qdOJPm4V5A1NlxE3BoXVLPaCUHcZMA4ZCLzkBvE0vttBgFULuC7QE1QvJBDFKLUQn+oA63iTBjhfp6x37+s/Y20FI324urpZwV28ZlJFGQNS8o2LKixsGEXLnhn/ rjek@platypus";
   storageServer = "u356603.your-storagebox.de";
   storageServerHostKey =
     "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA5EB5p/5Hp3hGW1oHok+PIOH9Pbn7cnUiGmUEBrCVjnAw+HrKyN8bYVV0dIGllswYXwkG/+bgiBlE6IVIBAq+JwVWu1Sss3KarHY3OvFJUXZoZyRRg/Gc/+LRCE7lyKpwWQ70dbelGRyyJFH36eNv6ySXoUYtGkwlU5IVaHPApOxe4LHPZa/qhSRbPo2hwoh0orCtgejRebNtW5nlx00DNFgsvn8Svz2cIYLxsPVzKgUxs8Zxsxgn+Q/UvR7uq4AbAhyBMLxv7DjJ1pc7PJocuTno2Rw9uMZi1gkjbnmiOh6TTXIEWbnroyIhwc8555uto9melEUmWNQ+C+PwAK+MPw==";
@@ -15,7 +17,7 @@ in {
   internalIP = hostNumber: "10.105.102.${builtins.toString hostNumber}";
   uservpnIP = hostNumber: "10.105.103.${builtins.toString hostNumber}";
   munin-core = "core";
-  rootPermittedKeys = [ danielSSHKey rauhaKey danielShellKey ];
+  rootPermittedKeys = [ danielSSHKey rauhaKey danielShellKey robShellKey ];
   primary-ns = "services0";
   inherit storageServer;
   borgURI = username: repo:
