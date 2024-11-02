@@ -65,7 +65,7 @@ with lib;
 
     boot.kernel.sysctl = {
       "net.ipv4.tcp_sack" = 0;
-      "vm.overcommit_memory" = 1;
+      "vm.overcommit_memory" = lib.mkDefault "1";
     };
 
     security.acme = {
