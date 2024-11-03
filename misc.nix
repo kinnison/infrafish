@@ -49,6 +49,11 @@ in {
         nodeNumber = 4;
         pubkey = "WUGWUqKlOLTvpGAETyYvtvwFMwN+UFKZZ7J1RbloRQA=";
       }
+      {
+        name = "edgar";
+        nodeNumber = 5;
+        pubkey = "I27ceGwaVpsgIuTSg8oeqAIJOJih59SACc0GGW3+mlU=";
+      }
     ];
 
   };
