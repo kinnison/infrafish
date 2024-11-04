@@ -263,6 +263,9 @@ in {
       enablePAM = false;
       mailLocation = "maildir:~/Maildir";
       protocols = [ "sieve " ];
+      sieve = {
+        extensions = [ "imapflags" ];
+      };
     };
 
     sops.secrets.mailcore-roundcube-password = {
