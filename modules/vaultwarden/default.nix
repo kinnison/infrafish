@@ -32,7 +32,7 @@ in {
         smtpAcceptInvalidCerts =
           true; # the cert used is mail.infrafish.uk but we need to use core.vpn for forwarding
       };
-      backupDir = "/var/lib/bitwarden_rs/backups";
+      backupDir = "/var/backup/vaultwarden";
     };
 
     security.acme.certs = {
