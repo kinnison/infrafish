@@ -57,7 +57,10 @@ with lib;
       };
     };
 
-    services.ntp.enable = true;
+    # Disabled for now
+    services.ntp.enable = false;
+    # Trialling this instead
+    services.timesyncd.enable = true;
     services.haveged.enable = true;
     programs.zsh.enable = true;
 
