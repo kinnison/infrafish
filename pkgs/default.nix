@@ -1,12 +1,12 @@
 { pkgs, mailconfig, ... }:
 with pkgs; {
   mailconfig = mailconfig.mailconfig;
-  exim-core = callPackage ./exim.nix {
+  exim-core = exim.override {
     enablePgSQL = true;
     enableAuthDovecot = true;
     enableSRS = true;
   };
-  exim-inmail = callPackage ./exim.nix {
+  exim-inmail = exim.override {
     enableJSON = true;
     enableSRS = true;
   };
