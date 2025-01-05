@@ -62,13 +62,22 @@
     saltFile = config.sops.secrets.pdns-admin-salt.path;
     config = ''
       BIND_ADDRESS = '127.0.0.1'
-      SESSION_TYPE = 'sqlalchemy'
+      # This will have to change when we upgrade, possibly to a different admin interface
+      # Since powerdns-admin is deprecated and pda-next has had no work in a year
+      SESSION_TYPE = 'filesystem'
+      SESSION_FILE_DIR='/run/powerdns-admin/flask-sessions'
       with open('${config.sops.secrets.pdns-admin-dburl.path}') as file:
           SQLALCHEMY_DATABASE_URI = file.read()
     '';
   };
   systemd.services.powerdns-admin.serviceConfig.BindReadOnlyPaths =
     [ config.sops.secrets.pdns-admin-dburl.path ];
+
+  # This bypasses an issue with the powerdns-admin packaging
+  # We don't set SESSION_TYPE so that we use the config above
+  # Otherwise we can't run the migrate, so service setup fails
+  systemd.services.powerdns-admin.serviceConfig.ExecStartPre = lib.mkForce
+    "${pkgs.coreutils}/bin/env FLASK_APP=${pkgs.powerdns-admin}/share/powerdnsadmin/__init__.py ${pkgs.python3Packages.flask}/bin/flask db upgrade -d ${pkgs.powerdns-admin}/share/migrations";
 
   services.nginx = {
     enable = true;
@@ -135,7 +144,8 @@
     compression = "auto,lzma";
   };
 
-  services.rspamd.locals."worker-controller.inc".source = config.sops.secrets.rspamd-ui-password.path;
+  services.rspamd.locals."worker-controller.inc".source =
+    config.sops.secrets.rspamd-ui-password.path;
 
   environment.systemPackages = with pkgs; [ pdns ];
 }
