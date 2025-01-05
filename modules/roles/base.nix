@@ -57,6 +57,12 @@ with lib;
       };
     };
 
+    # Quieten the firewall
+    networking.firewall = {
+      logRefusedPackets = false;
+      logRefusedConnections = false;
+    };
+
     # Disabled for now
     services.ntp.enable = false;
     # Trialling this instead
