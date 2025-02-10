@@ -358,6 +358,12 @@ in {
           pid = (?: \[\d+\]|\S?\w+ exim\[\d+\]:)? \S+ \S+
         '';
       };
+      "fail2ban/filter.d/exim.local" = {
+        text = ''
+          [Definition]
+          failregex = ^%(host_info)s.*rejected EHLO or HELO.*blacklisted$
+        '';
+      };
     };
 
   };
