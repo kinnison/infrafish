@@ -54,6 +54,11 @@ in {
         nodeNumber = 5;
         pubkey = "I27ceGwaVpsgIuTSg8oeqAIJOJih59SACc0GGW3+mlU=";
       }
+      {
+        name = "rjek-laptop";
+        nodeNumber = 6;
+        pubkey = "5I3HjGnU2RcyT1y19vK/0IdxkLKit32pZTIFL0JaYwY=";
+      }
     ];
 
   };
