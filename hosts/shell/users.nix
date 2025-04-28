@@ -7,13 +7,27 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHJQNkNYNGj+O//LldKl9wSjIrrtgI79nIArijEGNRgM danielsilverstone@rauha"
     ];
     shell = "zsh";
-    websites = { 
+    websites = {
       "www.digital-scurf.org" = { listings = true; };
       "url.ppfm.net" = {
         listings = false;
         cgi = true;
         extraConfig = ''
           rewrite ^/(?!url.cgi)(.*)$ /url.cgi?$1;
+        '';
+      };
+      "flarn.net" = {
+        listings = false;
+        cgi = false;
+        extraConfig = ''
+          location = /.well-known/webfinger {
+            add_header Access-Control-Allow-Origin '*';
+            return 301 https://social.flarn.net$request_uri;
+          }
+          location ~ ^/@.* {
+            add_header Access-Control-Allow-Origin '*';
+            return 301 https://social.flarn.net$request_uri;
+          }
         '';
       };
     };
@@ -67,7 +81,10 @@
     ];
     websites = {
       "personal.geah.org" = { listings = true; };
-      "photos.geah.org" = { listings = true; cgi = true; };
+      "photos.geah.org" = {
+        listings = true;
+        cgi = true;
+      };
     };
   };
 
@@ -129,7 +146,12 @@
     defaultKeys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD4JbI1zGL6a5iyC+iiSSJxSPQUnaXoz1YOcoBuwMz+i0Pq+vcKXzd/qkdBJnAgAFcanKSLevG95AMCTQ5KZipO3aPfHJJNuPHutb8aVFfqpUtuExh/fk0Vr3R6b2u9tzZsWHP5GjZfajSViGdQoP0G6G16Vh1EoxzGVaSvrtB3n2gDEzz2RyjRU2dOd723awnp8PziqyJ9WKmZPZDu9G3IrcXXMnCeRUSlOKf68bBeHGtTjm6XrPkNmMlXfDH0fMysO4aWHCrSeeXAqf5b2mHNMzukBl3xMU5U9PZJn0EXJPGhmPmQya49UEygheGYW0aZT7cCkq4k/blmQ5KwaEhx"
     ];
-    websites = { "www.smoothartist.com" = { listings = true; extraNames = ["smoothartist.com"]; }; };
+    websites = {
+      "www.smoothartist.com" = {
+        listings = true;
+        extraNames = [ "smoothartist.com" ];
+      };
+    };
   };
 
   eddie = {
