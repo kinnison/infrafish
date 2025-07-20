@@ -13,6 +13,24 @@ in order to use the tools here, however if you are creating new
 or editing existing ones then you will need the primary key which
 can be set up on your host by running `bash tools/decrypt-primary`
 
+# Adding secrets
+
+Firstly you need the secrets to be covered by the `.sops.yaml` file.
+This might require that you add a new stanza to that file, for example
+if you were adding a new service called `jeff` which would run on the
+services box, you might need to add:
+
+```yaml
+  - path_regex: keys/jeff-
+    key_groups:
+      - age:
+        - *primary
+        - *services0
+```
+
+Then you can use sops to create files, for example via something
+like `sops edit `
+
 # Adding a host
 
 This is very very unlikely to be complete but I will update it as and

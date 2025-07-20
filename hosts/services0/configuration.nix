@@ -147,5 +147,7 @@
   services.rspamd.locals."worker-controller.inc".source =
     config.sops.secrets.rspamd-ui-password.path;
 
+  pepperfish.atticd.enable = true;
+
   environment.systemPackages = with pkgs; [ pdns ];
 }

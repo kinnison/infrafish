@@ -80,6 +80,12 @@ creation_rules:
         - *primary
         - *shell
 
+  - path_regex: keys/atticd-*
+    key_groups:
+      - age:
+        - *primary
+        - *services0
+
   # Fallback just uses the primary
   - key_groups:
       - age:

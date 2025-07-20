@@ -10,4 +10,5 @@
   ./mail-core
   ./mail-relay
   ./nix-store-server
+  ./atticd
 ]
