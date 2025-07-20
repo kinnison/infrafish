@@ -6,6 +6,13 @@ To use this you will need Nix configured to enable flakes.
 
 Then you can run `nix devshell` and work from there.
 
+# Accessing secrets
+
+In the general case you do not need to be able to decrypt secrets
+in order to use the tools here, however if you are creating new
+or editing existing ones then you will need the primary key which
+can be set up on your host by running `bash tools/decrypt-primary`
+
 # Adding a host
 
 This is very very unlikely to be complete but I will update it as and
