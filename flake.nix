@@ -24,4 +24,10 @@
       hosts = import ./hosts.nix;
       ppfmisc = import ./misc.nix;
     });
+
+  nixConfig = {
+    extra-substituters = [ "https://attic.infrafish.uk/infrafish" ];
+    extra-trusted-public-keys =
+      [ "infrafish:D+tmoycePbBh+zjHC7Bawyc257pW6H3b8F+WvFoEFg0=" ];
+  };
 }
