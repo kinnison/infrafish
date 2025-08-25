@@ -5,6 +5,9 @@
     defaultKeys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDOgi5G6r/21IH5p0gDWQPomQPRcyGYtVK6D3uIl+A1QMvT6g9M6D+ecjvtQ8e1Rx5vGI2vgWxLN9fwIuoeWTRE9uRxD0fy6OHgSF95XY82OFC3RK1Bc3jLAVMP/BZUCqyXYbvgp6ggsc2fgEi+h+ZPG5bXwGgbwz0+vUJjMWZJKq0DVbKuVf41sOttBJ6FFZ7VbQ4t6qrq5HEnfXUPdCWtlfc+kDKwy+QLCB/xXBfkMzOsXrFfUdrx/80rWlaGa+0BuzHYst7xyP38KytEqHoz7txMv4HiLf2fkOcfpgIlFi+KPEcWfIUSgCKfC/7lyb2LHNec5IG/HYL59a2TCmIl cardno:5407828"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHJQNkNYNGj+O//LldKl9wSjIrrtgI79nIArijEGNRgM danielsilverstone@rauha"
+      ''
+        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC533ioOhlT604cwP10ktfVqA9Gf9G3TOVnzhEf1ZDrs6e5KjkEYad9d+m+NINYRghrMPSSslYSOem9jMhGo+8O/q47wOoPNAcxMyxLxhjQFqy9vANCKP8herqE9oINL2UIAPl2OroXc9iGBs4U5xRbSc3XPHg2AUYHt1UeyVWomOU7Qxqt56sCzGWTnJ/bulj/iwYrLSf+P3MsnjTgExxiGj5CnbBvi6wMhpzWJQVMDGqTJZX6BG/hxYo5F5VLTOMLtpTQxsKP7cwWuIE2+6k2DmjswNeaCAl3EVEyPOIdu3Zx/jU++M3ixErwbxlOg07BZ5RL93hp0e0rlriQB87j cardno:14_465_179
+      ''
     ];
     shell = "zsh";
     websites = {
