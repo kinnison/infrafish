@@ -6,11 +6,8 @@ let
   has-vpn = nodeData ? vpn;
   all-nodes-except-me = filter (n: n != nodeName) (attrNames inputs.hosts);
   my-vpn-addr = ppfmisc.internalIP nodeData.hostNumber;
-  subst-list' = map (name: "http://${name}.vpn:${builtins.toString store-port}")
+  subst-list = map (name: "http://${name}.vpn:${builtins.toString store-port}")
     all-nodes-except-me;
-  subst-list = subst-list' ++ [ "https://attic.infrafish.uk/infrafish/" ];
-  infrafish-attic-key =
-    "infrafish:D+tmoycePbBh+zjHC7Bawyc257pW6H3b8F+WvFoEFg0=";
 in {
   config = mkIf has-vpn {
     # Two things to configure, nix-serve and then using all other nodes
@@ -28,7 +25,7 @@ in {
     nix.settings = {
       substituters = subst-list;
       trusted-substituters = subst-list;
-      trusted-public-keys = [ ppfmisc.store-public-key infrafish-attic-key ];
+      trusted-public-keys = [ ppfmisc.store-public-key ];
     };
 
   };
