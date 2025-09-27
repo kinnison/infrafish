@@ -184,7 +184,7 @@ in {
 
     security.acme.certs."mail.infrafish.uk" = {
       group = "mailcert";
-      reloadServices = [ "exim.service" ];
+      reloadServices = [ "exim.service" "dovecot2.service" ];
     };
 
     sops.secrets.mailcore-mailconfig-env = {
@@ -263,9 +263,7 @@ in {
       enablePAM = false;
       mailLocation = "maildir:~/Maildir";
       protocols = [ "sieve " ];
-      sieve = {
-        extensions = [ "imapflags" ];
-      };
+      sieve = { extensions = [ "imapflags" ]; };
     };
 
     sops.secrets.mailcore-roundcube-password = {
