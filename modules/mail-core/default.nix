@@ -20,6 +20,10 @@ let
     *
   '';
 
+  dodgySenderAllowList = pkgs.writeText "dodgy-sender-allowlist" ''
+    *@*.mailjet.com
+  '';
+
   eximConfig = ''
 
     # Bring in the secret settings
@@ -37,6 +41,8 @@ let
     DETAINTFILE = ${detaintFile}
     BADCHARS = \N[^A-Za-z0-9_.+-]+\N
     SAFESUFFIX = ''${lookup {''${sg{$local_part_suffix}{BADCHARS}{_}}} lsearch*,ret=key{DETAINTFILE}}
+
+    DODGY_SENDER_ALLOWLIST = ${dodgySenderAllowList}
 
     primary_hostname = mail.infrafish.uk
     daemon_smtp_ports = 25 : 587 : 465
