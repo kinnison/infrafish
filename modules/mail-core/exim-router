@@ -82,6 +82,7 @@ remote_cunning:
 outgoing:
   driver = dnslookup
   domains = ! +local_domains
+  headers_add = "x-ms-reactions: disallow"
   transport = ${if eq {$local_part@$domain} \
                       {$original_local_part@$original_domain} \
                 {remote_smtp} {remote_forwarded_smtp}}
