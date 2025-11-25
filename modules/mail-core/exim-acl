@@ -80,12 +80,12 @@ ACL_check_data:
    deny message   = Message size $message_size > MESSAGE_SIZE_LIMIT
         condition = ${if >{$message_size}{MESSAGE_SIZE_LIMIT}{yes}{no}}
 
-  accept
-    condition = ${if eq{${lookup{$sender_address}nwildlsearch{DODGY_SENDER_ALLOWLIST}{1}}}{1}}
-    add_header = X-Pepperfish-RCPT: Skipped sender verification from headers due to presence in super-dodgy permissions list
+  #accept
+  #  condition = ${if eq{${lookup{$sender_address}nwildlsearch{DODGY_SENDER_ALLOWLIST}{1}}}{1}}
+  #  add_header = X-Pepperfish-RCPT: Skipped sender verification from headers due to presence in super-dodgy permissions list
 
-   deny message = No verifiable sender address in message headers
-      condition = ${if match{$h_from:}{(?i)MAILER-DAEMON}{no}{yes}}
-        !verify = header_sender
+  # deny message = No verifiable sender address in message headers
+  #    condition = ${if match{$h_from:}{(?i)MAILER-DAEMON}{no}{yes}}
+  #      !verify = header_sender
 
    accept
