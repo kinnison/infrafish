@@ -55,9 +55,9 @@ let
   }) raw-users;
 
   motdBanner = pkgs.writeText "motd-banner.txt" ''
-     ___        __            __ _     _     
-    |_ _|_ __  / _|_ __ __ _ / _(_)___| |__  
-     | || '_ \| |_| '__/ _` | |_| / __| '_ \ 
+     ___        __            __ _     _
+    |_ _|_ __  / _|_ __ __ _ / _(_)___| |__
+     | || '_ \| |_| '__/ _` | |_| / __| '_ \
      | || | | |  _| | | (_| |  _| \__ \ | | |
     |___|_| |_|_| |_|  \__,_|_| |_|___/_| |_|
 
@@ -163,7 +163,7 @@ in {
     httpie
     screen
     tmux
-    tinyfugue
+    #tinyfugue
     neomutt
     mosh
     mailconfig-bin

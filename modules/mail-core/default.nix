@@ -259,7 +259,6 @@ in {
       mailUser = "mail";
       mailGroup = "mail";
       createMailUser = false;
-      modules = [ pkgs.dovecot_pigeonhole ];
       sslServerCert = "${
           config.security.acme.certs."mail.infrafish.uk".directory
         }/fullchain.pem";
@@ -271,6 +270,8 @@ in {
       protocols = [ "sieve " ];
       sieve = { extensions = [ "imapflags" ]; };
     };
+
+    environment.systemPackages = [ pkgs.dovecot_pigeonhole ];
 
     sops.secrets.mailcore-roundcube-password = {
       sopsFile = ../../keys/mailcore-roundcube-password;
