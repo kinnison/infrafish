@@ -120,7 +120,7 @@ in {
       uptime.prefix = "Up";
       filesystems.root = "/";
       memory.swap_pos = "beside";
-      fail2_ban.jails = [ "sshd" ];
+      fail_2_ban.jails = [ "sshd" ];
       last_run = { };
     };
   };
