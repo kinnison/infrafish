@@ -3,7 +3,7 @@
   let pkgs = nixpkgs.legacyPackages."${system}";
   in {
     devShells.default = pkgs.callPackage ./shell.nix {
-      inherit (deploy.packages."${pkgs.system}") deploy-rs;
+      inherit (deploy.packages."${pkgs.stdenv.hostPlatform.system}") deploy-rs;
     };
   })) // {
     nixosConfigurations =

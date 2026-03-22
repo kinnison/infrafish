@@ -8,7 +8,7 @@ let
   overlays = [
     (final: prev: {
       local = import ../pkgs {
-        mailconfig = mailconfig.packages.${prev.system};
+        mailconfig = mailconfig.packages.${prev.stdenv.hostPlatform.system};
         pkgs = prev;
       };
       dovecot = prev.dovecot.override { withPgSQL = true; };
@@ -37,9 +37,7 @@ let
               dates = "weekly";
               options = "--delete-older-than 7d";
             };
-            nixPath = [
-              "nixpkgs=${inputs.nixpkgs}"
-            ];
+            nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
           };
           nixpkgs.overlays = overlays;
         })
