@@ -6,9 +6,14 @@ with pkgs; {
     enableAuthDovecot = true;
     enableSRS = true;
   };
-  exim-inmail = exim.override {
+  # The additional overrideAttrs is there because we need write access to the spool
+  exim-inmail = (exim.override {
     enableJSON = true;
     enableSRS = true;
+  }).overrideAttrs {
+    postPatch = ''
+      sed -e "s/, 0750, /, 0770, /" src/spool_mbox.c > src/spool_mbox.sed && mv src/spool_mbox.sed src/spool_mbox.c
+    '';
   };
 
   dmarc-report-converter = callPackage ./dmarc-report-converter.nix { };

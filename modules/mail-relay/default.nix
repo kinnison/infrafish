@@ -34,9 +34,9 @@ let
     GLOBAL = /etc/exim
     CORE_IP = ${coreip}
 
-    domainlist local_domains = 
+    domainlist local_domains =
     domainlist relay_to_domains = ''${lookup {all_domains} json {JSON}}
-    domainlist secondary_domains = 
+    domainlist secondary_domains =
 
     av_scanner = clamd:/run/clamav/clamd.ctl
     spamd_address = /run/rspamd/proxy.sock variant=rspamd
@@ -177,6 +177,12 @@ in {
       enable = true;
       package = pkgs.local.exim-inmail;
       config = eximConfig;
+    };
+
+    # This is needed to ensure clamav can access the scan directory
+    systemd.services.exim.serviceConfig = {
+      ExecStartPre = lib.mkForce
+        "+${pkgs.coreutils}/bin/install --group=${config.services.exim.group} --owner=${config.services.exim.user} --mode=0750 --directory ${config.services.exim.spoolDir}";
     };
 
     services.clamav = {

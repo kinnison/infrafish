@@ -169,7 +169,7 @@ ACL_check_data:
   accept
     condition = ${if eq{${lookup{$sender_address}nwildlsearch{CONF/sender_allow_list_${acl_m_domain}}{1}}}{1}}
     add_header = X-Pepperfish-RCPT: Skipped many MAIL FROM spam tests due to $sender_address matching a allow list entry
-  
+
   deny
     message = invalid header syntax in message body: $acl_verify_message
     condition = ${if match{$h_from:}{(?i)MAILER-DAEMON}{no}{yes}}
@@ -194,7 +194,7 @@ ACL_check_data:
   drop
     message = 550 5.7.0 malware detected in message ($malware_name)
     condition = ${if eq{${lookup {per_domain : $acl_m_domain : viruscheck_enable} json {JSON}}}{true}}
-    malware = *
+    malware = * / defer_ok
     delay = 5s
 
   accept
