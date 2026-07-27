@@ -1,14 +1,23 @@
 # Mail core
-{ config, lib, pkgs, hosts, ppfmisc, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  hosts,
+  ppfmisc,
+  ...
+}:
 with lib;
 let
   cfg = config.pepperfish.mailcore;
 
   coreip = ppfmisc.internalIP hosts.core.hostNumber;
   internalnet = "${ppfmisc.internalIP 0}/24";
-  relay_ok_hosts = lib.concatStringsSep " ; "
-    (lib.mapAttrsToList (n: d: ppfmisc.internalIP d.hostNumber)
-      (lib.filterAttrs (n: d: d.mail ? relay-ok && d.mail.relay-ok) hosts));
+  relay_ok_hosts = lib.concatStringsSep " ; " (
+    lib.mapAttrsToList (n: d: ppfmisc.internalIP d.hostNumber) (
+      lib.filterAttrs (n: d: d.mail ? relay-ok && d.mail.relay-ok) hosts
+    )
+  );
 
   cert = config.security.acme.certs."mail.infrafish.uk";
 
@@ -36,7 +45,7 @@ let
     # Note, there is a risk here that this limit may cause us to get bounces
     # but it's a risk worth taking.
     MESSAGE_LINE_LENGTH_LIMIT = 2048
-    DOVECOT_LDA = ${pkgs.dovecot}/libexec/dovecot/dovecot-lda
+    DOVECOT_LDA = ${config.services.dovecot2.package}/libexec/dovecot/dovecot-lda
 
     DETAINTFILE = ${detaintFile}
     BADCHARS = \N[^A-Za-z0-9_.+-]+\N
@@ -144,7 +153,7 @@ let
 
   '';
 
-  dovecotConfig = ''
+  dovecotConfig = pkgs.writeText "dovecot-extra.conf" ''
     # Extra Dovecot config
 
     passdb {
@@ -170,7 +179,8 @@ let
 
   '';
 
-in {
+in
+{
   options.pepperfish.mailcore = with types; {
     enable = mkEnableOption "enable the mail core on this host";
 
@@ -185,12 +195,18 @@ in {
   config = mkIf cfg.enable {
 
     users.groups.mailcert = {
-      members = [ config.services.exim.user config.services.nginx.user ];
+      members = [
+        config.services.exim.user
+        config.services.nginx.user
+      ];
     };
 
     security.acme.certs."mail.infrafish.uk" = {
       group = "mailcert";
-      reloadServices = [ "exim.service" "dovecot2.service" ];
+      reloadServices = [
+        "exim.service"
+        "dovecot2.service"
+      ];
     };
 
     sops.secrets.mailcore-mailconfig-env = {
@@ -220,7 +236,13 @@ in {
       config = eximConfig;
     };
 
-    networking.firewall.allowedTCPPorts = [ 465 587 993 995 4190 ];
+    networking.firewall.allowedTCPPorts = [
+      465
+      587
+      993
+      995
+      4190
+    ];
 
     systemd.services.mailcore-mailconfig = {
       enable = true;
@@ -254,24 +276,31 @@ in {
 
     services.dovecot2 = {
       enable = true;
-      enablePop3 = true;
-      enableImap = true;
-      mailUser = "mail";
-      mailGroup = "mail";
+      settings = {
+        mail_uid = "mail";
+        mail_gid = "mail";
+        protocols = {
+          imap = true;
+          pop3 = true;
+          sieve = true;
+        };
+        # When updating to 2.4, will need ssl_server_cert_file and ssl_server_key_file
+        ssl_cert = "${config.security.acme.certs."mail.infrafish.uk".directory}/fullchain.pem";
+        ssl_key = "${config.security.acme.certs."mail.infrafish.uk".directory}/key.pem";
+        # When updating to 2.4, will need mail_path
+        mail_location = "maildir:~/Maildir";
+      };
       createMailUser = false;
-      sslServerCert = "${
-          config.security.acme.certs."mail.infrafish.uk".directory
-        }/fullchain.pem";
-      sslServerKey =
-        "${config.security.acme.certs."mail.infrafish.uk".directory}/key.pem";
-      extraConfig = dovecotConfig;
       enablePAM = false;
-      mailLocation = "maildir:~/Maildir";
-      protocols = [ "sieve " ];
-      sieve = { extensions = [ "imapflags" ]; };
+      sieve = {
+        extensions = [ "imapflags" ];
+      };
+      includeFiles = [
+        dovecotConfig
+      ];
     };
 
-    environment.systemPackages = [ pkgs.dovecot_pigeonhole ];
+    environment.systemPackages = [ pkgs.dovecot_2_3.dovecot_pigeonhole ];
 
     sops.secrets.mailcore-roundcube-password = {
       sopsFile = ../../keys/mailcore-roundcube-password;
@@ -289,14 +318,15 @@ in {
       hostName = "mail.infrafish.uk";
       maxAttachmentSize = 10;
       dicts = with pkgs.aspellDicts; [ en ];
-      package = pkgs.roundcube.withPlugins (plugins:
-        with plugins; [
+      package = pkgs.roundcube.withPlugins (
+        plugins: with plugins; [
           persistent_login
           carddav
           custom_from
           contextmenu
           thunderbird_labels
-        ]);
+        ]
+      );
       plugins = [
         "additional_message_headers"
         "attachment_reminder"
@@ -318,7 +348,9 @@ in {
     # Roundcube has a setup service which needs to run, but it depends on postgresql
     # which is a service we're running on the same box; so let's depend on it in
     # the systemd unit
-    systemd.services.roundcube-setup = { after = [ "postgresql.service" ]; };
+    systemd.services.roundcube-setup = {
+      after = [ "postgresql.service" ];
+    };
 
     services.nginx = {
       enable = true;
@@ -328,7 +360,9 @@ in {
           forceSSL = false;
           enableACME = false;
           useACMEHost = "mail.infrafish.uk";
-          locations."/api" = { proxyPass = "http://127.0.0.1:1537/api"; };
+          locations."/api" = {
+            proxyPass = "http://127.0.0.1:1537/api";
+          };
         };
       };
     };

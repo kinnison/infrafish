@@ -3,8 +3,10 @@
 
 with lib;
 
-let cfg = config.pepperfish.vaultwarden;
-in {
+let
+  cfg = config.pepperfish.vaultwarden;
+in
+{
   options.pepperfish.vaultwarden = {
     enable = mkEnableOption "enable vaultwarden on this host";
   };
@@ -25,18 +27,19 @@ in {
         rocketPort = 8222;
         rocketLog = "critical";
         websocketEnabled = true;
-        websocketAddress = "127.0.0.1";
-        websocketPort = 8223;
+        # websocketAddress = "127.0.0.1";
+        # websocketPort = 8222;
         smtpHost = "core.vpn";
         smtpFrom = "vaultwarden@infrafish.uk";
-        smtpAcceptInvalidCerts =
-          true; # the cert used is mail.infrafish.uk but we need to use core.vpn for forwarding
+        smtpAcceptInvalidCerts = true; # the cert used is mail.infrafish.uk but we need to use core.vpn for forwarding
       };
       backupDir = "/var/backup/vaultwarden";
     };
 
     security.acme.certs = {
-      "vault.infrafish.uk" = { group = config.services.nginx.group; };
+      "vault.infrafish.uk" = {
+        group = config.services.nginx.group;
+      };
     };
 
     services.nginx = {
@@ -55,14 +58,14 @@ in {
               proxy_set_header X-Forwarded-Proto $scheme;
             '';
           };
-          locations."/notifications/hub" = {
-            proxyPass = "http://127.0.0.1:8223";
-            proxyWebsockets = true;
-          };
-          locations."/notifications/hub/negotiate" = {
-            proxyPass = "http://127.0.0.1:8222";
-            proxyWebsockets = true;
-          };
+          # locations."/notifications/hub" = {
+          #   proxyPass = "http://127.0.0.1:8223";
+          #   proxyWebsockets = true;
+          # };
+          # locations."/notifications/hub/negotiate" = {
+          #   proxyPass = "http://127.0.0.1:8222";
+          #   proxyWebsockets = true;
+          # };
         };
       };
     };

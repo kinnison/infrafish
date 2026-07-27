@@ -1,6 +1,15 @@
 # Host configurations
 
-{ self, inputs, nixpkgs, sops-nix, home-manager, hosts, ppfmisc, mailconfig, ...
+{
+  self,
+  inputs,
+  nixpkgs,
+  sops-nix,
+  home-manager,
+  hosts,
+  ppfmisc,
+  mailconfig,
+  ...
 }:
 let
   nixosSystem = nixpkgs.lib.makeOverridable nixpkgs.lib.nixosSystem;
@@ -11,7 +20,9 @@ let
         mailconfig = mailconfig.packages.${prev.stdenv.hostPlatform.system};
         pkgs = prev;
       };
-      dovecot = prev.dovecot.override { withPgSQL = true; };
+      # Update dovecot with pgsql support
+      # When stateversion is bumped, this needs to change back to dovecot from dovecot_2_3
+      dovecot_2_3 = prev.dovecot_2_3.override { withPgSQL = true; };
     })
   ];
   baseModules = [
@@ -24,7 +35,9 @@ let
             extraOptions = ''
               experimental-features = nix-command flakes
             '';
-            settings = { auto-optimise-store = true; };
+            settings = {
+              auto-optimise-store = true;
+            };
             registry.nixpkgs = {
               from = {
                 id = "nixpkgs";
@@ -58,7 +71,8 @@ let
   ];
   defaultModules = baseModules ++ customModules;
 
-  mkSystem = nodename: data:
+  mkSystem =
+    nodename: data:
     nixosSystem {
       system = if data ? system then data.system else "x86_64-linux";
       modules = defaultModules ++ [
@@ -73,4 +87,5 @@ let
         ./${nodename}/configuration.nix
       ];
     };
-in builtins.mapAttrs mkSystem hosts
+in
+builtins.mapAttrs mkSystem hosts

@@ -1,6 +1,15 @@
 # Pepperfish base role
 
-{ config, pkgs, lib, nodeName, nodeData, ppfmisc, hosts, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  nodeName,
+  nodeData,
+  ppfmisc,
+  hosts,
+  ...
+}:
 
 with lib;
 
@@ -29,8 +38,7 @@ with lib;
       format = "binary";
       neededForUsers = true;
     };
-    users.users.root.hashedPasswordFile =
-      config.sops.secrets.shared-fallback-root.path;
+    users.users.root.hashedPasswordFile = config.sops.secrets.shared-fallback-root.path;
 
     environment.systemPackages = with pkgs; [
       screen
@@ -82,7 +90,7 @@ with lib;
       defaults = {
         email = "dsilvers@digital-scurf.org";
         dnsProvider = "pdns";
-        credentialsFile = config.sops.secrets.acme-credentials.path;
+        environmentFile = config.sops.secrets.acme-credentials.path;
         dnsPropagationCheck = true;
       };
     };
@@ -100,14 +108,16 @@ with lib;
 
     fonts.fontconfig.enable = false;
 
-    services.openssh.knownHosts = (builtins.mapAttrs (name: value: {
-      publicKeyFile = ../../keys/hosts/${name}_ssh_host_ed25519_key.pub;
-      extraHostNames = [
-        "${name}.infrafish.uk"
-        "${name}.vpn"
-        (ppfmisc.internalIP value.hostNumber)
-      ];
-    }) hosts) // ppfmisc.extraHostKeys;
+    services.openssh.knownHosts =
+      (builtins.mapAttrs (name: value: {
+        publicKeyFile = ../../keys/hosts/${name}_ssh_host_ed25519_key.pub;
+        extraHostNames = [
+          "${name}.infrafish.uk"
+          "${name}.vpn"
+          (ppfmisc.internalIP value.hostNumber)
+        ];
+      }) hosts)
+      // ppfmisc.extraHostKeys;
 
     sops.secrets.backup-passphrase = {
       format = "binary";
