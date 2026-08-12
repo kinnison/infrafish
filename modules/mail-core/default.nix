@@ -92,14 +92,14 @@ let
          ''${if def:received_for {\n\tfor <$received_for>}}"
 
     # Load management
-    smtp_receive_timeout = 300s
+    smtp_receive_timeout = 10s
     smtp_load_reserve = 15
     deliver_queue_load_max = 12
     queue_only_load = 15
     queue_run_max = 1
     smtp_accept_max = 50
     smtp_accept_max_per_host = 5
-    smtp_reserve_hosts = ${internalnet} ; 127.0.0.1 ; ::1
+    smtp_reserve_hosts = <; ${internalnet} ; ${hosts.shell.ip} ; ${hosts.services0.ip} ; 127.0.0.1 ; ::1
     smtp_accept_reserve = 10
 
     dns_ipv4_lookup = *.google.com
@@ -197,6 +197,7 @@ in
     users.groups.mailcert = {
       members = [
         config.services.exim.user
+        config.services.dovecot2.settings.default_internal_user
         config.services.nginx.user
       ];
     };
@@ -279,14 +280,10 @@ in
       settings = {
         mail_uid = "mail";
         mail_gid = "mail";
-        protocols = {
-          imap = true;
-          pop3 = true;
-          sieve = true;
-        };
+        protocols = "imap pop3 sieve";
         # When updating to 2.4, will need ssl_server_cert_file and ssl_server_key_file
-        ssl_cert = "${config.security.acme.certs."mail.infrafish.uk".directory}/fullchain.pem";
-        ssl_key = "${config.security.acme.certs."mail.infrafish.uk".directory}/key.pem";
+        ssl_cert = "<${config.security.acme.certs."mail.infrafish.uk".directory}/fullchain.pem";
+        ssl_key = "<${config.security.acme.certs."mail.infrafish.uk".directory}/key.pem";
         # When updating to 2.4, will need mail_path
         mail_location = "maildir:~/Maildir";
       };
@@ -373,7 +370,7 @@ in
         exim.settings = {
           enabled = true;
           journalmatch = "_SYSTEMD_UNIT=exim.service";
-          port = "465,587";
+          port = "25,465,587";
         };
         dovecot.settings = {
           enabled = true;
