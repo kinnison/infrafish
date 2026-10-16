@@ -11,7 +11,9 @@
     ];
     shell = "zsh";
     websites = {
-      "www.digital-scurf.org" = { listings = true; };
+      "www.digital-scurf.org" = {
+        listings = true;
+      };
       "url.ppfm.net" = {
         listings = false;
         cgi = true;
@@ -61,6 +63,30 @@
           "yeoldevic.co.uk"
         ];
       };
+      "pub.yeoldevic.com" = {
+        listings = false;
+        extraConfig = ''
+          location / {
+            proxy_pass http://10.105.103.7;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+          }
+        '';
+      };
+      "pumpotron.yeoldevic.com" = {
+        listings = false;
+        extraConfig = ''
+          location / {
+            proxy_pass http://10.105.103.7;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+          }
+        '';
+      };
     };
   };
 
@@ -83,7 +109,9 @@
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCt+rzeHl8fYF5wX0p3MOiJWRvMTOluJh8n/r0qLfPyWdYq6z4pL+DlKOjO3KiZw0HjgkCMmk2E847aslMMTx0E113cWBqPZ0uP5lgfG5WrkZ1vMXRmy/k1itBd5FET5YQaB0lReoXk60wr2v9F41v8bG3RWEuZ9NbK4nqQjjIZKFmS04Y+NYtdUxtBaOp7hSTdbwHD1hC7j5Y+1Bucxi8DoLMUdk6E6kuvJST62X2tV8JlqFgukPgVOX+QXnIeqom51IcSvTuI+fLG0O6WtZhBw7wKG9uf5ye3Px5P9TQjU0Ejp3UJGdksUak3WCqTCyRGT0w/hpVY6THxSo87f5Jt dkscully@hex.geah.org"
     ];
     websites = {
-      "personal.geah.org" = { listings = true; };
+      "personal.geah.org" = {
+        listings = true;
+      };
       "photos.geah.org" = {
         listings = true;
         cgi = true;
@@ -105,7 +133,11 @@
     defaultKeys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAnPPorVliZfr8fv3gDOGuy86axBe8ObrgjFA6yDdGDjICP4HjqtqBLVur8CF9UOWQlawbffu7LU5DLQUgeXfd8C7PpClmLb7boNXMMQH78CbAEI36daRoIjEoCkZRv7wjjTwQdpoTCmKa1hsS8yki51a6Cg4rGg7Ns93hFxM3H9cL0BjoCgpWDFj4li2kblQFkleDppIh/maNFOhkBfNe5wJvXTRNifuSA8NLmDGv0F37F30aRJIIdlGC49Jz2cQ18IladhyOWIV0u28h7uvviyoApxTrJB5dDB9GeRZOwfksYb2MztYOFeAYJm086llClp0QTjeDmDqDQCG91Ol1rQ== vince@gerald"
     ];
-    websites = { "www.kyllikki.org" = { listings = true; }; };
+    websites = {
+      "www.kyllikki.org" = {
+        listings = true;
+      };
+    };
   };
 
   netsurf = {
@@ -122,9 +154,11 @@
   gillian = {
     name = "Gillian Simpson";
     email = "gillian.d.simpson@gmail.com";
-    defaultKeys = [''
-      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC9V7Ur1man51zynAorR3gkE0JUxWZFLK98uGrypbLV5Z8lo62/3z8YU7quNQXEoQqBdw3YSxkTbT61rVZ+nwzYpQgn1E0spUCsk3KMYopneJUJBEeQv0UYov342xw8vjtTFa29gJC1qV4MNL1LmmeXtG9X1u8Yo24VZKrAszVVGyioVBDRM6miaCCS3LZdKlVbb9aC+NwWe3mU4ms0DQwxrlxD4459ThCsbmmeDK2pFpSTFISHBa31G2v7A9tRCvw/JHyP3g77wK5WO5JT6YFf46YQCuqsjsnM8TLqHEw6yyHWvtqjabmCPklj5JXuPI9DneQwTqUUVDVW4eCKaPy1CygL+AI/J02PCOfAI/PyBs3H6pG0Ov/hjR6wscCKDYmuAeQoCZWnAZl8Iq4U3QvVXxBBOQVKnElP6JfPIb+kuPVon9xaxQJ5O8GVr8kQgdjt6X3KbeCya+XmocEuH2FOEdW3f6M9ea7GMm/uaDDXs4V/xPCDsuM8hfB8jOJfvnbrTKY3TcGhKrkxrU+YqZMuE8Xt76+S/S3vkv29+zGK1v9flHdoUyqCJh2v1Gtd/6ZuZU2mev1phjcHY2sYEIophW3k+eaBZyan/l6fElaP53H+Y51XJzvQ/QEvGCTS17nfeooVMsfNHO2HsnAZl6vChn7CNLr2hunvSvlCgjmJtQ== gillian@gillian-Vostro-3580
-    ''];
+    defaultKeys = [
+      ''
+        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC9V7Ur1man51zynAorR3gkE0JUxWZFLK98uGrypbLV5Z8lo62/3z8YU7quNQXEoQqBdw3YSxkTbT61rVZ+nwzYpQgn1E0spUCsk3KMYopneJUJBEeQv0UYov342xw8vjtTFa29gJC1qV4MNL1LmmeXtG9X1u8Yo24VZKrAszVVGyioVBDRM6miaCCS3LZdKlVbb9aC+NwWe3mU4ms0DQwxrlxD4459ThCsbmmeDK2pFpSTFISHBa31G2v7A9tRCvw/JHyP3g77wK5WO5JT6YFf46YQCuqsjsnM8TLqHEw6yyHWvtqjabmCPklj5JXuPI9DneQwTqUUVDVW4eCKaPy1CygL+AI/J02PCOfAI/PyBs3H6pG0Ov/hjR6wscCKDYmuAeQoCZWnAZl8Iq4U3QvVXxBBOQVKnElP6JfPIb+kuPVon9xaxQJ5O8GVr8kQgdjt6X3KbeCya+XmocEuH2FOEdW3f6M9ea7GMm/uaDDXs4V/xPCDsuM8hfB8jOJfvnbrTKY3TcGhKrkxrU+YqZMuE8Xt76+S/S3vkv29+zGK1v9flHdoUyqCJh2v1Gtd/6ZuZU2mev1phjcHY2sYEIophW3k+eaBZyan/l6fElaP53H+Y51XJzvQ/QEvGCTS17nfeooVMsfNHO2HsnAZl6vChn7CNLr2hunvSvlCgjmJtQ== gillian@gillian-Vostro-3580
+      ''
+    ];
   };
 
   probertson = {
