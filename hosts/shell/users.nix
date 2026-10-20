@@ -213,4 +213,12 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPQe6lsTapAxiwhhEeE/ixuK+5N8esCsMWoekQqjtxjP"
     ];
   };
+
+  sudokucon = {
+    name = "Sudokucon Admin";
+    email = "info@sudokucon.com";
+    defaultKeys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQClwCYAwLGpbgQdkeCjKpoyFr5ve1FiG1RKes7KgHICAS5YRCsWBvvHnamsLAaRPbWNKXBHA4J0cB+XOR6gCSVLGcQUsUaeDXyP5HjlxUhn3HC3/ormAmGVbMAdzRAhgfIGuKVUa2YRqM966/XLCrlplMak3nygQ8tZef8rklggT0TCx/TGqSU8/H7mZ+iScw0EA0BZj06E9L0dGpXVTZHjsPi8gnQoxyTN3mp79avdugA9iDzJhWb0q7G15woqpgiLwymWIlsdrcq1Xzf8AUM7cGgt4zMdZ/jej79GRGmbZpsoPAXTe7ddBGeCx8948b6zYDmtYe505lZGICrHe7Qv SudokuCon"
+    ];
+  };
 }
