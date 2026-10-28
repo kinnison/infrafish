@@ -302,6 +302,7 @@ in
     sops.secrets.mailcore-roundcube-password = {
       sopsFile = ../../keys/mailcore-roundcube-password;
       format = "binary";
+      owner = config.services.nginx.user;
     };
 
     services.roundcube = {
@@ -347,6 +348,13 @@ in
     # the systemd unit
     systemd.services.roundcube-setup = {
       after = [ "postgresql.service" ];
+    };
+
+    # Roundcube's PHPFPM needs access to the password secret
+    systemd.services.phpfpm-roundcube = {
+      serviceConfig = {
+        ReadOnlyPaths = "/run/secrets";
+      };
     };
 
     services.nginx = {
