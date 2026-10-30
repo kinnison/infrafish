@@ -222,8 +222,9 @@
     ];
 
     websites = {
-      "sudokucon.digital-scurf.org" = {
+      "www.sudokucon.com" = {
         listings = false;
+        extraNames = [ "sudokucon.com" ];
         extraConfig = ''
           location / {
             try_files $uri /index.html =404;
